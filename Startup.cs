@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BestOfTheWorst.Server.Database;
+using BestOfTheWorst.Server.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,8 @@ namespace BestOfTheWorst
             services.AddDbContextPool<BestOfTheWorstContext>(opt => {
                 opt.UseSqlServer(connectionString: connectionString);
             });
+
+            services.AddBestOfTheWorstServices(connectionString);
 
             services.AddAutoMapper();
 
