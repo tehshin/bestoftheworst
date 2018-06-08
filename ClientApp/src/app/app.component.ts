@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MovieService } from './movie.service';
+import { Movie } from './movie';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Best of the Worst';
+
+  constructor() { }
 }

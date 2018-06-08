@@ -22,14 +22,17 @@ namespace BestOfTheWorst.Server.Services.Sql
         {
             var sql = @"select [Id], [Title], [Synopsis] from [Movies] where [Id] = @id;
                         select distinct t.[Id], t.[Name] from MovieTag mt 
-                        join [Tag] t on mt.[TagId] = t.[Id]
+                        join [Tags] t on mt.[TagId] = t.[Id]
                         where mt.[MovieId] = @id;";
 
             var results = await Session.Connection.QueryMultipleAsync(sql, new { id });
 
-            var movie = results.Read<Movie>().First();
-            movie.Tags = results.Read<Tag>().ToList();
+            var movie = results.Read<Movie>().FirstOrDefault();
 
+            if (movie != null) {
+                movie.Tags = results.Read<Tag>().ToList();
+            }
+            
             return movie;
         }
 
