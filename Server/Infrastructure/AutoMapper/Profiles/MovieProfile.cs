@@ -11,6 +11,8 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
         {
             CreateMap<CreateMovieViewModel, Movie>()
                 .ForMember(dest => dest.Tags, opt => opt.ResolveUsing<StringTagResolver>());
+
+            CreateMap<UpdateMovieViewModel, Movie>();
         }
     }
 }

@@ -123,6 +123,62 @@ namespace BestOfTheWorst.Tests.UnitTests
             movieServiceMock.Verify();
         }
 
+        [Fact]
+        public async Task Update_ReturnsBadRequestResult_WhenModelStateIsInvalid()
+        {
+            var mapper = CreateAutomapper();
+
+            var movieServiceMock = new Mock<IMovieService>();
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+            controller.ModelState.AddModelError("Title", "A title is required");
+
+            var movie = new UpdateMovieViewModel();
+
+            var result = await controller.Update(1, movie);
+
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsNotFound_WhenMovieIsNull()
+        {
+            var mapper = CreateAutomapper();
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>())).Returns(Task.FromResult((Movie)null));
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+
+            var movie = new UpdateMovieViewModel();
+
+            var result = await controller.Update(123, movie);
+
+            var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsNoContentResultAndUpdatesMovie_WhenModelStateIsValid()
+        {
+            var mapper = CreateAutomapper();
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>()))
+                .Returns(Task.FromResult(new Movie()))
+                .Verifiable();
+            movieServiceMock.Setup(s => s.UpdateAsync(It.IsAny<Movie>()))
+                .Returns(Task.FromResult((long)1))
+                .Verifiable();
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+            
+            var movie = new UpdateMovieViewModel();
+            var result = await controller.Update(1, movie);
+
+            var noContentResult = Assert.IsType<NoContentResult>(result);
+            movieServiceMock.Verify();
+        }
+
         private IMapper CreateAutomapper()
         {
             var mapperConfig = new MapperConfiguration(config => {

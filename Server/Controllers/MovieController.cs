@@ -90,5 +90,44 @@ namespace BestOfTheWorst.Server.Controllers
 
             return CreatedAtAction("GetById", new { id = movieToCreate.Id }, _mapper.Map<MovieDetailViewModel>(movieToCreate));
         }
+
+        /// <summary>
+        /// Updates a Movie.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /movie
+        ///     {
+        ///         "title": "Movie name",
+        ///         "synopsis": "Movie synopsis"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <param name="movie"></param>
+        /// <response code="400">If the title is null</response>
+        /// <response code="404">If the movie is null</response>
+        [HttpPut("{id}", Name = "UpdateMovie")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateMovieViewModel movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var movieToUpdate = await _movieService.GetByIdAsync(id);
+            if (movieToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(movie, movieToUpdate);
+            await _movieService.UpdateAsync(movieToUpdate);
+
+            return NoContent();
+        }
     }
 }

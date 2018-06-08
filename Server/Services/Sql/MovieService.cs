@@ -48,5 +48,16 @@ namespace BestOfTheWorst.Server.Services.Sql
             movieToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, movieToCreate);
             return movieToCreate;
         }
+
+        public async Task<long> UpdateAsync(Movie movieToUpdate)
+        {
+            var sql = @"update [Movies] 
+                        set [Title] = @Title
+                            ,[Synopsis] = @Synopsis
+                        where [Id] = @Id";
+            
+            await Session.Connection.ExecuteAsync(sql, movieToUpdate);
+            return movieToUpdate.Id;
+        }
     }
 }
