@@ -32,5 +32,21 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             return movie;
         }
+
+        public async Task<Movie> CreateAsync(Movie movieToCreate)
+        {
+            var sql = @"INSERT INTO [dbo].[Movies]
+                            ([Title]
+                            ,[Synopsis])
+                        VALUES
+                            (@Title
+                             @Synopsis);
+                        select scope_identity();";
+
+            // TODO: create tags if they don't exist, create MovieTag
+
+            movieToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, movieToCreate);
+            return movieToCreate;
+        }
     }
 }

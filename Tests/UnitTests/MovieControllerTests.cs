@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BestOfTheWorst.Server.Controllers;
+using BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles;
 using BestOfTheWorst.Server.Models;
 using BestOfTheWorst.Server.Services;
 using BestOfTheWorst.Server.ViewModels;
@@ -75,10 +76,57 @@ namespace BestOfTheWorst.Tests.UnitTests
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
         }
 
+        [Fact]
+        public async Task Create_ReturnsBadRequestResult_WhenModelStateIsInvalid()
+        {
+            var mapper = CreateAutomapper();
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.CreateAsync(It.IsAny<Movie>())).Returns(Task.FromResult(new Movie()));
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+            controller.ModelState.AddModelError("Title", "A title is required");
+
+            var newMovie = new CreateMovieViewModel();
+
+            var result = await controller.Create(newMovie);
+
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task Create_ReturnsACreatedAtActionResultAndAddsMovie_WhenModelStateIsValid()
+        {
+            var mapper = CreateAutomapper();
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.CreateAsync(It.IsAny<Movie>()))
+                .Returns(Task.FromResult(new Movie() { Id = 1 }))
+                .Verifiable();
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+            var movie = new CreateMovieViewModel
+            {
+                Title = "New movie",
+                Synopsis = "It's about people",
+                Tags = new List<string>() { "Tag 1", "Tag 2" }
+            };
+
+            var result = await controller.Create(movie);
+
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+
+            Assert.Null(createdAtActionResult.ControllerName);
+            Assert.Equal("GetById", createdAtActionResult.ActionName);
+            Assert.IsType<MovieDetailViewModel>(createdAtActionResult.Value);
+            movieServiceMock.Verify();
+        }
+
         private IMapper CreateAutomapper()
         {
             var mapperConfig = new MapperConfiguration(config => {
-                
+                config.AddProfile(new MovieProfile());
             });
             return mapperConfig.CreateMapper();
         }

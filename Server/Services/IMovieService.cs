@@ -9,5 +9,7 @@ namespace BestOfTheWorst.Server.Services
         Task<IEnumerable<Movie>> ListAllAsync();
 
         Task<Movie> GetByIdAsync(long id);
+
+        Task<Movie> CreateAsync(Movie movieToCreate);
     }
 }

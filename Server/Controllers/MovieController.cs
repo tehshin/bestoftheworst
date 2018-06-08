@@ -55,5 +55,40 @@ namespace BestOfTheWorst.Server.Controllers
 
             return new ObjectResult(_mapper.Map<MovieDetailViewModel>(movie));
         }
+
+        /// <summary>
+        /// Creates a Movie.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /movie
+        ///     {
+        ///         "title": "New movie name",
+        ///         "synopsis": "Movie synopsis",
+        ///         "tags": ["tag 1", "tag 2"]
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="movie"></param>
+        /// <returns>A newly created Movie</returns>
+        /// <response code="201">Returns the newly created movie</response>
+        /// <response code="400">If the title is null</response>
+        [HttpPost("", Name = "CreateMovie")]
+        [ProducesResponseType(typeof(MovieDetailViewModel), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Create([FromBody] CreateMovieViewModel movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var movieToCreate = _mapper.Map<Movie>(movie);
+
+            movieToCreate = await _movieService.CreateAsync(movieToCreate);
+
+            return CreatedAtAction("GetById", new { id = movieToCreate.Id }, _mapper.Map<MovieDetailViewModel>(movieToCreate));
+        }
     }
 }
