@@ -59,5 +59,14 @@ namespace BestOfTheWorst.Server.Services.Sql
             await Session.Connection.ExecuteAsync(sql, movieToUpdate);
             return movieToUpdate.Id;
         }
+
+        public async Task<long> DeleteAsync(long id)
+        {
+            var sql = @"delete from [Movie] where [Id] = @id";
+
+            await Session.Connection.ExecuteAsync(sql, new { id });
+
+            return id;
+        }
     }
 }

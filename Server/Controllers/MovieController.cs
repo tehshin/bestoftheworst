@@ -129,5 +129,23 @@ namespace BestOfTheWorst.Server.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Deletes a specific Movie.
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete("{id}", Name = "DeleteMovie")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var movie = await _movieService.GetByIdAsync(id);
+
+            if (movie == null)
+            {
+                return NoContent();
+            }
+
+            await _movieService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

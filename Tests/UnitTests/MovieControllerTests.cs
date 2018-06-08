@@ -179,6 +179,40 @@ namespace BestOfTheWorst.Tests.UnitTests
             movieServiceMock.Verify();
         }
 
+        [Fact]
+        public async Task Delete_ReturnsNoContentResult_WhenMovieIsNull()
+        {
+            var mapper = CreateAutomapper();
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>())).Returns(Task.FromResult((Movie)null));
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+
+            var result = await controller.Delete(1);
+
+            var noContentResult = Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsNoContentResultAndDeletesMovie()
+        {
+            var mapper = CreateAutomapper();
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>()))
+                .Returns(Task.FromResult(new Movie()))
+                .Verifiable();
+            movieServiceMock.Setup(s => s.DeleteAsync(It.IsAny<long>()))
+                .Returns(Task.FromResult((long)1))
+                .Verifiable();
+
+            var controller = new MovieController(mapper, movieServiceMock.Object);
+
+            var result = await controller.Delete(1);
+
+            var noContentResult = Assert.IsType<NoContentResult>(result);
+            movieServiceMock.Verify();
+        }
+
         private IMapper CreateAutomapper()
         {
             var mapperConfig = new MapperConfiguration(config => {

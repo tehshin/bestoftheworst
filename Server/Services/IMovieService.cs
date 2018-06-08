@@ -13,5 +13,7 @@ namespace BestOfTheWorst.Server.Services
         Task<Movie> CreateAsync(Movie movieToCreate);
 
         Task<long> UpdateAsync(Movie movieToUpdate);
+
+        Task<long> DeleteAsync(long id);
     }
 }
