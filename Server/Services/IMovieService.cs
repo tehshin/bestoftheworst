@@ -7,5 +7,7 @@ namespace BestOfTheWorst.Server.Services
     public interface IMovieService
     {
         Task<IEnumerable<Movie>> ListAllAsync();
+
+        Task<Movie> GetByIdAsync(long id);
     }
 }
