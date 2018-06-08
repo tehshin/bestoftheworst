@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using BestOfTheWorst.Infrastructure.Swagger.Filter;
 using BestOfTheWorst.Server.Database;
 using BestOfTheWorst.Server.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -59,7 +62,14 @@ namespace BestOfTheWorst
                     Version = "v1"
                 });
 
-                //c.DocumentFilter<LowercaseDocumentFilter>();
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                if (File.Exists(xmlPath))
+                    c.IncludeXmlComments(xmlPath);
+
+                c.DocumentFilter<LowercaseDocumentFilter>();
             });
         }
 
