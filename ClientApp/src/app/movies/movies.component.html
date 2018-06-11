@@ -9,12 +9,16 @@
     <tr>
       <th>Id</th>
       <th>Title</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let movie of movies">
       <td>{{movie.id}}</td>
       <td>{{movie.title}}</td>
+      <td>
+        <a routerLink="/movie/{{movie.id}}">Details</a>
+      </td>
     </tr>
   </tbody>
 </table>
