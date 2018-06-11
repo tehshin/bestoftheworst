@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { MoviesComponent } from './movies/movies.component';
 import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MoviesComponent,
     CreateMovieComponent,
-    MovieDetailComponent
+    MovieDetailComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

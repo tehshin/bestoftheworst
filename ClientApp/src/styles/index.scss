@@ -1,0 +1,42 @@
+@import '../../node_modules/bulma/sass/utilities/initial-variables';
+@import '../../node_modules/bulma/sass/utilities/functions';
+
+@import 'bulma-overrides/initial-variables';
+
+@import "../../node_modules/bulma/sass/utilities/derived-variables";
+
+@import '../../node_modules/bulma/bulma';
+
+.botw-main {
+    padding: 0 3rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.navbar.is-dark {
+    background-color: rgba(26, 26, 26, .9);
+    color: $grey-lighter;
+}
+.navbar.has-shadow {
+    box-shadow: 0px 1px 3px 1px rgba(#000, .3);
+}
+
+.movie-item {
+    display: block;
+    background: #e1e1e1;
+    box-shadow: 0 1px 5px rgba(0,0,0,.15);
+    color: $dark;
+}
+
+.movie-item-picture {
+    position: relative;
+    display: block;
+    height: 0;
+    padding-bottom: 147%;
+}
+
+.movie-item-content {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    font-weight: 600;
+}

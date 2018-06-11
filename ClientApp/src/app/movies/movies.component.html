@@ -1,24 +1,12 @@
-<h1>Best of the Worst movie list</h1>
+<div class="columns is-multiline">
+  <div class="column is-2" *ngFor="let movie of movies">
+    <a routerLink="/movie/{{movie.id}}" class="movie-item">
+      <div class="movie-item-picture">
 
-<p>
-  <a routerLink="/create">Create movie</a>
-</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Title</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let movie of movies">
-      <td>{{movie.id}}</td>
-      <td>{{movie.title}}</td>
-      <td>
-        <a routerLink="/movie/{{movie.id}}">Details</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+      <div class="movie-item-content">
+        {{ movie.title }}
+      </div>
+    </a>
+  </div>
+</div>
