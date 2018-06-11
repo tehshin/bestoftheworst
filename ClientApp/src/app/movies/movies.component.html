@@ -1,3 +1,20 @@
+<h1>Best of the Worst movie list</h1>
+
 <p>
-  movies works!
+  <a routerLink="/create">Create movie</a>
 </p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movie of movies">
+      <td>{{movie.id}}</td>
+      <td>{{movie.title}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -43,7 +43,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                             ,[Synopsis])
                         VALUES
                             (@Title
-                             @Synopsis);
+                             ,@Synopsis);
                         select scope_identity();";
 
             // TODO: create tags if they don't exist, create MovieTag
