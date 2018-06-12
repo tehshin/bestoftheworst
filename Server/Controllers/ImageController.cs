@@ -39,7 +39,7 @@ namespace BestOfTheWorst.Server.Controllers
                 return BadRequest();
             }
 
-            var image = await _imageService.CreateImage(imageFile.OpenReadStream(), "images/movies");
+            var image = await _imageService.CreateImage(imageFile.OpenReadStream(), imageFile.FileName, "images/movies");
 
             return Created(Url.Content($"~/images/movies/{image.Id}.jpg"), _mapper.Map<ImageViewModel>(image));
         }

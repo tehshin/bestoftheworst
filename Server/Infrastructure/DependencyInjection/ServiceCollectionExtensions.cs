@@ -2,6 +2,9 @@ using BestOfTheWorst.Server.Database;
 using BestOfTheWorst.Server.Services;
 using BestOfTheWorst.Server.Services.Sql;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
@@ -10,6 +13,13 @@ namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
     {
         public static IServiceCollection AddBestOfTheWorstServices(this IServiceCollection services, string connectionString)
         {
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(_ => {
+                var actionContext = _.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = _.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
+
             services.AddScoped<IDbSession>(c => new DbSession(connectionString));
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IImageService>(c => 

@@ -22,11 +22,12 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Resolver
 
             if (!string.IsNullOrEmpty(source.Path))
             {
-                basePath = Path.Combine(basePath, source.Path);
+                basePath = $"{basePath}{source.Path.TrimEnd('/').TrimStart('/')}";
             }
 
-            return _urlHelper.Content(
-                Path.Combine(basePath, $"{source.Id}.jpg"));
+            var imagePath = $"{basePath}/{source.Id}.jpg";
+
+            return _urlHelper.Content(imagePath);
         }
     }
 }

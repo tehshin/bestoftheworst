@@ -6,6 +6,11 @@
 
 <form>
   <div>
+    Image
+    <input type="file" (change)="onImageSelected($event)" />
+    <button type="button" (click)="uploadImage()">Upload</button>
+  </div>
+  <div>
     Title
     <input type="text" name="title" [(ngModel)]="movie.title" />
   </div>

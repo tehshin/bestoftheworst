@@ -12,7 +12,10 @@ namespace BestOfTheWorst.Server.Services.Sql
     {
         public string ContentDirectory { get; set; }
 
-        public ImageService(IDbSession session, string contentDirectory) : base(session) { }
+        public ImageService(IDbSession session, string contentDirectory) : base(session) 
+        { 
+            ContentDirectory = contentDirectory;ContentDirectory = contentDirectory;
+        }
 
         public async Task<Image> CreateImage(Stream inputStream, string fileName = "", string targetDirectory = "")
         {
@@ -42,6 +45,11 @@ namespace BestOfTheWorst.Server.Services.Sql
         private async void StoreImageAsync(byte[] imageData, string fileName, string targetDirectory = "")
         {
             string targetDir = Path.Combine(ContentDirectory, targetDirectory);
+
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
 
             using (var original = SKBitmap.Decode(imageData))
             using (var image = SKImage.FromBitmap(original))
