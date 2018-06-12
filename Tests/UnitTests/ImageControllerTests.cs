@@ -20,10 +20,8 @@ namespace BestOfTheWorst.Tests.UnitTests
         [Fact]
         public async Task Create_ReturnsBadRequestResult_WhenFileIsNull()
         {
-            var mapper = CreateAutoMapper(null);
-
             var imageServiceMock = new Mock<IImageService>();
-            var controller = new ImageController(mapper, imageServiceMock.Object);
+            var controller = new ImageController(null, imageServiceMock.Object);
 
             var result = await controller.Create(null);
 
@@ -40,7 +38,9 @@ namespace BestOfTheWorst.Tests.UnitTests
             ))
             .Returns(imageUrl);
 
-            var mapper = CreateAutoMapper(urlHelperMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            mapperMock.Setup(m => m.Map<ImageViewModel>(It.IsAny<Image>()))
+                .Returns(new ImageViewModel());
 
             var image = new Image { Id = Guid.NewGuid() };
 
@@ -60,7 +60,7 @@ namespace BestOfTheWorst.Tests.UnitTests
             fileMock.Setup(f => f.FileName).Returns("test.jpg");
             fileMock.Setup(f => f.Length).Returns(ms.Length);
 
-            var controller = new ImageController(mapper, imageServiceMock.Object);
+            var controller = new ImageController(mapperMock.Object, imageServiceMock.Object);
             controller.Url = urlHelperMock.Object;
 
             var result = await controller.Create(fileMock.Object);
@@ -68,14 +68,6 @@ namespace BestOfTheWorst.Tests.UnitTests
             var createdResult = Assert.IsType<CreatedResult>(result);
             Assert.Equal(imageUrl, createdResult.Location);
             Assert.IsType<ImageViewModel>(createdResult.Value);
-        }
-
-        private IMapper CreateAutoMapper(IUrlHelper urlHelper)
-        {
-            var mapperConfig = new MapperConfiguration(config => {
-                config.AddProfile(new ImageProfile(urlHelper));
-            });
-            return mapperConfig.CreateMapper();
         }
     }
 }

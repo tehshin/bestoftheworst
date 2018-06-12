@@ -8,10 +8,10 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
 {
     public class ImageProfile : Profile
     {
-        public ImageProfile(IUrlHelper urlHelper)
+        public ImageProfile()
         {
             CreateMap<Image, ImageViewModel>()
-                .ForMember(i => i.ImageUrl, o => o.ResolveUsing(new ImageUrlResolver(urlHelper)));
+                .ForMember(i => i.ImageUrl, o => o.ResolveUsing<ImageUrlResolver>());
         }
     }
 }

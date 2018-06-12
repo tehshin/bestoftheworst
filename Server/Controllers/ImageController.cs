@@ -29,10 +29,9 @@ namespace BestOfTheWorst.Server.Controllers
         /// <returns>A newly created Image</returns>
         /// <response code="201">Returns the newly created image</response>
         /// <response code="400">If the image file is null</response>
-        [HttpPost("", Name = "CreateMovie")]
+        [HttpPost("", Name = "CreateImage")]
         [ProducesResponseType(typeof(ImageViewModel), 201)]
         [ProducesResponseType(400)]
-        [HttpPost("", Name = "CreateImage")]
         public async Task<IActionResult> Create(IFormFile imageFile)
         {
             if (imageFile == null)
