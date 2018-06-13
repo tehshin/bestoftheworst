@@ -1,0 +1,7 @@
+<div class="botw-image-control">
+  <input #fileInput type="file" class="botw-image-control-file" (change)="onFileSelected($event)" />
+  <a *ngIf="!imageUrl" class="botw-image-control-selector" (click)="fileInput.click()">
+    Choose an image
+  </a>
+  <img *ngIf="imageUrl" class="botw-image-control-preview" src="{{ imageUrl }}" />
+</div>

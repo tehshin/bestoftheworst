@@ -12,6 +12,7 @@ import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { MovieImageInputComponent } from './movie-image-input/movie-image-input.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     CreateMovieComponent,
     MovieDetailComponent,
     NavbarComponent,
-    PaginationComponent
+    PaginationComponent,
+    MovieImageInputComponent
   ],
   imports: [
     BrowserModule,

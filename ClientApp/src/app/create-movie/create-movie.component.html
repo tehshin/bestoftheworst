@@ -1,23 +1,32 @@
-<h1>Create a new movie</h1>
+<header class="botw-header">
+  <h1 class="title">Create a new movie</h1>
+</header>
 
-<p>
-  <a routerLink="/">Back</a>
-</p>
-
-<form>
-  <div>
-    Image
-    <input type="file" (change)="onImageSelected($event)" />
-    <button type="button" (click)="uploadImage()">Upload</button>
+<div class="columns">
+  <div class="column">
+    <form>
+      <div class="field">
+        <label class="label">Title</label>
+        <div class="control">
+          <input class="input" type="text" name="title" [(ngModel)]="movie.title" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Synopsis</label>
+        <div class="control">
+          <textarea class="textarea" name="synopsis" [(ngModel)]="movie.synopsis"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-primary" type="submit" (click)="save()">Create movie</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div>
-    Title
-    <input type="text" name="title" [(ngModel)]="movie.title" />
+  <div class="column is-4">
+    <div class="box">
+      <app-movie-image-input name="image" [(ngModel)]="movie.image"></app-movie-image-input>
+    </div>
   </div>
-  <div>
-    Synopsis
-    <textarea name="synopsis" [(ngModel)]="movie.synopsis"></textarea>
-  </div>
-
-  <button type="submit" (click)="save()">Create movie</button>
-</form>
+</div>

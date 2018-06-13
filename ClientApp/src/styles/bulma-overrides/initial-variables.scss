@@ -1,3 +1,9 @@
+$purple: #9932CC;
+$purple-invert: findColorInvert($purple);
+
+$primary: $purple;
+$primary-invert: $purple-invert;
+
 $grey-lighter: #ccc;
 $body-background-color: $grey-lighter;
 
