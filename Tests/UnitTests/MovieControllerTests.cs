@@ -16,19 +16,25 @@ namespace BestOfTheWorst.Tests.UnitTests
     public class MovieControllerTests
     {
         [Fact]
-        public async Task GetAll_ReturnsAListOfMovieViewModels()
+        public async Task Get_ReturnsAMovieListVieWModel()
         {
             var mapper = CreateAutomapper();
 
             Mock<IMovieService> movieServiceMock = new Mock<IMovieService>();
-            movieServiceMock.Setup(s => s.ListAllAsync()).Returns(Task.FromResult(GetTestMovies()));
+            movieServiceMock.Setup(s => s.ListAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(GetTestMovies()));
             
             var controller = new MovieController(mapper, movieServiceMock.Object);
 
-            var result = await controller.GetAll();
+            var result = await controller.Get(1, 3);
 
-            Assert.IsType<List<MovieViewModel>>(result);
-            Assert.Equal(3, result.Count());
+            Assert.IsType<MovieListViewModel>(result);
+            Assert.Equal(3, result.Items.Count());
+
+            Assert.Equal(2, result.Paging.TotalPages);
+            Assert.Equal(1, result.Paging.PageIndex);
+            Assert.Equal(3, result.Paging.PageSize);
+            Assert.Equal(6, result.Paging.TotalItems);
         }
 
         [Fact]
@@ -221,14 +227,19 @@ namespace BestOfTheWorst.Tests.UnitTests
             return mapperConfig.CreateMapper();
         }
 
-        private IEnumerable<Movie> GetTestMovies()
+        private PaginatedList<Movie> GetTestMovies()
         {
-            return new List<Movie>()
+            var movies = new List<Movie>()
             {
                 new Movie { Id = 1, Title = "Movie 1" },
                 new Movie { Id = 2, Title = "Movie 2" },
-                new Movie { Id = 3, Title = "Movie 3" }
+                new Movie { Id = 3, Title = "Movie 3" },
+                new Movie { Id = 4, Title = "Movie 4" },
+                new Movie { Id = 5, Title = "Movie 5" },
+                new Movie { Id = 6, Title = "Movie 6" }
             };
+
+            return new PaginatedList<Movie>(movies.Take(3).ToList(), movies.Count, 1, 3);
         }
     }
 }

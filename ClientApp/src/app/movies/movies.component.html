@@ -1,8 +1,8 @@
 <div class="columns is-multiline">
-  <div class="column is-2" *ngFor="let movie of movies">
+  <div class="column is-2" *ngFor="let movie of movieList?.items">
     <a routerLink="/movie/{{movie.id}}" class="movie-item">
       <div class="movie-item-picture">
-
+        <img class="movie-item-img" *ngIf="movie.image" src="{{movie.image?.imageUrl}}" alt="{{movie.title}}" />
       </div>
       <div class="movie-item-content">
         {{ movie.title }}

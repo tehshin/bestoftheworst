@@ -24,15 +24,27 @@ namespace BestOfTheWorst.Server.Controllers
         }
 
         /// <summary>
-        /// Returns all Movies.
+        /// Returns a page of Movies.
         /// </summary>
-        /// <returns>A list of Movies.</returns>
+        /// <returns>A paged list of Movies.</returns>
         [HttpGet("", Name = "ListMovies")]
-        [ProducesResponseType(typeof(IEnumerable<MovieViewModel>), 200)]
-        public async Task<IEnumerable<MovieViewModel>> GetAll()
+        [ProducesResponseType(typeof(MovieListViewModel), 200)]
+        public async Task<MovieListViewModel> Get([FromQuery]int page, [FromQuery]int pageSize)
         {
-            var movies = await _movieService.ListAllAsync();
-            return _mapper.Map<IEnumerable<Movie>, IEnumerable<MovieViewModel>>(movies);
+            if (page <= 0)
+            {
+                page = 1;
+            }
+
+            if (pageSize <= 0)
+            {
+                pageSize = 10;
+            }
+
+            var pageOfMovies = await _movieService.ListAsync(page, pageSize);
+            var movieListViewModel = _mapper.Map<PaginatedList<Movie>, MovieListViewModel>(pageOfMovies);
+
+            return movieListViewModel;
         }
 
         /// <summary>
@@ -43,7 +55,7 @@ namespace BestOfTheWorst.Server.Controllers
         /// <response code="200">Returns the requested movie</response>
         /// <response code="404">If the movie is null</response>
         [HttpGet("{id}", Name = "GetStory")]
-        [ProducesResponseType(typeof(MovieViewModel), 201)]
+        [ProducesResponseType(typeof(MovieDetailViewModel), 201)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(long id)
         {

@@ -15,3 +15,15 @@ export class MovieForm {
     synopsis: string;
     image: string;
 }
+
+export class PageInfo {
+    pageIndex: number;
+    pageSize: number;
+    totalPages: number;
+    totalItems: number;
+}
+
+export class MovieList {
+    paging: PageInfo;
+    items: Movie[]
+}

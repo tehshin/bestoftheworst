@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Movie, MovieForm } from './movie'
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Movie, MovieForm, MovieList } from './movie'
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -23,8 +23,16 @@ export class MovieService {
     return throwError(errorMsg);
   };
 
-  listMovies() {
-    return this.http.get<Movie[]>(this.baseUrl)
+  listMovies(pageIndex: number, pageSize: number) {
+    let params: HttpParams;
+    
+    if (pageIndex || pageSize) {
+      params = new HttpParams();
+      params = pageIndex ? params.append('page', pageIndex.toString()) : params;
+      params = pageSize ? params.append('pageSize', pageSize.toString()) : params;
+    }
+    
+    return this.http.get<MovieList>(this.baseUrl, { params: params })
       .pipe(
         catchError(this.handleError)
       )

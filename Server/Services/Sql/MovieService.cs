@@ -18,6 +18,35 @@ namespace BestOfTheWorst.Server.Services.Sql
             return await Session.Connection.QueryAsync<Movie>(sql);
         }
 
+        public async Task<PaginatedList<Movie>> ListAsync(int pageIndex, int pageSize)
+        {
+            var sql = @"select 
+                            m.[Id],
+                            m.[Title], 
+                            m.[Synopsis],
+                            i.[Id],
+                            i.[FileName],
+                            i.[Path]
+                        from [Movies] m
+                        left join [Images] i on m.[ImageId] = i.[Id]
+                        order by m.[Title]
+                        offset @pageSize * (@pageIndex - 1) rows
+                        fetch next @pageSize rows only;
+                        
+                        select count(id) from [Movies];";
+
+            var results = await Session.Connection.QueryMultipleAsync(sql, new { pageIndex, pageSize });
+
+            var movies = results.Read<Movie, Image, Movie>((m, i) => {  
+                m.Image = i;
+                return m;
+            }).ToList();
+
+            var totalCount = results.Read<int>().FirstOrDefault();
+
+            return new PaginatedList<Movie>(movies, totalCount, pageIndex, pageSize);
+        }
+
         public async Task<Movie> GetByIdAsync(long id)
         {
             var sql = @"select 

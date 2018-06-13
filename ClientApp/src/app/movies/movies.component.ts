@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../movie.service';
-import { Movie } from '../movie';
+import { Movie, MovieList } from '../movie';
 
 @Component({
   selector: 'app-movies',
@@ -9,7 +9,9 @@ import { Movie } from '../movie';
 })
 export class MoviesComponent implements OnInit {
 
-  movies: Movie[];
+  movieList: MovieList;
+  page: number = 1;
+  pageSize: number = 12;
 
   constructor(private movieService: MovieService) { }
 
@@ -18,9 +20,9 @@ export class MoviesComponent implements OnInit {
   }
 
   listMovies() {
-    this.movieService.listMovies()
+    this.movieService.listMovies(this.page, this.pageSize)
       .subscribe(
-        (data: Movie[]) => this.movies = data,
+        (data: MovieList) => this.movieList = data,
         error => console.log('listMovies', error)
       );
   };

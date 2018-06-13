@@ -8,6 +8,8 @@ namespace BestOfTheWorst.Server.Services
     {
         Task<IEnumerable<Movie>> ListAllAsync();
 
+        Task<PaginatedList<Movie>> ListAsync(int pageIndex, int pageSize);
+
         Task<Movie> GetByIdAsync(long id);
 
         Task<Movie> CreateAsync(Movie movieToCreate);
