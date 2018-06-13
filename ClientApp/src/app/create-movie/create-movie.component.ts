@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Movie } from '../movie';
+import { Movie, MovieForm } from '../movie';
 import { MovieService } from '../movie.service';
 import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
@@ -11,7 +11,7 @@ import { ImageService } from '../image.service';
 })
 export class CreateMovieComponent implements OnInit {
 
-  movie: Movie = new Movie();
+  movie: MovieForm = new MovieForm();
   selectedFile: File = null;
 
   constructor(
@@ -28,10 +28,9 @@ export class CreateMovieComponent implements OnInit {
   }
 
   uploadImage() {
-    console.log(this.selectedFile);
     if (this.selectedFile != null)
       this.imageService.createImage(this.selectedFile).subscribe(
-        (data) => console.log(data),
+        (data: any) => this.movie.image = data.id,
         error => console.log(error)
       )
   }

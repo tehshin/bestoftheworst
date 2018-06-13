@@ -3,6 +3,10 @@
   <a routerLink="/">Back</a>
 </p>
 
+<div *ngIf="movie?.image">
+  <img src="{{movie?.image.imageUrl}}" width="500" />
+</div>
+
 <div>
   Title: {{ movie?.title }}
 </div>

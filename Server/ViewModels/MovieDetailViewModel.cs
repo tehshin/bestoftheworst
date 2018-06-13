@@ -10,6 +10,8 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public string Synopsis { get; set; }
 
+        public ImageViewModel Image { get; set; }
+
         public IList<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
     }
 }

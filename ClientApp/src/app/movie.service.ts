@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Movie } from './movie'
+import { Movie, MovieForm } from './movie'
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -38,14 +38,14 @@ export class MovieService {
       );
   };
 
-  createMovie(movie: Movie): Observable<Movie> {
+  createMovie(movie: MovieForm): Observable<Movie> {
     return this.http.post<Movie>(this.baseUrl, movie, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   };
 
-  updateMovie(id: number, movie: Movie): Observable<{}> {
+  updateMovie(id: number, movie: MovieForm): Observable<{}> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.put(url, movie, this.httpOptions)
       .pipe(
