@@ -79,10 +79,12 @@ export class PaginationComponent implements OnInit {
       }));
     }
 
-    this.pages.push(new PageInfo({ 
-      text: this.totalPages ? this.totalPages.toString() : "1",
-      pageIndex: this.totalPages 
-    }));
+    if (this.totalPages > 1) {
+      this.pages.push(new PageInfo({ 
+        text: this.totalPages ? this.totalPages.toString() : "1",
+        pageIndex: this.totalPages 
+      }));
+    }
   }
 
   changePage(page: number) {

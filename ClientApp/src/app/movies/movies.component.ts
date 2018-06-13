@@ -11,7 +11,7 @@ export class MoviesComponent implements OnInit {
 
   movieList: MovieList;
   pages: number[];
-  pageSize: number = 1;
+  pageSize: number = 24;
 
   constructor(private movieService: MovieService) { }
 
