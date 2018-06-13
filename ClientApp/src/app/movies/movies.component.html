@@ -10,3 +10,19 @@
     </a>
   </div>
 </div>
+
+<app-pagination [page]="movieList?.paging.pageIndex" [totalPages]="movieList?.paging.totalPages" (pageChanged)="listMovies($event)"></app-pagination>
+
+<!-- <nav class="pagination is-centered">
+  <a class="pagination-previous" *ngIf="hasPrevious()" (click)="goToPrevious()">
+    <fa-icon [icon]="faAngleLeft"></fa-icon>
+  </a>
+  <a class="pagination-next" *ngIf="hasNext()" (click)="goToNext()">
+    <fa-icon [icon]="faAngleRight"></fa-icon>
+  </a>
+  <ul class="pagination-list">
+    <li *ngFor="let page of pages">
+      <a class="pagination-link" [ngClass]="{ 'is-current': isCurrentPage(page) }" (click)="listMovies(page)">{{ page }}</a>
+    </li>
+  </ul>
+</nav> -->

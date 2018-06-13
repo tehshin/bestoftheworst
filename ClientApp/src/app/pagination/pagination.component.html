@@ -1,0 +1,16 @@
+<nav class="pagination is-centered">
+  <a class="pagination-previous" *ngIf="hasPrevious()" (click)="goToPrevious()">
+    <fa-icon [icon]="faAngleLeft"></fa-icon>
+  </a>
+  <a class="pagination-next" *ngIf="hasNext()" (click)="goToNext()">
+    <fa-icon [icon]="faAngleRight"></fa-icon>
+  </a>
+  <ul class="pagination-list">
+    <li *ngFor="let pageInfo of pages">
+      <a *ngIf="pageInfo.clickable" class="pagination-link" [ngClass]="{ 'is-current': isCurrentPage(pageInfo.pageIndex) }" (click)="changePage(pageInfo.pageIndex)">
+        {{ pageInfo.text }}
+      </a>
+      <span *ngIf="!pageInfo.clickable" class="pagination-ellipsis">&hellip;</span>
+    </li>
+  </ul>
+</nav>

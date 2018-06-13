@@ -25,5 +25,5 @@ export class PageInfo {
 
 export class MovieList {
     paging: PageInfo;
-    items: Movie[]
+    items: Movie[];
 }
