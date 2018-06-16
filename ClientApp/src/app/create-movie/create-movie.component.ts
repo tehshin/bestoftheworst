@@ -3,6 +3,7 @@ import { Movie, MovieForm } from '../movie';
 import { MovieService } from '../movie.service';
 import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-movie',
@@ -12,7 +13,9 @@ import { ImageService } from '../image.service';
 export class CreateMovieComponent implements OnInit {
 
   movie: MovieForm = new MovieForm();
-  selectedFile: File = null;
+  
+  faPlus = faPlus;
+  faTimes = faTimes;
 
   constructor(
     private movieService: MovieService,
@@ -23,16 +26,16 @@ export class CreateMovieComponent implements OnInit {
   ngOnInit() {
   }
 
-  onImageSelected(event) {
-    this.selectedFile = <File>event.target.files[0];
+  trackByIndex(index, obj) {
+    return index;
   }
 
-  uploadImage() {
-    if (this.selectedFile != null)
-      this.imageService.createImage(this.selectedFile).subscribe(
-        (data: any) => this.movie.image = data.id,
-        error => console.log(error)
-      )
+  addTag() {
+    this.movie.tags.push("");
+  }
+
+  removeTag(index) {
+    this.movie.tags.splice(index, 1);
   }
 
   save() {

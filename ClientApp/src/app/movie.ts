@@ -14,6 +14,7 @@ export class MovieForm {
     title: string;
     synopsis: string;
     image: string;
+    tags: string[] = [];
 }
 
 export class PageInfo {

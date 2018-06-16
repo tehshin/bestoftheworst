@@ -80,7 +80,7 @@ namespace BestOfTheWorst.Server.Services.Sql
 
         public async Task<Movie> CreateAsync(Movie movieToCreate)
         {
-            var sql = @"INSERT INTO [dbo].[Movies]
+            var sql = @"INSERT INTO [Movies]
                             ([Title]
                             ,[Synopsis]
                             ,[ImageId])
@@ -90,10 +90,49 @@ namespace BestOfTheWorst.Server.Services.Sql
                              ,@ImageId);
                         select scope_identity();";
 
-            // TODO: create tags if they don't exist, create MovieTag
-
             movieToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, movieToCreate);
+
+            foreach (var tag in movieToCreate.Tags)
+            {
+                var existingTag = await GetTagByNameAsync(tag.Name);
+                if (existingTag == null)
+                {
+                    existingTag = await CreateTagAsync(tag);
+                    tag.Id = existingTag.Id;
+                }
+
+                await CreateMovieTag(new MovieTag
+                {
+                    MovieId = movieToCreate.Id,
+                    TagId = tag.Id
+                });
+            }
+
             return movieToCreate;
+        }
+
+        private async Task CreateMovieTag(MovieTag movieTagToCreate)
+        {
+            var sql = @"INSERT INTO [MovieTag] ([MovieId], [TagId]) VALUES(@MovieId, @TagId)";
+            await Session.Connection.ExecuteAsync(sql, movieTagToCreate);
+        }
+
+        private async Task<Tag> GetTagByNameAsync(string name)
+        {
+            var sql = @"select [Id], [Name] from [Tags] where [Name] = @name";
+            return await Session.Connection.QueryFirstOrDefaultAsync<Tag>(sql, new { name });
+        }
+
+        private async Task<Tag> CreateTagAsync(Tag tagToCreate)
+        {
+            var sql = @"INSERT INTO [Tags]
+                            ([Name])
+                        VALUES
+                            (@Name);
+                        select scope_identity();";
+            
+            tagToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, tagToCreate);
+            return tagToCreate;
         }
 
         public async Task<long> UpdateAsync(Movie movieToUpdate)

@@ -4,7 +4,7 @@
 
 <div class="columns">
   <div class="column">
-    <form>
+    
       <div class="field">
         <label class="label">Title</label>
         <div class="control">
@@ -18,11 +18,36 @@
         </div>
       </div>
       <div class="field">
+        <label class="label">Tags</label>
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let tag of movie.tags, let index = index, trackBy: trackByIndex">
+              <td>
+                <button type="button" class="button is-danger" (click)="removeTag(index)">
+                  <span class="icon is-small">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                  </span>
+                </button>
+              </td>
+              <td>
+                <input type="text" class="input" name="tag[]" [(ngModel)]="movie.tags[index]" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="button is-small" (click)="addTag()">
+          <span class="icon is-small">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </span>
+          <span>Add tag</span>
+        </button>
+      </div>
+      <div class="field">
         <div class="control">
           <button class="button is-primary" type="submit" (click)="save()">Create movie</button>
         </div>
       </div>
-    </form>
+    
   </div>
   <div class="column is-4">
     <div class="box">
