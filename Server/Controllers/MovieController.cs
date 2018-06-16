@@ -54,7 +54,7 @@ namespace BestOfTheWorst.Server.Controllers
         /// <returns>Returns the requested Movie.</returns>
         /// <response code="200">Returns the requested movie</response>
         /// <response code="404">If the movie is null</response>
-        [HttpGet("{id}", Name = "GetStory")]
+        [HttpGet("{id}", Name = "GetMovie")]
         [ProducesResponseType(typeof(MovieDetailViewModel), 201)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(long id)

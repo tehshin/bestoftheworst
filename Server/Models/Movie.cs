@@ -15,6 +15,12 @@ namespace BestOfTheWorst.Server.Models
 
         public Image Image { get; set; }
 
+        public long EpisodeId { get; set; }
+
+        public Episode Episode { get; set; }
+
+        public TimeSpan Timestamp { get; set; }
+
         public IList<Tag> Tags { get; set; } = new List<Tag>();
     }
 }
