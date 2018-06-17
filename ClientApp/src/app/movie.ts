@@ -14,6 +14,7 @@ export class MovieForm {
     title: string;
     synopsis: string;
     image: string;
+    episodeId: number;
     tags: string[] = [];
 }
 

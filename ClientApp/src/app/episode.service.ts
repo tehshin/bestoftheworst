@@ -24,7 +24,7 @@ export class EpisodeService {
   }
 
   listEpisodes() {
-    return this.http.get<Episode>(this.baseUrl)
+    return this.http.get<Episode[]>(this.baseUrl)
       .pipe(
         catchError(this.handleError)
       );

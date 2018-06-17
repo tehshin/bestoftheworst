@@ -19,7 +19,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                             ,[VideoId])
                         VALUES
                             (@Title
-                            @VideoId);
+                            ,@VideoId);
                         select scope_identity()";
             
             episodeToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, episodeToCreate);
@@ -35,13 +35,13 @@ namespace BestOfTheWorst.Server.Services.Sql
 
         public async Task<Episode> GetByIdAsync(long id)
         {
-            var sql = "select [Id], [Name], [VideoId] from [Episode] where [Id] = @id";
+            var sql = "select [Id], [Title], [VideoId] from [Episodes] where [Id] = @id";
             return await Session.Connection.QueryFirstOrDefaultAsync<Episode>(sql, new { id });
         }
 
         public async Task<IEnumerable<Episode>> ListAllAsync()
         {
-            var sql = "select [Id], [Name], [VideoId] from [Episode]";
+            var sql = "select [Id], [Title], [VideoId] from [Episodes]";
             return await Session.Connection.QueryAsync<Episode>(sql);
         }
 

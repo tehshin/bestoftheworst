@@ -16,6 +16,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { MovieImageInputComponent } from './movie-image-input/movie-image-input.component';
 import { ModalComponent } from './modal/modal.component';
 import { Browser } from 'protractor';
+import { EpisodeSelectComponent } from './episode-select/episode-select.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { Browser } from 'protractor';
     NavbarComponent,
     PaginationComponent,
     MovieImageInputComponent,
-    ModalComponent
+    ModalComponent,
+    EpisodeSelectComponent
   ],
   imports: [
     BrowserModule,

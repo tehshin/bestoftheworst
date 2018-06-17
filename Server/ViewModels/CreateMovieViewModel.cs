@@ -13,6 +13,9 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public IList<string> Tags { get; set; } = new List<string>();
 
-        public Guid Image { get; set; }
+        public Guid? Image { get; set; }
+
+        [Required]
+        public long EpisodeId { get; set; }
     }
 }

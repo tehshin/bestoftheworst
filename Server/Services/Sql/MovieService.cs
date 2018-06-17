@@ -83,11 +83,13 @@ namespace BestOfTheWorst.Server.Services.Sql
             var sql = @"INSERT INTO [Movies]
                             ([Title]
                             ,[Synopsis]
-                            ,[ImageId])
+                            ,[ImageId]
+                            ,[EpisodeId])
                         VALUES
                             (@Title
                              ,@Synopsis
-                             ,@ImageId);
+                             ,@ImageId
+                             ,@EpisodeId);
                         select scope_identity();";
 
             movieToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, movieToCreate);
@@ -140,6 +142,7 @@ namespace BestOfTheWorst.Server.Services.Sql
             var sql = @"update [Movies] 
                         set [Title] = @Title
                             ,[Synopsis] = @Synopsis
+                            ,[EpisodeId] = @EpisodeId
                         where [Id] = @Id";
             
             await Session.Connection.ExecuteAsync(sql, movieToUpdate);

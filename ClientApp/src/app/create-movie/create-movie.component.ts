@@ -28,14 +28,6 @@ export class CreateMovieComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog() {
-    this.showDialog = true;
-  }
-
-  closeDialog() {
-    this.showDialog = false;
-  }
-
   trackByIndex(index, obj) {
     return index;
   }

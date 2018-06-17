@@ -97,7 +97,7 @@ namespace BestOfTheWorst.Server.Controllers
             }
 
             var movieToCreate = _mapper.Map<Movie>(movie);
-
+            
             movieToCreate = await _movieService.CreateAsync(movieToCreate);
 
             return CreatedAtAction("GetById", new { id = movieToCreate.Id }, _mapper.Map<MovieDetailViewModel>(movieToCreate));
