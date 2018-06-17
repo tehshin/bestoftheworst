@@ -17,6 +17,52 @@
           <textarea class="textarea" name="synopsis" [(ngModel)]="movie.synopsis"></textarea>
         </div>
       </div>
+
+      <div class="field">
+        <label class="label">Episode</label>
+        <div class="control">
+          <div class="field has-addons">
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select name="episode">
+                    <option value="1">Episode 1</option>
+                    <option value="2">Episode 2</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <button type="button" class="button" (click)="openDialog()">
+                  <span class="icon is-small">
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                  </span>
+                  <span>
+                    Add episode
+                  </span>
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+      <app-modal title="Add new episode" [showDialog]="showDialog" (modalClosed)="closeDialog()">
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input type="text" class="input" name="title" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Video Id</label>
+          <div class="control">
+            <input type="text" class="input" name="videoid" />
+          </div>
+        </div>
+        <div class="control">
+          <button type="button" class="button is-primary">
+            Add episode
+          </button>
+        </div>
+      </app-modal>
+
       <div class="field">
         <label class="label">Tags</label>
         <table class="table">

@@ -13,6 +13,8 @@ import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 export class CreateMovieComponent implements OnInit {
 
   movie: MovieForm = new MovieForm();
+
+  showDialog: boolean = false;
   
   faPlus = faPlus;
   faTimes = faTimes;
@@ -24,6 +26,14 @@ export class CreateMovieComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  openDialog() {
+    this.showDialog = true;
+  }
+
+  closeDialog() {
+    this.showDialog = false;
   }
 
   trackByIndex(index, obj) {

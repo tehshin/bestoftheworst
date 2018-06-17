@@ -1,0 +1,17 @@
+<div class="botw-modal" *ngIf="showDialog" [@showModalBackground]>
+  <div class="modal-background" (click)="close()"></div>
+  <div class="modal-dialog" [@showModal]>
+    <div class="modal-header">
+      <div class="modal-title">{{ title }}</div>
+      <div class="modal-controls">
+        <a class="modal-control-item" (click)="close()">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </a>
+      </div>
+    </div>
+    <div class="modal-content">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer"></div>
+  </div>
+</div>
