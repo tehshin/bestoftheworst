@@ -1,5 +1,9 @@
 import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { TagService } from '../tag.service';
+
 
 @Component({
   selector: 'app-tag-input',
@@ -18,6 +22,9 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
 
   newTag: string;
 
+  tagSuggestions$: Observable<string[]>;
+  private searchText$ = new Subject<string>()
+
   get tags() {
     return this._tags;
   }
@@ -32,14 +39,23 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
 
   propagateChange = (_: any) => {};
 
-  constructor() { }
+  constructor(
+    private tagService: TagService
+  ) { }
 
   ngOnInit() {
+    this.tagSuggestions$ = this.searchText$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(q => 
+        this.tagService.autocomplete(q))
+    );
   }
 
   addTag(tag: string) {
     this.tags.push(tag);
     this.newTag = "";
+    this.searchText$.next("");
   }
 
   removeTag(index: number, $event) {
@@ -50,6 +66,10 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
 
     $event.cancelBubble = true;
     $event.returnValue = false;
+  }
+
+  autocomplete(q: string) {
+    this.searchText$.next(q);
   }
 
   focusInput(input: HTMLInputElement) {

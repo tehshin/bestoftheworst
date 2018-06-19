@@ -9,7 +9,12 @@ namespace BestOfTheWorst.Server.Services.Sql
 {
     public class MovieService : BaseService, IMovieService
     {
-        public MovieService(IDbSession session) : base(session) { }
+        private readonly ITagService _tagService;
+
+        public MovieService(IDbSession session, ITagService tagService) : base(session) 
+        {
+            _tagService = tagService;
+        }
 
         public async Task<IEnumerable<Movie>> ListAllAsync()
         {
@@ -96,10 +101,10 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             foreach (var tag in movieToCreate.Tags)
             {
-                var existingTag = await GetTagByNameAsync(tag.Name);
+                var existingTag = await _tagService.GetByNameAsync(tag.Name);
                 if (existingTag == null)
                 {
-                    existingTag = await CreateTagAsync(tag);
+                    existingTag = await _tagService.CreateAsync(tag);
                     tag.Id = existingTag.Id;
                 }
 
@@ -117,24 +122,6 @@ namespace BestOfTheWorst.Server.Services.Sql
         {
             var sql = @"INSERT INTO [MovieTag] ([MovieId], [TagId]) VALUES(@MovieId, @TagId)";
             await Session.Connection.ExecuteAsync(sql, movieTagToCreate);
-        }
-
-        private async Task<Tag> GetTagByNameAsync(string name)
-        {
-            var sql = @"select [Id], [Name] from [Tags] where [Name] = @name";
-            return await Session.Connection.QueryFirstOrDefaultAsync<Tag>(sql, new { name });
-        }
-
-        private async Task<Tag> CreateTagAsync(Tag tagToCreate)
-        {
-            var sql = @"INSERT INTO [Tags]
-                            ([Name])
-                        VALUES
-                            (@Name);
-                        select scope_identity();";
-            
-            tagToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, tagToCreate);
-            return tagToCreate;
         }
 
         public async Task<long> UpdateAsync(Movie movieToUpdate)

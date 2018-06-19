@@ -8,6 +8,13 @@
         </div>
       </li>
     </ul>
-    <input #tagInput [(ngModel)]="newTag" type="text" (keyup.enter)="addTag(tagInput.value)" />
+    <input #tagInput [(ngModel)]="newTag" type="text" (keyup)="autocomplete(tagInput.value)" (keyup.enter)="addTag(tagInput.value)" />
+  </div>
+  <div *ngIf="(tagSuggestions$ | async) as tagSuggestions">
+    <ol *ngIf="tagSuggestions.length > 0">
+      <li *ngFor="let suggestion of tagSuggestions">
+        {{ suggestion }}
+      </li>
+    </ol>
   </div>
 </div>
