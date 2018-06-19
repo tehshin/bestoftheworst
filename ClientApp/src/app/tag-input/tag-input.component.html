@@ -1,0 +1,13 @@
+<div class="control">
+  <div class="tag-input" (click)="focusInput(tagInput)">
+    <ul *ngIf="tags.length > 0" class="tag-input-selected-tags">
+      <li *ngFor="let tag of tags, let index = index">
+        <div class="tags has-addons">
+          <span class="tag">{{ tag }}</span>
+          <a class="tag is-delete" (click)="removeTag(index, $event)"></a>
+        </div>
+      </li>
+    </ul>
+    <input #tagInput [(ngModel)]="newTag" type="text" (keyup.enter)="addTag(tagInput.value)" />
+  </div>
+</div>

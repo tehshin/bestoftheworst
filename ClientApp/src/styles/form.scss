@@ -1,0 +1,44 @@
+.tag-input {
+    @include input;
+
+    height: auto;
+    box-shadow: $input-shadow;
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    cursor: text;
+
+    &[readonly] {
+        box-shadow: none;
+    }
+
+    .tags {
+        flex-wrap: nowrap;
+    }
+
+    .tag-input-selected-tags {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: -0.25em;
+        margin-right: 0;
+
+        li {
+           margin: 0.25em;
+        }
+    }
+
+    input {
+        min-width: 130px;
+        min-height: calc(36px - .5em);
+        margin: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        outline: none;
+        font-size: 1rem;
+    }
+}
