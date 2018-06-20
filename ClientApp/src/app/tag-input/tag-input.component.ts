@@ -1,7 +1,7 @@
 import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { TagService } from '../tag.service';
 
 
@@ -21,9 +21,11 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
   _tags: string[] = [];
 
   newTag: string;
-
-  tagSuggestions$: Observable<string[]>;
-  private searchText$ = new Subject<string>()
+  showDropdown: boolean = false;
+  selectedIndex: number = 0;
+  tagSuggestions: string[] = [];
+  
+  private searchText$ = new Subject<string>();
 
   get tags() {
     return this._tags;
@@ -44,17 +46,30 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
   ) { }
 
   ngOnInit() {
-    this.tagSuggestions$ = this.searchText$.pipe(
+    this.tagService.autocompleteSuggestions.subscribe(_ => this.tagSuggestions = _);
+
+    this.searchText$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(q => 
-        this.tagService.autocomplete(q))
-    );
+      tap(q => {
+        this.showDropdown = q.length > 0;
+      }),
+      tap(q => this.tagService.autocomplete(q))
+    ).subscribe();
+  }
+
+  keyEnter(tag: string) {
+    if (this.showDropdown) {
+      tag = this.tagSuggestions[this.selectedIndex] || tag;
+    }
+
+    this.addTag(tag);
   }
 
   addTag(tag: string) {
     this.tags.push(tag);
     this.newTag = "";
+    this.showDropdown = false;
     this.searchText$.next("");
   }
 
@@ -66,6 +81,28 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
 
     $event.cancelBubble = true;
     $event.returnValue = false;
+  }
+
+  keyDown($event: KeyboardEvent) {
+    if ($event.keyCode === 40 && this.selectedIndex < this.tagSuggestions.length - 1) {
+      this.selectedIndex++;
+    } else if ($event.keyCode === 38 && this.selectedIndex > 0) {
+      this.selectedIndex--;
+    }
+
+    if ($event.keyCode === 27) {
+      this.showDropdown = false;
+    }
+
+    if ($event.keyCode === 40 
+      || $event.keyCode === 38
+      || $event.keyCode === 27) {
+      if ($event.stopPropagation) $event.stopPropagation();
+      if ($event.preventDefault) $event.preventDefault();
+
+      $event.cancelBubble = true;
+      $event.returnValue = false;
+    }
   }
 
   autocomplete(q: string) {

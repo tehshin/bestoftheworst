@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -15,6 +15,8 @@ export class TagService {
     })
   };
 
+  autocompleteSuggestions: BehaviorSubject<string[]> = new BehaviorSubject([]);
+
   constructor(private http: HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
@@ -22,12 +24,13 @@ export class TagService {
     return throwError(errorMsg);
   };
 
-  autocomplete(q: string): Observable<string[]> {
+  autocomplete(q: string): void {
     let params = new HttpParams().set("term", q);
 
-    return this.http.get<string[]>(`${this.baseUrl}/autocomplete`, { params: params })
-      .pipe(
-        catchError(this.handleError)
+    this.http.get<string[]>(`${this.baseUrl}/autocomplete`, { params: params })
+      .subscribe(
+        (data) => this.autocompleteSuggestions.next(data),
+        error => this.handleError(error)
       );
   }
 }

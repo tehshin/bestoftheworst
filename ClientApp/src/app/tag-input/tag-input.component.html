@@ -8,13 +8,16 @@
         </div>
       </li>
     </ul>
-    <input #tagInput [(ngModel)]="newTag" type="text" (keyup)="autocomplete(tagInput.value)" (keyup.enter)="addTag(tagInput.value)" />
-  </div>
-  <div *ngIf="(tagSuggestions$ | async) as tagSuggestions">
-    <ol *ngIf="tagSuggestions.length > 0">
-      <li *ngFor="let suggestion of tagSuggestions">
-        {{ suggestion }}
-      </li>
-    </ol>
+    <input #tagInput [(ngModel)]="newTag" type="text"
+      (keydown)="keyDown($event)"
+      (keyup)="autocomplete(tagInput.value)" 
+      (keyup.enter)="keyEnter(tagInput.value)" />
+    <div class="tag-input-autocomplete-dropdown" *ngIf="tagSuggestions.length > 0 && showDropdown">
+      <ul class="tag-input-autocomplete-list">
+        <li class="tag-input-autocomplete-item" *ngFor="let suggestion of tagSuggestions, let index = index">
+          <a [class.is-active]="selectedIndex == index" (click)="addTag(suggestion)">{{ suggestion }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

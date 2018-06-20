@@ -9,6 +9,7 @@
     flex-wrap: wrap;
     align-items: center;
     cursor: text;
+    position: relative;
 
     &[readonly] {
         box-shadow: none;
@@ -40,5 +41,36 @@
         box-shadow: none;
         outline: none;
         font-size: 1rem;
+    }
+
+    .tag-input-autocomplete-dropdown {
+        left: 0;
+        min-width: 12rem;
+        padding-top: 1px;
+        position: absolute;
+        top: 100%;
+        z-index: $dropdown-content-z;
+        width: 100%;
+    }
+
+    .tag-input-autocomplete-list {
+        background-color: $dropdown-content-background-color;
+        box-shadow: $dropdown-content-shadow;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+    }
+
+    .tag-input-autocomplete-item a {
+        color: $dropdown-item-color;
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: 0.375rem 1rem;
+        position: relative;
+
+        &.is-active {
+            background-color: $dropdown-item-active-background-color;
+            color: $dropdown-item-active-color;
+        }
     }
 }
