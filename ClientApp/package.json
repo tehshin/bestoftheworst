@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "bulma": "^0.7.1",
     "core-js": "^2.5.4",
+    "ngx-markdown": "^6.1.0",
     "package": "^1.0.1",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"

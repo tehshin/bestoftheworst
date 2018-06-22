@@ -60,12 +60,17 @@ namespace BestOfTheWorst.Server.Controllers
         public async Task<IActionResult> GetById(long id)
         {
             var movie = await _movieService.GetByIdAsync(id);
+            var relatedMovies = await _movieService.ListInSameEpisodeAsync(id);
+
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return new ObjectResult(_mapper.Map<MovieDetailViewModel>(movie));
+            var movieDetails = _mapper.Map<MovieDetailViewModel>(movie);
+            movieDetails.RelatedMovies = _mapper.Map<IList<MovieDetailViewModel.MovieInfo>>(relatedMovies);
+
+            return new ObjectResult(movieDetails);
         }
 
         /// <summary>

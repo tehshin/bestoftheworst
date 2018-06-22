@@ -23,6 +23,25 @@ namespace BestOfTheWorst.Server.Services.Sql
             return await Session.Connection.QueryAsync<Movie>(sql);
         }
 
+        public async Task<IEnumerable<Movie>> ListInSameEpisodeAsync(long movieId)
+        {
+            var sql = @"select 
+                            [Id], [Title] 
+                        from [Movies] 
+                        where [EpisodeId] = (select [EpisodeId] from [Movies] where [Id] = @movieId)
+                        and   [Id] != @movieId
+                        order by [Title]";
+
+            return await Session.Connection.QueryAsync<Movie>(sql, new { movieId });
+        }
+
+        public async Task<IEnumerable<Movie>> ListByEpisodeAsync(long episodeId)
+        {
+            var sql = @"select [Id], [Title] from [Movies] where [EpisodeId] = @episodeId order by [Title]";
+
+            return await Session.Connection.QueryAsync<Movie>(sql, new { episodeId });
+        }
+
         public async Task<PaginatedList<Movie>> ListAsync(int pageIndex, int pageSize)
         {
             var sql = @"select 

@@ -15,9 +15,7 @@
       <header class="movie-detail-header">
         Description
       </header>
-      <div class="content">
-        {{movie?.synopsis}}
-      </div>
+      <div class="content" markdown [data]="movie?.synopsis"></div>
     </section>
   </div>
   <div class="column">

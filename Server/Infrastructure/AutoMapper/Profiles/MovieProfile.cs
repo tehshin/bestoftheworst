@@ -27,6 +27,9 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
 
             CreateMap<UpdateMovieViewModel, Movie>();
+
+            CreateMap<Movie, MovieDetailViewModel>()
+                .ForMember(dest => dest.RelatedMovies, opt => opt.Ignore());
         }
     }
 }

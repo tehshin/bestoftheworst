@@ -17,5 +17,9 @@ namespace BestOfTheWorst.Server.Services
         Task<long> UpdateAsync(Movie movieToUpdate);
 
         Task<long> DeleteAsync(long id);
+
+        Task<IEnumerable<Movie>> ListInSameEpisodeAsync(long movieId);
+
+        Task<IEnumerable<Movie>> ListByEpisodeAsync(long episodeId);
     }
 }
