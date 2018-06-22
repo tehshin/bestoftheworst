@@ -22,5 +22,7 @@ namespace BestOfTheWorst.Server.Models
         public TimeSpan Timestamp { get; set; }
 
         public IList<Tag> Tags { get; set; } = new List<Tag>();
+
+        public IList<Link> Links { get; set; } = new List<Link>();
     }
 }

@@ -18,6 +18,8 @@ namespace BestOfTheWorst.Server.Database
 
         public DbSet<Episode> Episodes { get; set; }
 
+        public DbSet<Link> Links { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MovieTag>()

@@ -58,12 +58,20 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
     ).subscribe();
   }
 
-  keyEnter(tag: string) {
+  keyEnter(tag: string, $event: KeyboardEvent) {
     if (this.showDropdown) {
       tag = this.tagSuggestions[this.selectedIndex] || tag;
     }
 
-    this.addTag(tag);
+    if (tag) {
+      this.addTag(tag);
+    }
+
+    if ($event.stopPropagation) $event.stopPropagation();
+    if ($event.preventDefault) $event.preventDefault();
+
+    $event.cancelBubble = true;
+    $event.returnValue = false;
   }
 
   addTag(tag: string) {

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Movie, MovieForm } from '../movie';
 import { MovieService } from '../movie.service';
 import { Router } from '@angular/router';
-import { ImageService } from '../image.service';
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { LinkType } from '../link-type.enum';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { Link } from '../link';
 
 @Component({
   selector: 'app-create-movie',
@@ -12,36 +14,80 @@ import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 })
 export class CreateMovieComponent implements OnInit {
 
-  movie: MovieForm = new MovieForm();
+  form: FormGroup;
 
-  showDialog: boolean = false;
-  
+  linkTypes = LinkType;
+  linkTypeKeys: string[];
+
   faPlus = faPlus;
   faTimes = faTimes;
+  faCheck = faCheck;
+  
+  get titleInput() {
+    return this.form.get('title');
+  }
+
+  get synopsisInput() {
+    return this.form.get('synopsis');
+  }
+
+  get episodeInput() {
+    return this.form.get('episode');
+  }
+
+  get links(): FormArray {
+    return this.form.get("links") as FormArray;
+  }
 
   constructor(
     private movieService: MovieService,
-    private imageService: ImageService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private fb: FormBuilder
+  ) { 
+    this.linkTypeKeys = Object.keys(this.linkTypes).filter(f => !isNaN(Number(f)));
+    this.createForm();
+  }
 
   ngOnInit() {
   }
 
-  trackByIndex(index, obj) {
-    return index;
+  createForm() {
+    this.form = this.fb.group({
+      'title': ['', Validators.required],
+      'synopsis': ['', Validators.compose([Validators.required, Validators.minLength(50)])],
+      'episode': [null, Validators.required],
+      'image': [null, Validators.required],
+      'tags': [[]],
+      'links': this.fb.array([])
+    });
   }
 
-  addTag() {
-    this.movie.tags.push("");
+  addLink() {
+    this.links.push(this.fb.group({
+      'linkType': 0,
+      'href': 'http://'
+    }));
   }
 
-  removeTag(index) {
-    this.movie.tags.splice(index, 1);
+  removeLink(index: number) {
+    this.links.removeAt(index);
   }
 
-  save() {
-    this.movieService.createMovie(this.movie).subscribe(
+  save(movieForm) {
+    const linksDeepCopy: Link[] = movieForm.links.map(
+      (link) => new Link(link)
+    );
+
+    let movie = new MovieForm({ 
+      title: movieForm.title,
+      synopsis: movieForm.synopsis,
+      episodeId: movieForm.episode,
+      image: movieForm.image,
+      tags: movieForm.tags,
+      links: linksDeepCopy
+    });
+
+    this.movieService.createMovie(movie).subscribe(
       (data: Movie) => this.goToMovieDetails(data),
       error => console.log(error)
     );

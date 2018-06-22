@@ -1,38 +1,68 @@
-<header class="movie-header">
-  <h1 class="title movie-title">{{ movie?.title }}</h1>
-  <div class="movie-episode">{{ movie?.episode.title }}</div>
-</header>
+<div *ngIf="movie$ | async as movie">
+  <header class="movie-header">
+    <h1 class="title movie-title">{{ movie?.title }}</h1>
+    <div class="movie-episode">{{ movie?.episode.title }}</div>
+  </header>
 
-<div class="columns">
-  <div class="column is-8">
-    <header class="movie-detail-header">
-      Episode
-    </header>
-    <div class="video" *ngIf="movie">
-      <iframe class="video-frame" [src]="getVideoUrl(movie.episode.videoId)" width="100%" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <section class="description">
+  <div class="columns">
+    <div class="column is-8">
       <header class="movie-detail-header">
-        Description
+        Episode
       </header>
-      <div class="content" markdown [data]="movie?.synopsis"></div>
-    </section>
-  </div>
-  <div class="column">
-    <header class="movie-detail-header">
-      Movie
-    </header>
-    <div class="movie-image">
-      <img src="{{movie?.image?.imageUrl}}" alt="{{movie?.title}}" />
+      <div class="video" *ngIf="movie">
+        <iframe class="video-frame" [src]="getVideoUrl(movie.episode.videoId)" width="100%" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <section class="description">
+        <header class="movie-detail-header">
+          Description
+        </header>
+        <div class="content" markdown [data]="movie?.synopsis"></div>
+      </section>
     </div>
-    <header class="movie-detail-header movie-detail-header--right">
-      Tags
-    </header>
-    <div class="tag-list">
-      <a class="tag-item" *ngFor="let tag of movie?.tags">{{tag.name}}</a>
+    <div class="column">
+      <header class="movie-detail-header">
+        Movie
+      </header>
+      <div class="movie-image">
+        <img src="{{movie?.image?.imageUrl}}" alt="{{movie?.title}}" />
+      </div>
+      <header class="movie-detail-header movie-detail-header--right">
+        Info
+      </header>
+      <div class="movie-detail-links">
+        <a class="movie-detail-link is-fullwidth">
+          <span class="icon">
+            <fa-icon [icon]="faImdb" [fixedWidth]="true"></fa-icon>
+          </span>
+          <span>IMDB</span>
+        </a>
+        <a class="movie-detail-link is-fullwidth">
+          <span class="icon">
+            <fa-icon [icon]="faWikipedia" [fixedWidth]="true"></fa-icon>
+          </span>
+          <span>Wikipedia</span>
+        </a>
+        <a class="movie-detail-link is-fullwidth">
+          <span class="icon">
+            <fa-icon [icon]="faLink" [fixedWidth]="true"></fa-icon>
+          </span>
+          <span>Rotten Tomatoes</span>
+        </a>
+      </div>
+      <header class="movie-detail-header movie-detail-header--right">
+        Tags
+      </header>
+      <div class="tags">
+        <a class="tag movie-detail-tag" *ngFor="let tag of movie?.tags">{{tag.name}}</a>
+      </div>
+      <header class="movie-detail-header movie-detail-header--right">
+        Other movies from the same episode
+      </header>
+      <div class="related-movies">
+        <a routerLink="/movie/{{movie.id}}" class="movie-item" *ngFor="let movie of movie?.relatedMovies">
+          {{ movie.title }}
+        </a>
+      </div>
     </div>
-    <header class="movie-detail-header movie-detail-header--right">
-      Other movies from the same episode
-    </header>
   </div>
 </div>

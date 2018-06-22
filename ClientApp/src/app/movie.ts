@@ -1,3 +1,5 @@
+import { Link } from "./link";
+
 export class Image {
     id: string;
     imageUrl: string;
@@ -16,6 +18,11 @@ export class MovieForm {
     image: string;
     episodeId: number;
     tags: string[] = [];
+    links: Link[] = [];
+
+    public constructor(init?: Partial<MovieForm>) {
+        Object.assign(this, init);
+    }
 }
 
 export class PageInfo {

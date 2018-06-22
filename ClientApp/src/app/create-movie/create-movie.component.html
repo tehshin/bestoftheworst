@@ -1,40 +1,96 @@
-<header class="botw-header">
-  <h1 class="title">Create a new movie</h1>
-</header>
+<form [formGroup]="form" (ngSubmit)="save(form.value)" (keydown.enter)="$event.preventDefault()">
+  <header class="botw-header">
+    <h1 class="title">Create a new movie</h1>
+  </header>
 
-<div class="columns">
-  <div class="column">
-    
-      <div class="field">
-        <label class="label">Title</label>
-        <div class="control">
-          <input class="input" type="text" name="title" [(ngModel)]="movie.title" />
+  <div class="columns">
+    <div class="column">
+      
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control has-icons-right">
+            <input class="input" type="text" formControlName="title" [class.is-danger]="!titleInput.valid && (titleInput.dirty || titleInput.touched)" />
+            <span class="icon is-small is-right" *ngIf="!titleInput.valid && (titleInput.dirty || titleInput.touched)">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </span>
+            <span class="icon is-small is-right" *ngIf="titleInput.valid && (titleInput.dirty || titleInput.touched)">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </span>
+          </div>
+          <div class="input-error" *ngIf="titleInput.errors?.required && (titleInput.dirty || titleInput.touched)">
+            A title is required
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Synopsis</label>
-        <div class="control">
-          <textarea class="textarea" name="synopsis" [(ngModel)]="movie.synopsis"></textarea>
-        </div>
-      </div>
 
-      <app-episode-select [(ngModel)]="movie.episodeId"></app-episode-select>
-      
-      <div class="field">
-        <label class="label">Tags</label>
-        <app-tag-input [(ngModel)]="movie.tags"></app-tag-input>
-      </div>
-      
-      <div class="field">
-        <div class="control">
-          <button class="button is-primary" type="submit" (click)="save()">Create movie</button>
+        <div class="field">
+          <label class="label">Synopsis</label>
+          <div class="control">
+            <textarea class="textarea" name="synopsis" formControlName="synopsis" [class.is-danger]="!synopsisInput.valid && (synopsisInput.dirty || synopsisInput.touched)"></textarea>
+          </div>
+          <div class="input-error" *ngIf="synopsisInput.errors?.required && (synopsisInput.dirty || synopsisInput.touched)">
+            A synopsis is required
+          </div>
+          <div class="input-error" *ngIf="synopsisInput.errors?.minlength && (synopsisInput.dirty || synopsisInput.touched)">
+            Synopsis must be at least 50 characters long
+          </div>
         </div>
+
+        <app-episode-select formControlName="episode"></app-episode-select>
+        <div class="input-error" *ngIf="episodeInput.errors?.required && (episodeInput.dirty || episodeInput.touched)">
+          An episode is required
+        </div>
+        
+        <div class="field">
+          <label class="label">Tags</label>
+          <app-tag-input formControlName="tags"></app-tag-input>
+        </div>
+
+        <div class="field" formArrayName="links">
+          <label class="label">Links</label>
+          <table class="table is-fullwidth is-narrow">
+            <tbody>
+              <tr *ngFor="let link of links.controls; let i = index" [formGroupName]="i">
+                <td class="is-narrow">
+                  <button type="button" class="button is-danger" (click)="removeLink(i)">
+                    <span class="icon is-small">
+                      <fa-icon [icon]="faTimes"></fa-icon>
+                    </span>
+                  </button>
+                </td>
+                <td style="width: 50%">
+                  <div class="select is-fullwidth">
+                    <select formControlName="linkType">
+                      <option *ngFor="let linkTypeKey of linkTypeKeys" [value]="linkTypeKey" [label]="linkTypes[linkTypeKey]"></option>
+                    </select>
+                  </div>
+                </td>
+                <td style="width: 50%">
+                  <input type="text" class="input" placeholder="Url" formControlName="href" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="button is-small" (click)="addLink()">
+            <span class="icon is-small">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </span>
+            <span>
+              Add link
+            </span>
+          </button>
+        </div>
+        
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary" type="submit" [disabled]="!form.valid">Create movie</button>
+          </div>
+        </div>
+      
+    </div>
+    <div class="column is-4">
+      <div class="box">
+        <app-movie-image-input name="image" formControlName="image"></app-movie-image-input>
       </div>
-    
-  </div>
-  <div class="column is-4">
-    <div class="box">
-      <app-movie-image-input name="image" [(ngModel)]="movie.image"></app-movie-image-input>
     </div>
   </div>
-</div>
+</form>

@@ -11,7 +11,7 @@
     <input #tagInput [(ngModel)]="newTag" type="text"
       (keydown)="keyDown($event)"
       (keyup)="autocomplete(tagInput.value)" 
-      (keyup.enter)="keyEnter(tagInput.value)" />
+      (keyup.enter)="keyEnter(tagInput.value, $event)" />
     <div class="tag-input-autocomplete-dropdown" *ngIf="tagSuggestions.length > 0 && showDropdown">
       <ul class="tag-input-autocomplete-list">
         <li class="tag-input-autocomplete-item" *ngFor="let suggestion of tagSuggestions, let index = index">
