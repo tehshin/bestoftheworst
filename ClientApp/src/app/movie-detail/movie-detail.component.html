@@ -1,15 +1,40 @@
-<h1>{{ movie?.title | uppercase }} Details</h1>
-<p>
-  <a routerLink="/">Back</a>
-</p>
+<header class="movie-header">
+  <h1 class="title movie-title">{{ movie?.title }}</h1>
+  <div class="movie-episode">{{ movie?.episode.title }}</div>
+</header>
 
-<div *ngIf="movie?.image">
-  <img src="{{movie?.image.imageUrl}}" width="500" />
-</div>
-
-<div>
-  Title: {{ movie?.title }}
-</div>
-<div>
-  Synopsis: {{ movie?.synopsis }}
+<div class="columns">
+  <div class="column is-8">
+    <header class="movie-detail-header">
+      Episode
+    </header>
+    <div class="video" *ngIf="movie">
+      <iframe class="video-frame" [src]="getVideoUrl(movie.episode.videoId)" width="100%" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <section class="description">
+      <header class="movie-detail-header">
+        Description
+      </header>
+      <div class="content">
+        {{movie?.synopsis}}
+      </div>
+    </section>
+  </div>
+  <div class="column">
+    <header class="movie-detail-header">
+      Movie
+    </header>
+    <div class="movie-image">
+      <img src="{{movie?.image?.imageUrl}}" alt="{{movie?.title}}" />
+    </div>
+    <header class="movie-detail-header movie-detail-header--right">
+      Tags
+    </header>
+    <div class="tag-list">
+      <a class="tag-item" *ngFor="let tag of movie?.tags">{{tag.name}}</a>
+    </div>
+    <header class="movie-detail-header movie-detail-header--right">
+      Other movies from the same episode
+    </header>
+  </div>
 </div>

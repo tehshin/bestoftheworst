@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from '../movie';
 import { MovieService } from '../movie.service';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie-detail',
@@ -15,6 +16,7 @@ export class MovieDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -28,5 +30,9 @@ export class MovieDetailComponent implements OnInit {
         (data: Movie) => this.movie = data,
         error => console.log(error)
       );
+  }
+
+  getVideoUrl(videoId: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${videoId}`);
   }
 }

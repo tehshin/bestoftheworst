@@ -58,10 +58,14 @@ namespace BestOfTheWorst.Server.Services.Sql
                             m.[Id],
                             m.[Title], 
                             m.[Synopsis],
+                            e.[Id],
+                            e.[Title],
+                            e.[VideoId],
                             i.[Id],
                             i.[FileName],
                             i.[Path]
                         from [Movies] m
+                        join [Episodes] e on m.[EpisodeId] = e.[Id]
                         left join [Images] i on m.[ImageId] = i.[Id]
                         where m.[Id] = @id;
 
@@ -71,8 +75,9 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             var results = await Session.Connection.QueryMultipleAsync(sql, new { id });
 
-            var movie = results.Read<Movie, Image, Movie>((m, i) => {
+            var movie = results.Read<Movie, Episode, Image, Movie>((m, e, i) => {
                 m.Image = i;
+                m.Episode = e;
                 return m;
             }).FirstOrDefault();
 
@@ -105,8 +110,9 @@ namespace BestOfTheWorst.Server.Services.Sql
                 if (existingTag == null)
                 {
                     existingTag = await _tagService.CreateAsync(tag);
-                    tag.Id = existingTag.Id;
                 }
+
+                tag.Id = existingTag.Id;
 
                 await CreateMovieTag(new MovieTag
                 {

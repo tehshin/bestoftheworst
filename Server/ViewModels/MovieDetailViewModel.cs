@@ -12,6 +12,8 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public ImageViewModel Image { get; set; }
 
+        public EpisodeViewModel Episode { get; set; }
+
         public IList<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
     }
 }

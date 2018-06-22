@@ -92,3 +92,86 @@
         display: none;
     }
 }
+
+.movie-header {
+    color: #1a1a1a;
+    padding-bottom: 2.25rem;
+}
+
+.movie-title {
+    font-weight: 300;
+    margin-bottom: 0!important;
+}
+
+.movie-episode {
+    color: #1a1a1a;
+    font-size: .95rem;
+    margin: 0.75em 0;
+    line-height: 1.5em;
+    font-weight: normal;
+}
+
+.video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    box-shadow: 0 0 5px rgba(#000, .3);
+
+    .video-frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.movie-image {
+    box-shadow: 0 0 5px rgba(#000, .3);
+
+    img {
+        display: block;
+    }
+}
+
+.movie-detail-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #262626;
+    line-height: 1.5;
+    font-size: 0.875em;
+    padding: 1.25em 0;
+
+    &.movie-detail-header--right {
+        margin-top: 1.5rem;
+    }
+}
+
+.description {
+    margin-top: 2.5rem;
+    color: #212121;
+
+    .content {
+        font-size: 0.9rem;
+    }
+}
+
+.tag-list {
+    position: relative;
+    background-color: #e1e1e1;
+    color: #212121;
+    box-shadow: 0 1px 5px rgba(#000, .15);
+
+    .tag-item {
+        display: block;
+        color: #212121;
+        padding: 0.75rem;
+        border-top: 1px solid #cfcfcf;
+        font-size: 0.85rem;
+
+        &:hover {
+            background-color: #e5e5e5;
+        }
+    }
+}
