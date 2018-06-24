@@ -26,10 +26,10 @@
       <div class="movie-image">
         <img src="{{movie?.image?.imageUrl}}" alt="{{movie?.title}}" />
       </div>
-      <header class="movie-detail-header movie-detail-header--right">
+      <header class="movie-detail-header movie-detail-header--right" *ngIf="movie?.links.length > 0">
         Info
       </header>
-      <div class="movie-detail-links">
+      <div class="movie-detail-links" *ngIf="movie?.links.length > 0">
         <a class="movie-detail-link" *ngFor="let link of movie?.links" [href]="link.href" target="_blank">
           <span class="icon">
             <fa-icon [icon]="getMovieLinkIcon(link)" [fixedWidth]="true"></fa-icon>

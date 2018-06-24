@@ -36,9 +36,6 @@
         </div>
 
         <app-episode-select formControlName="episode"></app-episode-select>
-        <div class="input-error" *ngIf="episodeInput.errors?.required && (episodeInput.dirty || episodeInput.touched)">
-          An episode is required
-        </div>
         
         <div class="field">
           <label class="label">Tags</label>
