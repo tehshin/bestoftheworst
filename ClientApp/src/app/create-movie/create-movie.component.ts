@@ -63,10 +63,26 @@ export class CreateMovieComponent implements OnInit {
   }
 
   addLink() {
-    this.links.push(this.fb.group({
+    let link = this.fb.group({
       'linkType': 0,
+      'name': '',
       'href': 'http://'
-    }));
+    });
+
+    link.get('linkType').valueChanges.subscribe(linkType => {
+      switch (+linkType) {
+        case LinkType.IMDB:
+          link.get('name').patchValue('IMDB');
+          break;
+        case LinkType.Wikipedia:
+          link.get('name').patchValue('Wikipedia');
+          break;
+        default:
+          break;
+      }
+    });
+
+    this.links.push(link);
   }
 
   removeLink(index: number) {

@@ -7,6 +7,8 @@ import { faImdb, faWikipediaW } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Link } from '../link';
+import { LinkType } from '../link-type.enum';
 
 @Component({
   selector: 'app-movie-detail',
@@ -39,5 +41,19 @@ export class MovieDetailComponent implements OnInit {
 
   getVideoUrl(videoId: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${videoId}`);
+  }
+
+  getMovieLinkIcon(link: Link) {
+    switch (link.linkType) {
+      case LinkType.IMDB:
+        return this.faImdb;
+        break;
+      case LinkType.Wikipedia:
+        return this.faWikipedia;
+        break;
+      default:
+        return this.faLink;
+        break;
+    }
   }
 }

@@ -90,7 +90,10 @@ namespace BestOfTheWorst.Server.Services.Sql
 
                         select distinct t.[Id], t.[Name] from MovieTag mt 
                         join [Tags] t on mt.[TagId] = t.[Id]
-                        where mt.[MovieId] = @id;";
+                        where mt.[MovieId] = @id;
+                        
+                        select [Id], [MovieId], [LinkType], [Name], [Href] from [Links]
+                        where [MovieId] = @id";
 
             var results = await Session.Connection.QueryMultipleAsync(sql, new { id });
 
@@ -102,6 +105,7 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             if (movie != null) {
                 movie.Tags = results.Read<Tag>().ToList();
+                movie.Links = results.Read<Link>().ToList();
             }
             
             return movie;
@@ -123,7 +127,15 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             movieToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, movieToCreate);
 
-            foreach (var tag in movieToCreate.Tags)
+            await CreateTagsAsync(movieToCreate);
+            await CreateLinksAsync(movieToCreate);
+            
+            return movieToCreate;
+        }
+
+        private async Task CreateTagsAsync(Movie movie)
+        {
+            foreach (var tag in movie.Tags)
             {
                 var existingTag = await _tagService.GetByNameAsync(tag.Name);
                 if (existingTag == null)
@@ -135,12 +147,22 @@ namespace BestOfTheWorst.Server.Services.Sql
 
                 await CreateMovieTag(new MovieTag
                 {
-                    MovieId = movieToCreate.Id,
+                    MovieId = movie.Id,
                     TagId = tag.Id
                 });
             }
+        }
 
-            return movieToCreate;
+        private async Task CreateLinksAsync(Movie movie)
+        {
+            string sql = @"insert into [Links] ([MovieId], [Name], [LinkType], [Href]) values (@MovieId, @Name, @LinkType, @Href);
+                           select scope_identity();";
+
+            foreach (var link in movie.Links)
+            {
+                link.MovieId = movie.Id;
+                link.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, link);
+            }
         }
 
         private async Task CreateMovieTag(MovieTag movieTagToCreate)

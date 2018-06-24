@@ -5,6 +5,8 @@ namespace BestOfTheWorst.Server.Models
         public long Id { get; set; }
 
         public long MovieId { get; set; }
+        
+        public string Name { get; set; }
 
         public int LinkType { get; set; }
 

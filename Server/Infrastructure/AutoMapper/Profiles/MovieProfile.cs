@@ -26,6 +26,10 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                 .ForMember(dest => dest.ImageId, opt => opt.MapFrom(_ => _.Image))
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
 
+            CreateMap<CreateMovieViewModel.LinkInfo, Link>()
+                .ForMember(dest => dest.LinkType, opt => opt.MapFrom(_ => _.LinkType))
+                .ForMember(dest => dest.Href, opt => opt.MapFrom(_ => _.Href));
+
             CreateMap<UpdateMovieViewModel, Movie>();
 
             CreateMap<Movie, MovieDetailViewModel>()

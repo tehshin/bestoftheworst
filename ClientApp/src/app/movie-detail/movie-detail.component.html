@@ -30,23 +30,11 @@
         Info
       </header>
       <div class="movie-detail-links">
-        <a class="movie-detail-link is-fullwidth">
+        <a class="movie-detail-link" *ngFor="let link of movie?.links" [href]="link.href" target="_blank">
           <span class="icon">
-            <fa-icon [icon]="faImdb" [fixedWidth]="true"></fa-icon>
+            <fa-icon [icon]="getMovieLinkIcon(link)" [fixedWidth]="true"></fa-icon>
           </span>
-          <span>IMDB</span>
-        </a>
-        <a class="movie-detail-link is-fullwidth">
-          <span class="icon">
-            <fa-icon [icon]="faWikipedia" [fixedWidth]="true"></fa-icon>
-          </span>
-          <span>Wikipedia</span>
-        </a>
-        <a class="movie-detail-link is-fullwidth">
-          <span class="icon">
-            <fa-icon [icon]="faLink" [fixedWidth]="true"></fa-icon>
-          </span>
-          <span>Rotten Tomatoes</span>
+          <span>{{link.name}}</span>
         </a>
       </div>
       <header class="movie-detail-header movie-detail-header--right">

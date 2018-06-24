@@ -57,14 +57,17 @@
                     </span>
                   </button>
                 </td>
-                <td style="width: 50%">
+                <td style="width: 33%">
                   <div class="select is-fullwidth">
                     <select formControlName="linkType">
                       <option *ngFor="let linkTypeKey of linkTypeKeys" [value]="linkTypeKey" [label]="linkTypes[linkTypeKey]"></option>
                     </select>
                   </div>
                 </td>
-                <td style="width: 50%">
+                <td style="width: 33%">
+                  <input type="text" class="input" placeholder="Name" formControlName="name" />
+                </td>
+                <td style="width: 33%">
                   <input type="text" class="input" placeholder="Url" formControlName="href" />
                 </td>
               </tr>

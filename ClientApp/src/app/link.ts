@@ -1,5 +1,6 @@
 export class Link {
     id: number;
+    name: string;
     linkType: number;
     href: string;
 
