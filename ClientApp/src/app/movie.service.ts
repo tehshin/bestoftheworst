@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
 import { Movie, MovieForm, MovieList } from './movie'
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,21 @@ export class MovieService {
   constructor(private http: HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
-    const errorMsg = error.message || 'Unable to retrieve data';
-    return throwError(errorMsg);
+    let errorObj = {
+      message: "",
+      notfound: false
+    };
+
+    if (error.error instanceof ErrorEvent) {
+      errorObj.message = error.error.message;
+    } else if (error.status == 404) {
+      errorObj.message = "API returned 404 not found";
+      errorObj.notfound = true;
+    } else {
+      errorObj.message = error.message || 'Unable to retrieve data';
+    }
+
+    return throwError(errorObj);
   };
 
   listMovies(pageIndex: number, pageSize: number) {

@@ -103,9 +103,12 @@ namespace BestOfTheWorst.Server.Services.Sql
                 return m;
             }).FirstOrDefault();
 
+            var movieTags = results.Read<Tag>().ToList();
+            var movieLinks = results.Read<Link>().ToList();
+
             if (movie != null) {
-                movie.Tags = results.Read<Tag>().ToList();
-                movie.Links = results.Read<Link>().ToList();
+                movie.Tags = movieTags;
+                movie.Links = movieLinks;
             }
             
             return movie;

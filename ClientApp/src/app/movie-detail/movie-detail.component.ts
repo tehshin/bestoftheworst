@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../movie';
 import { MovieService } from '../movie.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { faImdb, faWikipediaW } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
+import { Observable, empty } from 'rxjs';
 import { Link } from '../link';
 import { LinkType } from '../link-type.enum';
 
@@ -27,14 +27,25 @@ export class MovieDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.movie$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.movieId = +params.get('id');
-        return this.movieService.getById(this.movieId);
+        return this.movieService.getById(this.movieId)
+          .pipe(
+            catchError((error) => {
+              if (error.notfound) {
+                this.router.navigate(['/404'], { 
+                  queryParams: { u: window.location.pathname+window.location.search } 
+                });
+              }
+              return empty();
+            })
+          );
       })
     );
   }
@@ -47,13 +58,10 @@ export class MovieDetailComponent implements OnInit {
     switch (link.linkType) {
       case LinkType.IMDB:
         return this.faImdb;
-        break;
       case LinkType.Wikipedia:
         return this.faWikipedia;
-        break;
       default:
         return this.faLink;
-        break;
     }
   }
 }

@@ -18,6 +18,7 @@ import { MovieImageInputComponent } from './movie-image-input/movie-image-input.
 import { ModalComponent } from './modal/modal.component';
 import { EpisodeSelectComponent } from './episode-select/episode-select.component';
 import { TagInputComponent } from './tag-input/tag-input.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TagInputComponent } from './tag-input/tag-input.component';
     MovieImageInputComponent,
     ModalComponent,
     EpisodeSelectComponent,
-    TagInputComponent
+    TagInputComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
