@@ -19,6 +19,8 @@ import { ModalComponent } from './modal/modal.component';
 import { EpisodeSelectComponent } from './episode-select/episode-select.component';
 import { TagInputComponent } from './tag-input/tag-input.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
+import { MovieFormComponent } from './movie-form/movie-form.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ModalComponent,
     EpisodeSelectComponent,
     TagInputComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    EditMovieComponent,
+    MovieFormComponent
   ],
   imports: [
     BrowserModule,
