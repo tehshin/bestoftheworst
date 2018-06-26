@@ -11,7 +11,8 @@ namespace BestOfTheWorst.Server.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class MovieController : Controller
+    [ApiController]
+    public class MovieController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMovieService _movieService;
@@ -70,7 +71,7 @@ namespace BestOfTheWorst.Server.Controllers
             var movieDetails = _mapper.Map<MovieDetailViewModel>(movie);
             movieDetails.RelatedMovies = _mapper.Map<IList<MovieDetailViewModel.MovieInfo>>(relatedMovies);
 
-            return new ObjectResult(movieDetails);
+            return Ok(movieDetails);
         }
 
         /// <summary>
@@ -96,11 +97,6 @@ namespace BestOfTheWorst.Server.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] CreateMovieViewModel movie)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var movieToCreate = _mapper.Map<Movie>(movie);
             
             movieToCreate = await _movieService.CreateAsync(movieToCreate);

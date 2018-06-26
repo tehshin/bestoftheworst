@@ -57,6 +57,8 @@ namespace BestOfTheWorst
             services.AddMvc();
 
             services.AddSwaggerGen(c => {
+                c.CustomSchemaIds(x => x.FullName);
+
                 c.SwaggerDoc("v1", new Info {
                     Title = "Best of the Worst API",
                     Version = "v1"

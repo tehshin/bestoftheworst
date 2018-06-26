@@ -6,14 +6,6 @@ namespace BestOfTheWorst.Server.ViewModels
 {
     public class CreateMovieViewModel
     {
-        public class LinkInfo
-        {
-            public int LinkType { get; set; }
-
-            public string Name { get; set; }
-
-            public string Href { get; set; }
-        }
 
         [Required]
         public string Title { get; set; }
@@ -22,7 +14,7 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public IList<string> Tags { get; set; } = new List<string>();
 
-        public IList<LinkInfo> Links { get; set; } = new List<LinkInfo>();
+        public IList<LinkViewModel> Links { get; set; } = new List<LinkViewModel>();
 
         public Guid? Image { get; set; }
 
