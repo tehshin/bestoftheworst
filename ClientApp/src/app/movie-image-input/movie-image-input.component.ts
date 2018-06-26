@@ -17,6 +17,7 @@ export class MovieImageInputComponent implements OnInit, ControlValueAccessor {
   @Input("image")
   _imageId: string;
 
+  @Input("preview-url")
   imageUrl: string;
 
   get imageId() {

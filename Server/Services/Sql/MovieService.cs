@@ -16,6 +16,84 @@ namespace BestOfTheWorst.Server.Services.Sql
             _tagService = tagService;
         }
 
+        private async Task CreateTagsAsync(Movie movie)
+        {
+            foreach (var tag in movie.Tags)
+            {
+                var existingTag = await _tagService.GetByNameAsync(tag.Name);
+                if (existingTag == null)
+                {
+                    existingTag = await _tagService.CreateAsync(tag);
+                }
+
+                tag.Id = existingTag.Id;
+
+                await CreateMovieTagAsync(new MovieTag
+                {
+                    MovieId = movie.Id,
+                    TagId = tag.Id
+                });
+            }
+        }
+
+        private async Task CreateOrUpdateLinksAsync(Movie movie)
+        {
+            foreach (var link in movie.Links)
+            {
+                link.MovieId = movie.Id;
+                
+                if (link.Id > 0)
+                {
+                    await UpdateLinkAsync(link);
+                }
+                else
+                {
+                    link.Id = await CreateLinkAsync(link);
+                }
+            }
+        }
+
+        private async Task CreateLinksAsync(Movie movie)
+        {
+            foreach (var link in movie.Links)
+            {
+                link.MovieId = movie.Id;
+                link.Id = await CreateLinkAsync(link);
+            }
+        }
+
+        private async Task<long> CreateLinkAsync(Link linkToCreate)
+        {
+            string sql = @"insert into [Links] ([MovieId], [Name], [LinkType], [Href]) values (@MovieId, @Name, @LinkType, @Href);
+                           select scope_identity();";
+
+            return await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, linkToCreate);
+        }
+
+        private async Task UpdateLinkAsync(Link linkToUpdate)
+        {
+            string sql = @"UPDATE [dbo].[Links]
+                           SET [MovieId] = @MovieId
+                              ,[LinkType] = @LinkType
+                              ,[Href] = @Href
+                              ,[Name] = @Name
+                           WHERE [Id] = @Id";
+            
+            await Session.Connection.ExecuteAsync(sql, linkToUpdate);
+        }
+
+        private async Task CreateMovieTagAsync(MovieTag movieTagToCreate)
+        {
+            var sql = @"INSERT INTO [MovieTag] ([MovieId], [TagId]) VALUES(@MovieId, @TagId)";
+            await Session.Connection.ExecuteAsync(sql, movieTagToCreate);
+        }
+
+        private void DeleteMovieTags(long movieId) 
+        {
+            string sql = "delete from [MovieTag] where [MovieId] = @movieId";
+            Session.Connection.Execute(sql, new { movieId });
+        }
+
         public async Task<IEnumerable<Movie>> ListAllAsync()
         {
             var sql = @"select [Id], [Title] from [Movies] order by [Title]";
@@ -136,51 +214,18 @@ namespace BestOfTheWorst.Server.Services.Sql
             return movieToCreate;
         }
 
-        private async Task CreateTagsAsync(Movie movie)
-        {
-            foreach (var tag in movie.Tags)
-            {
-                var existingTag = await _tagService.GetByNameAsync(tag.Name);
-                if (existingTag == null)
-                {
-                    existingTag = await _tagService.CreateAsync(tag);
-                }
-
-                tag.Id = existingTag.Id;
-
-                await CreateMovieTag(new MovieTag
-                {
-                    MovieId = movie.Id,
-                    TagId = tag.Id
-                });
-            }
-        }
-
-        private async Task CreateLinksAsync(Movie movie)
-        {
-            string sql = @"insert into [Links] ([MovieId], [Name], [LinkType], [Href]) values (@MovieId, @Name, @LinkType, @Href);
-                           select scope_identity();";
-
-            foreach (var link in movie.Links)
-            {
-                link.MovieId = movie.Id;
-                link.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, link);
-            }
-        }
-
-        private async Task CreateMovieTag(MovieTag movieTagToCreate)
-        {
-            var sql = @"INSERT INTO [MovieTag] ([MovieId], [TagId]) VALUES(@MovieId, @TagId)";
-            await Session.Connection.ExecuteAsync(sql, movieTagToCreate);
-        }
-
         public async Task<long> UpdateAsync(Movie movieToUpdate)
         {
             var sql = @"update [Movies] 
                         set [Title] = @Title
                             ,[Synopsis] = @Synopsis
+                            ,[ImageId] = @ImageId
                             ,[EpisodeId] = @EpisodeId
                         where [Id] = @Id";
+
+            DeleteMovieTags(movieToUpdate.Id);
+            await CreateTagsAsync(movieToUpdate);
+            await CreateOrUpdateLinksAsync(movieToUpdate);
             
             await Session.Connection.ExecuteAsync(sql, movieToUpdate);
             return movieToUpdate.Id;

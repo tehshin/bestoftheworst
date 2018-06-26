@@ -1,7 +1,20 @@
 <div *ngIf="movie$ | async as movie">
   <header class="movie-header">
-    <h1 class="title movie-title">{{ movie?.title }}</h1>
-    <div class="movie-episode">{{ movie?.episode.title }}</div>
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <div class="movie-titles">
+              <h1 class="title movie-title">{{ movie?.title }}</h1>
+              <div class="movie-episode">{{ movie?.episode.title }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <a routerLink="/movie/edit/{{movie?.id}}" type="button" class="button">Edit movie</a>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="columns">

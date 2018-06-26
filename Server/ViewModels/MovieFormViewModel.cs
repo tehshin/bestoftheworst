@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BestOfTheWorst.Server.ViewModels
 {
-    public class CreateMovieViewModel
+    public class MovieFormViewModel
     {
-
         [Required]
         public string Title { get; set; }
 

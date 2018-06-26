@@ -95,7 +95,7 @@ namespace BestOfTheWorst.Tests.UnitTests
                 .Verifiable();
 
             var controller = new MovieController(mapper, movieServiceMock.Object);
-            var movie = new CreateMovieViewModel
+            var movie = new MovieFormViewModel
             {
                 Title = "New movie",
                 Synopsis = "It's about people",
@@ -113,23 +113,6 @@ namespace BestOfTheWorst.Tests.UnitTests
         }
 
         [Fact]
-        public async Task Update_ReturnsBadRequestResult_WhenModelStateIsInvalid()
-        {
-            var mapper = CreateAutomapper();
-
-            var movieServiceMock = new Mock<IMovieService>();
-            var controller = new MovieController(mapper, movieServiceMock.Object);
-            controller.ModelState.AddModelError("Title", "A title is required");
-
-            var movie = new UpdateMovieViewModel();
-
-            var result = await controller.Update(1, movie);
-
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
-        }
-
-        [Fact]
         public async Task Update_ReturnsNotFound_WhenMovieIsNull()
         {
             var mapper = CreateAutomapper();
@@ -139,7 +122,7 @@ namespace BestOfTheWorst.Tests.UnitTests
 
             var controller = new MovieController(mapper, movieServiceMock.Object);
 
-            var movie = new UpdateMovieViewModel();
+            var movie = new MovieFormViewModel();
 
             var result = await controller.Update(123, movie);
 
@@ -161,7 +144,7 @@ namespace BestOfTheWorst.Tests.UnitTests
 
             var controller = new MovieController(mapper, movieServiceMock.Object);
             
-            var movie = new UpdateMovieViewModel();
+            var movie = new MovieFormViewModel();
             var result = await controller.Update(1, movie);
 
             var noContentResult = Assert.IsType<NoContentResult>(result);

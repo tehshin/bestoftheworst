@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
 import { Movie, MovieForm } from '../movie';
 import { MovieService } from '../movie.service';
 import { Router } from '@angular/router';
@@ -14,8 +14,20 @@ import { Link } from '../link';
 })
 export class MovieFormComponent implements OnInit {
 
-  @Input("title") title: string;
-  @Input("movie") movieId: number;
+  @Input("form-title") title: string;
+
+  private _movieId: number;
+  @Input("movie")
+  set movieId(movieId: number) {
+    this._movieId = movieId;
+    this.getMovie();
+  }
+
+  get movieId() {
+    return this._movieId;
+  }
+
+  imagePreview: string;
 
   form: FormGroup;
 
@@ -54,6 +66,29 @@ export class MovieFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  getMovie() {
+    this.movieService.getById(this.movieId).subscribe(
+      (movie) => this.setFormValues(movie)
+    );
+  }
+
+  setFormValues(movie: Movie) {
+    if (movie.image) {
+      this.imagePreview = movie.image.imageUrl;
+    }
+
+    this.form.get('title').patchValue(movie.title);
+    this.form.get('synopsis').patchValue(movie.synopsis);
+    this.form.get('episode').patchValue(movie.episode.id);
+    this.form.get('image').patchValue(movie.image.id);
+    this.form.get('tags').patchValue(movie.tags.map(t => t.name));
+
+    let formLinks = this.form.get('links') as FormArray;
+    if (movie.links) {
+      movie.links.forEach(l => this.addLink(l));
+    }
+  }
+
   createForm() {
     this.form = this.fb.group({
       'title': ['', Validators.required],
@@ -65,27 +100,28 @@ export class MovieFormComponent implements OnInit {
     });
   }
 
-  addLink() {
-    let link = this.fb.group({
-      'linkType': 0,
-      'name': '',
-      'href': 'http://'
+  addLink(link: Link) {
+    let formLink = this.fb.group({
+      'id': link ? link.id : 0,
+      'linkType': link ? link.linkType : 0,
+      'name': link ? link.name : '',
+      'href': link ? link.href : 'http://'
     });
 
-    link.get('linkType').valueChanges.subscribe(linkType => {
+    formLink.get('linkType').valueChanges.subscribe(linkType => {
       switch (+linkType) {
         case LinkType.IMDB:
-          link.get('name').patchValue('IMDB');
+          formLink.get('name').patchValue('IMDB');
           break;
         case LinkType.Wikipedia:
-          link.get('name').patchValue('Wikipedia');
+          formLink.get('name').patchValue('Wikipedia');
           break;
         default:
           break;
       }
     });
 
-    this.links.push(link);
+    this.links.push(formLink);
   }
 
   removeLink(index: number) {
@@ -106,13 +142,20 @@ export class MovieFormComponent implements OnInit {
       links: linksDeepCopy
     });
 
-    this.movieService.createMovie(movie).subscribe(
-      (data: Movie) => this.goToMovieDetails(data),
-      error => console.log(error)
-    );
+    if (this.movieId) {
+      this.movieService.updateMovie(this.movieId, movie).subscribe(
+        _ => this.goToMovieDetails(this.movieId),
+        error => console.log(error)
+      );
+    } else {
+      this.movieService.createMovie(movie).subscribe(
+        (data: Movie) => this.goToMovieDetails(data.id),
+        error => console.log(error)
+      );
+    }
   }
 
-  goToMovieDetails(movie: Movie) {
-    this.router.navigate(['/movie', movie.id]);
+  goToMovieDetails(movieId: number) {
+    this.router.navigate(['/movie', movieId]);
   }
 }

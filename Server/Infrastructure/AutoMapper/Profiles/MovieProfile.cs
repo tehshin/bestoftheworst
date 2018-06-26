@@ -21,7 +21,7 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                     }
                 ));
 
-            CreateMap<CreateMovieViewModel, Movie>()
+            CreateMap<MovieFormViewModel, Movie>()
                 .ForMember(dest => dest.Tags, opt => opt.ResolveUsing<StringTagResolver>())
                 .ForMember(dest => dest.ImageId, opt => opt.MapFrom(_ => _.Image))
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
@@ -29,8 +29,6 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
             CreateMap<LinkViewModel, Link>()
                 .ForMember(dest => dest.LinkType, opt => opt.MapFrom(_ => _.LinkType))
                 .ForMember(dest => dest.Href, opt => opt.MapFrom(_ => _.Href));
-
-            CreateMap<UpdateMovieViewModel, Movie>();
 
             CreateMap<Movie, MovieDetailViewModel>()
                 .ForMember(dest => dest.RelatedMovies, opt => opt.Ignore());

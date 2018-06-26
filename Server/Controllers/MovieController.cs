@@ -95,7 +95,7 @@ namespace BestOfTheWorst.Server.Controllers
         [HttpPost("", Name = "CreateMovie")]
         [ProducesResponseType(typeof(MovieDetailViewModel), 201)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Create([FromBody] CreateMovieViewModel movie)
+        public async Task<IActionResult> Create([FromBody] MovieFormViewModel movie)
         {
             var movieToCreate = _mapper.Map<Movie>(movie);
             
@@ -124,13 +124,8 @@ namespace BestOfTheWorst.Server.Controllers
         [HttpPut("{id}", Name = "UpdateMovie")]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(long id, [FromBody] UpdateMovieViewModel movie)
+        public async Task<IActionResult> Update(long id, [FromBody] MovieFormViewModel movie)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var movieToUpdate = await _movieService.GetByIdAsync(id);
             if (movieToUpdate == null)
             {
