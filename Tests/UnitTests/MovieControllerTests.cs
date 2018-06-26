@@ -84,38 +84,6 @@ namespace BestOfTheWorst.Tests.UnitTests
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
         }
 
-        // TODO: Learn how to unit test ModelState with ApiControllerAttribute
-        //       that will return 400 Bad Request if ModelState.IsValid == false
-        //       automatically
-        
-        // [Fact]
-        // public async Task Create_ReturnsBadRequestResult_WhenModelStateIsInvalid()
-        // {
-        //     var mapper = CreateAutomapper();
-
-        //     var movieServiceMock = new Mock<IMovieService>();
-        //     movieServiceMock.Setup(s => s.CreateAsync(It.IsAny<Movie>())).Returns(Task.FromResult(new Movie()));
-
-        //     var objectValidatorMock = new Mock<IObjectModelValidator>();
-        //     objectValidatorMock.Setup(o => o.Validate(It.IsAny<ActionContext>(),
-        //                                      It.IsAny<ValidationStateDictionary>(),
-        //                                      It.IsAny<string>(),
-        //                                      It.IsAny<Object>()));
-
-        //     var controller = new MovieController(mapper, movieServiceMock.Object);
-        //     controller.ObjectValidator = objectValidatorMock.Object;
-        //     controller.ModelState.AddModelError("Title", "A title is required");
-
-        //     var newMovie = new CreateMovieViewModel();
-
-        //     var isValid = controller.TryValidateModel(newMovie);
-        //     var result = await controller.Create(newMovie);
-
-        //     Assert.False(isValid);
-        //     var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        //     Assert.IsType<SerializableError>(badRequestResult.Value);
-        // }
-
         [Fact]
         public async Task Create_ReturnsACreatedAtActionResultAndAddsMovie_WhenModelStateIsValid()
         {
