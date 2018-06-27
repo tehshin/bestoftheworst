@@ -1,14 +1,12 @@
 using BestOfTheWorst.Server.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BestOfTheWorst.Server.Database
 {
-    public class BestOfTheWorstContext : DbContext
+    public class BestOfTheWorstContext : IdentityDbContext<AppUser>
     {
-        public BestOfTheWorstContext(DbContextOptions<BestOfTheWorstContext> options) : base(options)
-        {
-            
-        }
+        public BestOfTheWorstContext(DbContextOptions<BestOfTheWorstContext> options) : base(options) { }
 
         public DbSet<Movie> Movies { get; set; }
 
