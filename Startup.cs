@@ -27,7 +27,7 @@ namespace BestOfTheWorst
     {
         private readonly IHostingEnvironment _env;
 
-        public IConfigurationRoot Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
         
         public Startup(IHostingEnvironment env)
         {
@@ -49,6 +49,7 @@ namespace BestOfTheWorst
 
             services.AddDbContextPool<BestOfTheWorstContext>(opt => {
                 opt.UseSqlServer(connectionString: connectionString);
+                opt.UseOpenIddict();
             });
 
             services.AddBestOfTheWorstIdentity();

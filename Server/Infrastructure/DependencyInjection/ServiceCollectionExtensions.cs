@@ -29,6 +29,8 @@ namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
                     c.GetService<IDbSession>(), 
                     c.GetService<IHostingEnvironment>().WebRootPath));
 
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+
             return services;
         }
     }

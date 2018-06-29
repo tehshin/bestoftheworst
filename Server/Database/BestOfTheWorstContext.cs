@@ -1,4 +1,5 @@
 using BestOfTheWorst.Server.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,8 @@ namespace BestOfTheWorst.Server.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<MovieTag>()
                 .HasKey(mt => new { mt.MovieId, mt.TagId });
 
