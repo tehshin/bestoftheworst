@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { faGoogle, faTwitter, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faGoogle, faTwitter, faMicrosoft, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { AppDataService } from '../app-data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,16 +10,27 @@ import { faGoogle, faTwitter, faMicrosoft } from '@fortawesome/free-brands-svg-i
 })
 export class NavbarComponent implements OnInit {
 
+  loginProviders = [];
+
   currentUrl: string;
   isLoginDialogVisible: boolean = false;
   loginDialogTitle: string = "Login";
 
   faGoogle = faGoogle;
+  faGithub = faGithub;
   faTwitter = faTwitter;
   faMicrosoft = faMicrosoft;
 
+  loginProviderIcons = {
+    "Google": this.faGoogle,
+    "GitHub": this.faGithub,
+    "Twitter": this.faTwitter,
+    "Microsoft": this.faMicrosoft
+  };
+
   constructor(
-    private router: Router
+    private router: Router,
+    private appDataService: AppDataService
   ) { 
     router.events.subscribe(
       (_: NavigationEnd) => this.currentUrl = _.url
@@ -26,6 +38,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appDataService.loginProviders.subscribe(
+      data => this.loginProviders = data
+    );
   }
 
   closeLoginDialog() {
@@ -35,6 +50,10 @@ export class NavbarComponent implements OnInit {
   showLoginDialog(title: string) {
     this.loginDialogTitle = title;
     this.isLoginDialogVisible = true;
+  }
+
+  loginProviderClass(loginProvider: string) {
+    return `is-${loginProvider.toLowerCase()}`;
   }
 
 }

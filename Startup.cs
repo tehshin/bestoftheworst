@@ -56,6 +56,10 @@ namespace BestOfTheWorst
 
             services.AddBestOfTheWorstServices(connectionString);
 
+            services.AddCustomOpenIddict(options => {
+                options.Environment = _env;
+            });
+
             services.AddAutoMapper();
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);

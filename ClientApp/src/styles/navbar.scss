@@ -42,3 +42,33 @@
         width: 100%;
     }
 }
+
+.button {
+    &.is-login {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.15), 0 1px 5px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    &.is-google {
+        background-color: #db4437;
+        border-color: #db4437;
+        color: whitesmoke;
+    }
+
+    &.is-github {
+        background-color: #fff;
+        border-color: #fff;
+        color: #24292e;
+    }
+
+    &.is-twitter {
+        background-color: #1da1f2;
+        border-color: #1da1f2;
+        color: whitesmoke;
+    }
+
+    &.is-microsoft {
+        background-color: #0078D7;
+        border-color: #0078D7;
+        color: whitesmoke;
+    }
+}

@@ -44,12 +44,12 @@
   </div>
   <div class="divider"></div>
   <div class="columns is-multiline">
-    <div class="column">
-      <button type="button" class="button is-login is-medium is-fullwidth">
+    <div class="column" *ngFor="let loginProvider of loginProviders">
+      <button type="button" class="button is-login is-medium is-fullwidth" [ngClass]="loginProviderClass(loginProvider)">
         <span class="icon">
-          <fa-icon [icon]="faGoogle"></fa-icon>
+          <fa-icon [icon]="loginProviderIcons[loginProvider]"></fa-icon>
         </span>
-        <span>Google</span>
+        <span>{{loginProvider}}</span>
       </button>
     </div>
   </div>
