@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppDataService {
 
-  loginProviders: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  private baseUrl = "/api/application";
+
+  loginProviders = [];
 
   constructor(
     private http: HttpClient
   ) { }
 
   getAppData() {
-    // TODO: load app data and set loginProviders
+    this.http.get(`${this.baseUrl}/data`).subscribe(
+      (appData: any) => this.loginProviders = appData ? appData.loginProviders : [],
+      error => console.log(error)
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,6 +21,7 @@ import { TagInputComponent } from './tag-input/tag-input.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { MovieFormComponent } from './movie-form/movie-form.component';
+import { AppDataService } from './app-data.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,15 @@ import { MovieFormComponent } from './movie-form/movie-form.component';
       }
     })
   ],
-  providers: [],
+  providers: [
+    AppDataService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (appDataService: AppDataService) => () => appDataService.getAppData(),
+      deps: [AppDataService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
