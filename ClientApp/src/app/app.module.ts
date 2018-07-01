@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ import { AppDataService } from './app-data.service';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    OAuthModule.forRoot(),
     FontAwesomeModule,
     MarkdownModule.forRoot({ 
       loader: HttpClient, 

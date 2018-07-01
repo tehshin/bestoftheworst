@@ -233,3 +233,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 /Properties/PublishProfiles/*
 /wwwroot/images/movies/*
+appsettings.development.json

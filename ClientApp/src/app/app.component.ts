@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MovieService } from './movie.service';
-import { Movie } from './movie';
+import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { authConfig } from './auth-config';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,21 @@ import { Movie } from './movie';
 export class AppComponent {
   title = 'Best of the Worst';
 
-  constructor() { }
+  constructor(
+    private oAuthService: OAuthService
+  ) { 
+    this.configureAuth();
+  }
+
+  configureAuth() {
+    let baseUrl = window.location.origin;
+    if (!baseUrl.endsWith('/')) {
+      baseUrl = baseUrl + '/';
+    }
+    
+    this.oAuthService.configure(authConfig(baseUrl));
+    this.oAuthService.setStorage(localStorage);
+    this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oAuthService.loadDiscoveryDocumentAndTryLogin();
+  }
 }

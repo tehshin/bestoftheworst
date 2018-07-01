@@ -58,6 +58,18 @@ namespace BestOfTheWorst
 
             services.AddCustomOpenIddict(options => {
                 options.Environment = _env;
+
+                options.Google.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.Google.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
+                options.Twitter.ClientId = Configuration["Authentication:Twitter:ClientId"];
+                options.Twitter.ClientSecret = Configuration["Authentication:Twitter:ClientSecret"];
+
+                options.GitHub.ClientId = Configuration["Authentication:GitHub:ClientId"];
+                options.GitHub.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
+
+                options.Microsoft.ClientId = Configuration["Authentication:Microsoft:ClientId"];
+                options.Microsoft.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
             });
 
             services.AddAutoMapper();
@@ -102,6 +114,8 @@ namespace BestOfTheWorst
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Best of the Worst API v1");
             });
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
