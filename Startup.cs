@@ -109,13 +109,12 @@ namespace BestOfTheWorst
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Best of the Worst API v1");
             });
-
-            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

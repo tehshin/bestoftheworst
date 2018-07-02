@@ -15,7 +15,21 @@
       <div class="navbar-start">
         <a routerLink="/" class="navbar-item botw-navbar-item" [class.is-active]="currentUrl == '/'">Movies</a>
       </div>
-      <div class="navbar-end">
+      <div class="navbar-end" *ngIf="isLoggedIn">
+        <div class="navbar-item has-dropdown" *ngIf="userProfile">
+          <a class="navbar-link botw-user-navbar">
+            {{ userProfile?.username }}
+          </a>
+        </div>
+        <div class="navbar-item">
+          <div class="field is-grouped is-grouped-multiline">
+            <p class="control">
+              <a routerLink="/create" class="button is-success">Add movie</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-end" *ngIf="!isLoggedIn">
         <a class="navbar-item" (click)="showLoginDialog('Login')">
           Login
         </a>
@@ -26,14 +40,7 @@
             </p>
           </div>
         </div>
-        <!--         
-        <div class="navbar-item">
-          <div class="field is-grouped is-grouped-multiline">
-            <p class="control">
-              <a routerLink="/create" class="button is-success">Add movie</a>
-            </p>
-          </div>
-        </div> -->
+        
       </div>
     </div>
   </div>

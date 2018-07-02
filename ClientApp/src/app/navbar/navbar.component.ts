@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { faGoogle, faTwitter, faMicrosoft, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AppDataService } from '../app-data.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class NavbarComponent implements OnInit {
 
   loginProviders = [];
+  userProfile;
 
   currentUrl: string;
   isLoginDialogVisible: boolean = false;
@@ -29,10 +31,15 @@ export class NavbarComponent implements OnInit {
     "Microsoft": this.faMicrosoft
   };
 
+  public get isLoggedIn(): boolean {
+    return this.accountService.isAuthenticated;
+  }
+
   constructor(
     private router: Router,
     private appDataService: AppDataService,
-    private authService: OAuthService
+    private authService: OAuthService,
+    private accountService: AccountService
   ) { 
     router.events.subscribe(
       (_: NavigationEnd) => this.currentUrl = _.url
@@ -42,6 +49,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.appDataService.loginProviders.subscribe(
       data => this.loginProviders = data
+    );
+
+    this.accountService.currentUser.subscribe(
+      data => this.userProfile = data
     );
   }
 

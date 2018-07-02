@@ -1,0 +1,32 @@
+<div class="content">
+  <header class="botw-header">
+    <h1 class="title">Confirm your new account</h1>
+  </header>
+
+  <p>
+    You are about to create a new account using a login from
+  </p>
+
+  <div class="field">
+    <label>Email</label>
+    <div class="control">
+      <input type="email" class="input" [(ngModel)]="email" placeholder="john@domain.com" required />
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Username</label>
+    <div class="control">
+      <input type="text" class="input" [(ngModel)]="username" placeholder="Username" required />
+    </div>
+  </div>
+
+  <div class="field">
+    <button type="submit" class="button is-primary" (click)="join()">Confirm and create account</button>
+  </div>
+
+  <p>
+    By clicking "Confirm and create account", you acknowledge that you have read our updated <a href="#">Terms of Use</a>, 
+    and that your continued use of the website is subject to these policies.
+  </p>
+</div>

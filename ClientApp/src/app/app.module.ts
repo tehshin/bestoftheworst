@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthStorage, DefaultOAuthInterceptor } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +23,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { MovieFormComponent } from './movie-form/movie-form.component';
 import { AppDataService } from './app-data.service';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { AppDataService } from './app-data.service';
     TagInputComponent,
     PageNotFoundComponent,
     EditMovieComponent,
-    MovieFormComponent
+    MovieFormComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,12 @@ import { AppDataService } from './app-data.service';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    OAuthModule.forRoot(),
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: [''],
+        sendAccessToken: true
+      }
+    }),
     FontAwesomeModule,
     MarkdownModule.forRoot({ 
       loader: HttpClient, 
@@ -66,7 +74,8 @@ import { AppDataService } from './app-data.service';
       useFactory: (appDataService: AppDataService) => () => appDataService.getAppData(),
       deps: [AppDataService],
       multi: true
-    }
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
