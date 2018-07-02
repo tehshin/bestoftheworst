@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { faGoogle, faTwitter, faMicrosoft, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AppDataService } from '../app-data.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-navbar',
@@ -30,7 +31,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private appDataService: AppDataService
+    private appDataService: AppDataService,
+    private authService: OAuthService
   ) { 
     router.events.subscribe(
       (_: NavigationEnd) => this.currentUrl = _.url
@@ -54,6 +56,10 @@ export class NavbarComponent implements OnInit {
 
   loginProviderClass(loginProvider: string) {
     return `is-${loginProvider.toLowerCase()}`;
+  }
+
+  redirect(provider: string) {
+    this.authService.initImplicitFlow(null, { provider: provider });
   }
 
 }

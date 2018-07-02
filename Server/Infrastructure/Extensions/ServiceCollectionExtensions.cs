@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Abstractions;
 
 namespace BestOfTheWorst.Infrastructure.Extensions
 {
@@ -60,6 +61,12 @@ namespace BestOfTheWorst.Infrastructure.Extensions
                     options.UseMvc();
                     options.EnableTokenEndpoint("/connect/token")
                         .EnableAuthorizationEndpoint("/connect/authorize");
+
+                    options.RegisterScopes(
+                        OpenIdConnectConstants.Scopes.Profile,
+                        OpenIdConnectConstants.Scopes.Email,
+                        OpenIddictConstants.Scopes.Roles
+                    );
 
                     options.AllowRefreshTokenFlow()
                         .AllowImplicitFlow();

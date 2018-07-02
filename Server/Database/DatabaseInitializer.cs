@@ -17,25 +17,28 @@ namespace BestOfTheWorst.Server.Database
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly OpenIddictApplicationManager<OpenIddictApplication> _openIddictApplicationManager;
+        private readonly OpenIddictScopeManager<OpenIddictScope> _openIddictScopeManager;
 
         public DatabaseInitializer(
             BestOfTheWorstContext context,
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
-            OpenIddictApplicationManager<OpenIddictApplication> openIddictApplicationManager
+            OpenIddictApplicationManager<OpenIddictApplication> openIddictApplicationManager,
+            OpenIddictScopeManager<OpenIddictScope> openIddictScopeManager
         )
         {
             _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
             _openIddictApplicationManager = openIddictApplicationManager;
+            _openIddictScopeManager = openIddictScopeManager;
         }
 
         public async Task SeedAsync(IConfiguration config)
         {
             await CreateRolesAsync();
             await CreateUsersAsync();
-            await AddOpenIdConnectOptions(config);
+            await AddOpenIdConnectApplication(config);
         }
 
         private async Task CreateRolesAsync()
@@ -71,7 +74,7 @@ namespace BestOfTheWorst.Server.Database
             }
         }
 
-        private async Task AddOpenIdConnectOptions(IConfiguration configuration)
+        private async Task AddOpenIdConnectApplication(IConfiguration configuration)
         {
             if (await _openIddictApplicationManager.FindByClientIdAsync("botw") == null)
             {
@@ -89,7 +92,10 @@ namespace BestOfTheWorst.Server.Database
                         OpenIddictConstants.Permissions.Endpoints.Token,
                         OpenIddictConstants.Permissions.GrantTypes.Implicit,
                         OpenIddictConstants.Permissions.GrantTypes.Password,
-                        OpenIddictConstants.Permissions.GrantTypes.RefreshToken
+                        OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                        OpenIddictConstants.Permissions.Scopes.Email,
+                        OpenIddictConstants.Permissions.Scopes.Profile,
+                        OpenIddictConstants.Permissions.Scopes.Roles,
                     }
                 };
 

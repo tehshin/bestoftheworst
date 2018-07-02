@@ -4,9 +4,9 @@ export function authConfig(url: string): AuthConfig {
     return new AuthConfig({
         issuer: url,
         redirectUri: url,
-        clientId: '',
+        clientId: 'botw',
         tokenEndpoint: url + '/connect/token',
         requireHttps: false,
-        scope: 'openid profile email offline_access client_id roles'
+        scope: 'openid profile email offline_access roles'
     });
 }
