@@ -25,6 +25,7 @@ import { MovieFormComponent } from './movie-form/movie-form.component';
 import { AppDataService } from './app-data.service';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { GravatarComponent } from './gravatar/gravatar.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     PageNotFoundComponent,
     EditMovieComponent,
     MovieFormComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    GravatarComponent
   ],
   imports: [
     BrowserModule,

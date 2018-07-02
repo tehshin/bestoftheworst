@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
   isLoginDialogVisible: boolean = false;
   loginDialogTitle: string = "Login";
 
+  showUserDropdown: boolean = false;
+
   faGoogle = faGoogle;
   faGithub = faGithub;
   faTwitter = faTwitter;
@@ -71,6 +73,14 @@ export class NavbarComponent implements OnInit {
 
   redirect(provider: string) {
     this.authService.initImplicitFlow(null, { provider: provider });
+  }
+
+  logout() {
+    this.authService.logOut();
+  }
+
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
   }
 
 }

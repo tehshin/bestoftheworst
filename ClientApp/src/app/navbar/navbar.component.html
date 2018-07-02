@@ -16,10 +16,14 @@
         <a routerLink="/" class="navbar-item botw-navbar-item" [class.is-active]="currentUrl == '/'">Movies</a>
       </div>
       <div class="navbar-end" *ngIf="isLoggedIn">
-        <div class="navbar-item has-dropdown" *ngIf="userProfile">
-          <a class="navbar-link botw-user-navbar">
+        <div class="navbar-item has-dropdown" *ngIf="userProfile" [class.is-active]="showUserDropdown">
+          <a class="navbar-link botw-user-navbar" (click)="toggleUserDropdown()">
+            <app-gravatar [hash]="userProfile?.gravatarHash" size="21" [altText]="userProfile?.username" class="botw-user-avatar"></app-gravatar>
             {{ userProfile?.username }}
           </a>
+          <div class="navbar-dropdown is-right">
+            <a class="navbar-item" (click)="logout()">Logout</a>
+          </div>
         </div>
         <div class="navbar-item">
           <div class="field is-grouped is-grouped-multiline">
