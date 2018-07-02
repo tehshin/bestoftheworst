@@ -50,12 +50,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: [''],
-        sendAccessToken: true
-      }
-    }),
+    OAuthModule.forRoot(),
     FontAwesomeModule,
     MarkdownModule.forRoot({ 
       loader: HttpClient, 
