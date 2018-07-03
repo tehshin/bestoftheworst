@@ -72,6 +72,7 @@ import { GravatarComponent } from './gravatar/gravatar.component';
       deps: [AppDataService],
       multi: true
     },
+    { provide: OAuthStorage, useValue: localStorage },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
