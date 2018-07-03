@@ -31,10 +31,6 @@ export class AppComponent implements OnInit {
         }
       }
     );
-
-    if (this.accountService.isAuthenticated) {
-      this.accountService.getUserInfo();
-    }
   }
 
   configureAuth() {
@@ -46,12 +42,5 @@ export class AppComponent implements OnInit {
     this.oAuthService.configure(authConfig(baseUrl));
     this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
     this.oAuthService.loadDiscoveryDocumentAndTryLogin();
-
-    this.oAuthService.events
-      .pipe(
-        filter(e => e.type === 'token_received'))
-      .subscribe(
-        e => this.accountService.getUserInfo()
-      );
   }
 }

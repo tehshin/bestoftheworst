@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -86,6 +87,8 @@ namespace BestOfTheWorst.Server.Controllers
 
                     if (createUserResult.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "User");
+
                         createUserResult = await _userManager.AddLoginAsync(user, loginInfo);
                         if (createUserResult.Succeeded)
                         {
@@ -131,29 +134,57 @@ namespace BestOfTheWorst.Server.Controllers
 
             foreach (var claim in ticket.Principal.Claims)
             {
-                if (claim.Type == _identityOptions.Value.ClaimsIdentity.SecurityStampClaimType)
-                {
-                    continue;
-                }
-
-                var destinations = new List<string>
-                {
-                    OpenIdConnectConstants.Destinations.AccessToken
-                };
-
-                // Only add the iterated claim to the id_token if the corresponding scope was granted to the client application.
-                // The other claims will only be added to the access_token, which is encrypted when using the default format.
-                if ((claim.Type == OpenIdConnectConstants.Claims.Name && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Email && ticket.HasScope(OpenIdConnectConstants.Scopes.Email)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Role && ticket.HasScope(OpenIddictConstants.Claims.Roles)))
-                {
-                    destinations.Add(OpenIdConnectConstants.Destinations.IdentityToken);
-                }
-
-                claim.SetDestinations(destinations);
+                claim.SetDestinations(GetDestinations(claim, ticket));
             }
 
             return ticket;
+        }
+
+        private IEnumerable<string> GetDestinations(Claim claim, AuthenticationTicket ticket)
+        {
+            // Note: by default, claims are NOT automatically included in the access and identity tokens.
+            // To allow OpenIddict to serialize them, you must attach them a destination, that specifies
+            // whether they should be included in access tokens, in identity tokens or in both.
+
+            switch (claim.Type)
+            {
+                case OpenIdConnectConstants.Claims.Name:
+                    yield return OpenIdConnectConstants.Destinations.AccessToken;
+
+                    if (ticket.HasScope(OpenIdConnectConstants.Scopes.Profile))
+                        yield return OpenIdConnectConstants.Destinations.IdentityToken;
+
+                    yield break;
+
+                case OpenIdConnectConstants.Claims.Picture:
+                    yield return OpenIdConnectConstants.Destinations.AccessToken;
+                    yield return OpenIdConnectConstants.Destinations.IdentityToken;
+
+                    yield break;
+
+                case OpenIdConnectConstants.Claims.Email:
+                    yield return OpenIdConnectConstants.Destinations.AccessToken;
+
+                    if (ticket.HasScope(OpenIdConnectConstants.Scopes.Email))
+                        yield return OpenIdConnectConstants.Destinations.IdentityToken;
+
+                    yield break;
+
+                case OpenIdConnectConstants.Claims.Role:
+                    yield return OpenIdConnectConstants.Destinations.AccessToken;
+
+                    if (ticket.HasScope(OpenIddictConstants.Claims.Roles))
+                        yield return OpenIdConnectConstants.Destinations.IdentityToken;
+
+                    yield break;
+
+                // Never include the security stamp in the access and identity tokens, as it's a secret value.
+                case "AspNet.Identity.SecurityStamp": yield break;
+
+                default:
+                    yield return OpenIdConnectConstants.Destinations.AccessToken;
+                    yield break;
+            }
         }
     }
 }

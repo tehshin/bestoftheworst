@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,18 @@ export class AccountService {
 
   get accessToken() {
     return this.authService.getAccessToken();
+  }
+
+  private _user: IProfileModel;
+  get user(): IProfileModel | undefined {
+    if (!this._user) {
+      var idToken = this.authService.getIdToken();
+      if (idToken) {
+        const helper = new JwtHelperService();
+        this._user = helper.decodeToken(idToken);
+      }
+    }
+    return this._user;
   }
 
   constructor(

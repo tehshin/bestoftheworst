@@ -18,8 +18,8 @@
       <div class="navbar-end" *ngIf="isLoggedIn">
         <div class="navbar-item has-dropdown" *ngIf="userProfile" [class.is-active]="showUserDropdown">
           <a class="navbar-link botw-user-navbar" (click)="toggleUserDropdown()">
-            <app-gravatar [hash]="userProfile?.gravatarHash" size="21" [altText]="userProfile?.username" class="botw-user-avatar"></app-gravatar>
-            {{ userProfile?.username }}
+            <app-gravatar [hash]="userProfile?.picture" size="21" [altText]="userProfile?.name" class="botw-user-avatar"></app-gravatar>
+            {{ userProfile?.name }}
           </a>
           <div class="navbar-dropdown is-right">
             <a class="navbar-item" (click)="logout()">Logout</a>

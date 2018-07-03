@@ -1,7 +1,10 @@
 using BestOfTheWorst.Server.Database;
+using BestOfTheWorst.Server.Infrastructure.Security;
+using BestOfTheWorst.Server.Models;
 using BestOfTheWorst.Server.Services;
 using BestOfTheWorst.Server.Services.Sql;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -19,6 +22,8 @@ namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
                 var factory = _.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext);
             });
+
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
             services.AddScoped<IDbSession>(c => new DbSession(connectionString));
             services.AddScoped<ITagService, TagService>();

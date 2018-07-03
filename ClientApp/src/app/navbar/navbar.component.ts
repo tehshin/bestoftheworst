@@ -13,8 +13,7 @@ import { AccountService } from '../account.service';
 export class NavbarComponent implements OnInit {
 
   loginProviders = [];
-  userProfile;
-
+  
   currentUrl: string;
   isLoginDialogVisible: boolean = false;
   loginDialogTitle: string = "Login";
@@ -32,6 +31,10 @@ export class NavbarComponent implements OnInit {
     "Twitter": this.faTwitter,
     "Microsoft": this.faMicrosoft
   };
+
+  get userProfile(): IProfileModel {
+    return this.accountService.user;
+  }
 
   public get isLoggedIn(): boolean {
     return this.accountService.isAuthenticated;
@@ -51,10 +54,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.appDataService.loginProviders.subscribe(
       data => this.loginProviders = data
-    );
-
-    this.accountService.currentUser.subscribe(
-      data => this.userProfile = data
     );
   }
 
