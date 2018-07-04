@@ -27,6 +27,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GravatarComponent } from './gravatar/gravatar.component';
 import { RoleGuard } from './role-guard.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { RoleGuard } from './role-guard.service';
     EditMovieComponent,
     MovieFormComponent,
     CreateUserComponent,
-    GravatarComponent
+    GravatarComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

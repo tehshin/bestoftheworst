@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { faGoogle, faTwitter, faMicrosoft, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AppDataService } from '../app-data.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AccountService } from '../account.service';
@@ -12,25 +11,8 @@ import { AccountService } from '../account.service';
 })
 export class NavbarComponent implements OnInit {
 
-  loginProviders = [];
-  
   currentUrl: string;
-  isLoginDialogVisible: boolean = false;
-  loginDialogTitle: string = "Login";
-
   showUserDropdown: boolean = false;
-
-  faGoogle = faGoogle;
-  faGithub = faGithub;
-  faTwitter = faTwitter;
-  faMicrosoft = faMicrosoft;
-
-  loginProviderIcons = {
-    "Google": this.faGoogle,
-    "GitHub": this.faGithub,
-    "Twitter": this.faTwitter,
-    "Microsoft": this.faMicrosoft
-  };
 
   get userProfile(): IProfileModel {
     return this.accountService.user;
@@ -46,36 +28,18 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private appDataService: AppDataService,
-    private authService: OAuthService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private authService: OAuthService
   ) { 
-    router.events.subscribe(
+    this.router.events.subscribe(
       (_: NavigationEnd) => this.currentUrl = _.url
     )
   }
 
-  ngOnInit() {
-    this.appDataService.loginProviders.subscribe(
-      data => this.loginProviders = data
-    );
-  }
-
-  closeLoginDialog() {
-    this.isLoginDialogVisible = false;
-  }
+  ngOnInit() { }
 
   showLoginDialog(title: string) {
-    this.loginDialogTitle = title;
-    this.isLoginDialogVisible = true;
-  }
-
-  loginProviderClass(loginProvider: string) {
-    return `is-${loginProvider.toLowerCase()}`;
-  }
-
-  redirect(provider: string) {
-    this.authService.initImplicitFlow(null, { provider: provider });
+    this.accountService.showLogin();
   }
 
   logout() {

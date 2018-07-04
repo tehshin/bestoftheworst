@@ -49,23 +49,3 @@
     </div>
   </div>
 </nav>
-<app-modal [title]="loginDialogTitle" [showDialog]="isLoginDialogVisible" (modalClosed)="closeLoginDialog()">
-  <div class="has-text-centered">
-    Use on of the following providers to log in
-  </div>
-  <div class="divider"></div>
-  <div class="columns is-multiline">
-    <div class="column" *ngFor="let loginProvider of loginProviders">
-      <button type="button" class="button is-login is-medium is-fullwidth" [ngClass]="loginProviderClass(loginProvider)" (click)="redirect(loginProvider)">
-        <span class="icon">
-          <fa-icon [icon]="loginProviderIcons[loginProvider]"></fa-icon>
-        </span>
-        <span>{{loginProvider}}</span>
-      </button>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="has-text-centered">
-    By logging in, you agree to the <a href="#">Terms of Use</a>
-  </div>
-</app-modal>

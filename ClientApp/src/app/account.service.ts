@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -11,7 +11,9 @@ export class AccountService {
 
   private baseUrl = '/api/user';
 
-  currentUser: BehaviorSubject<any> = new BehaviorSubject(null);
+  private isLoginVisibleSource = new Subject<boolean>();
+
+  isLoginVisible$ = this.isLoginVisibleSource.asObservable();
 
   get isAuthenticated(): boolean {
     return this.authService.hasValidAccessToken();
@@ -38,12 +40,12 @@ export class AccountService {
     private http: HttpClient
   ) { }
 
-  getUserInfo() {
-    this.http.get(`${this.baseUrl}/info`)
-      .subscribe(
-        (userInfo) => this.currentUser.next(userInfo),
-        error => console.log(error)
-      );
+  showLogin() {
+    this.isLoginVisibleSource.next(true);
+  }
+
+  hideLogin() {
+    this.isLoginVisibleSource.next(false);
   }
 
   isUserInRole(role: string): boolean {
