@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Resolver
 {
-    public class ImageUrlResolver : IValueResolver<Image, object, string>
+    public class ImageUrlResolver : IValueResolver<Image, object, IDictionary<int, string>>
     {
         private readonly IUrlHelper _urlHelper;
 
@@ -16,8 +16,9 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Resolver
             _urlHelper = urlHelper;
         }
 
-        public string Resolve(Image source, object destination, string destMember, ResolutionContext context)
+        public IDictionary<int, string> Resolve(Image source, object destination, IDictionary<int, string> destMember, ResolutionContext context)
         {
+            var urls = new Dictionary<int, string>();
             string basePath = "~/";
 
             if (!string.IsNullOrEmpty(source.Path))
@@ -25,9 +26,11 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Resolver
                 basePath = $"{basePath}{source.Path.TrimEnd('/').TrimStart('/')}";
             }
 
-            var imagePath = $"{basePath}/{source.Id}.jpg";
+            urls.Add(500, _urlHelper.Content($"{basePath}/{source.Id}_500.jpg"));
+            urls.Add(250, _urlHelper.Content($"{basePath}/{source.Id}_250.jpg"));
+            urls.Add(100, _urlHelper.Content($"{basePath}/{source.Id}_100.jpg"));
 
-            return _urlHelper.Content(imagePath);
+            return urls;
         }
     }
 }

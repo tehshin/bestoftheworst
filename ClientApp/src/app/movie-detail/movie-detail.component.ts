@@ -70,4 +70,8 @@ export class MovieDetailComponent implements OnInit {
         return this.faLink;
     }
   }
+
+  getImageUrlForWidth(movie: Movie, width: number) {
+    return movie.image.imageUrls[width] || movie.image.imageUrls[500];
+  }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace BestOfTheWorst.Server.ViewModels
 {
@@ -6,6 +7,6 @@ namespace BestOfTheWorst.Server.ViewModels
     {
         public Guid Id { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IDictionary<int, string> ImageUrls { get; set; }
     }
 }

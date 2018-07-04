@@ -42,7 +42,7 @@ export class MovieImageInputComponent implements OnInit, ControlValueAccessor {
       this.imageService.createImage(selectedFile).subscribe(
         (data: any) => {
           this.imageId = data.id;
-          this.imageUrl = data.imageUrl;
+          this.imageUrl = data.imageUrls[500];
         }
       )
     }

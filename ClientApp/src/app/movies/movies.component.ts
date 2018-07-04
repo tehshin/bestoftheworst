@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../movie.service';
-import { MovieList } from '../movie';
+import { MovieList, Movie } from '../movie';
 
 @Component({
   selector: 'app-movies',
@@ -25,5 +25,11 @@ export class MoviesComponent implements OnInit {
         (data: MovieList) => this.movieList = data,
         error => console.log('listMovies', error)
       );
+  }
+
+  getImageUrlForWidth(movie: Movie, width: number) {
+    if (!movie.image) return '';
+    
+    return movie.image.imageUrls[width] || movie.image.imageUrls[500];
   }
 }

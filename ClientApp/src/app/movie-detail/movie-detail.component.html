@@ -37,7 +37,7 @@
         Movie
       </header>
       <div class="movie-image">
-        <img src="{{movie?.image?.imageUrl}}" alt="{{movie?.title}}" />
+        <img [src]="getImageUrlForWidth(movie, 500)" alt="{{movie?.title}}" />
       </div>
       <header class="movie-detail-header movie-detail-header--right" *ngIf="movie?.links.length > 0">
         Info

@@ -3,7 +3,7 @@ import { Episode } from "./episode";
 
 export class Image {
     id: string;
-    imageUrl: string;
+    imageUrls: {[key: number]: string};
 }
 
 export class Tag {

@@ -10,6 +10,9 @@ namespace BestOfTheWorst.Server.Services.Sql
 {
     public class ImageService : BaseService, IImageService
     {
+        private int[] _widths = new[] { 500, 250, 100 };
+        private double _sizeRatio = 1.47;
+
         public string ContentDirectory { get; set; }
 
         public ImageService(IDbSession session, string contentDirectory) : base(session) 
@@ -33,7 +36,11 @@ namespace BestOfTheWorst.Server.Services.Sql
                 imageData = ms.ToArray();
             }
 
-            StoreImageAsync(imageData, image.Id.ToString(), image.Path);
+            await StoreImageAsync(imageData, image.Id.ToString(), image.Path);
+            foreach (var width in _widths)
+            {
+                await StoreImageAsync(imageData, image.Id.ToString(), image.Path, width, (int)Math.Round(width * _sizeRatio));
+            }
 
             string sql = @"insert into [Images] ([Id], [FileName], [Path]) values(@Id, @FileName, @Path)";
 
@@ -42,7 +49,7 @@ namespace BestOfTheWorst.Server.Services.Sql
             return image;
         }
 
-        private async void StoreImageAsync(byte[] imageData, string fileName, string targetDirectory = "")
+        private async Task StoreImageAsync(byte[] imageData, string fileName, string targetDirectory = "", int? width = null, int? height = null)
         {
             string targetDir = Path.Combine(ContentDirectory, targetDirectory);
 
@@ -51,12 +58,62 @@ namespace BestOfTheWorst.Server.Services.Sql
                 Directory.CreateDirectory(targetDir);
             }
 
-            using (var original = SKBitmap.Decode(imageData))
-            using (var image = SKImage.FromBitmap(original))
-            using (var fs = File.Create(Path.Combine(targetDir, $"{fileName}.jpg")))
+            if (width.HasValue && height.HasValue)
             {
-                image.Encode(SKEncodedImageFormat.Jpeg, 100).SaveTo(fs);
-                await fs.FlushAsync();
+                fileName = $"{fileName}_{width.Value}";
+
+                using (var resized = CropAndResize(imageData, width.Value, height.Value))
+                {
+                    if (resized == null) return;
+
+                    using (var image = SKImage.FromBitmap(resized))
+                    using (var fs = File.Create(Path.Combine(targetDir, $"{fileName}.jpg")))
+                    {
+                        image.Encode(SKEncodedImageFormat.Jpeg, 100).SaveTo(fs);
+                        await fs.FlushAsync();
+                    }
+                }
+            }
+            else
+            {
+                using (var original = SKBitmap.Decode(imageData))
+                using (var image = SKImage.FromBitmap(original))
+                using (var fs = File.Create(Path.Combine(targetDir, $"{fileName}.jpg")))
+                {
+                    image.Encode(SKEncodedImageFormat.Jpeg, 100).SaveTo(fs);
+                    await fs.FlushAsync();
+                }
+            }
+        }
+
+        private SKBitmap CropAndResize(byte[] imageData, int width, int height)
+        {
+            using (var original = SKBitmap.Decode(imageData))
+            {
+                int cropSides = 0, cropTopBottom = 0;
+
+                if ((float)width / original.Width < (float)height / original.Height)
+                {
+                    cropSides = original.Width - (int)Math.Round((float)original.Height / height * width);
+                }
+                else
+                {
+                    cropTopBottom = original.Height - (int)Math.Round((float)original.Width / width * height);
+                }
+
+                var cropRect = new SKRectI
+                {
+                    Left = cropSides / 2,
+                    Top = cropTopBottom / 2,
+                    Right = original.Width - cropSides + cropSides / 2,
+                    Bottom = original.Height - cropTopBottom + cropTopBottom / 2
+                };
+
+                using (var cropped = new SKBitmap(cropRect.Width, cropRect.Height))
+                {
+                    original.ExtractSubset(cropped, cropRect);
+                    return cropped.Resize(new SKImageInfo(width, height), SKBitmapResizeMethod.Lanczos3);
+                }
             }
         }
     }

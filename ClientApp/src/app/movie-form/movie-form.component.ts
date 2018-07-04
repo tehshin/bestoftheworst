@@ -74,7 +74,7 @@ export class MovieFormComponent implements OnInit {
 
   setFormValues(movie: Movie) {
     if (movie.image) {
-      this.imagePreview = movie.image.imageUrl;
+      this.imagePreview = movie.image.imageUrls[500];
     }
 
     this.form.get('title').patchValue(movie.title);
