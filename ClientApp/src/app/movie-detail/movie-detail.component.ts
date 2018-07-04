@@ -9,6 +9,7 @@ import { switchMap, catchError } from 'rxjs/operators';
 import { Observable, empty } from 'rxjs';
 import { Link } from '../link';
 import { LinkType } from '../link-type.enum';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'app-movie-detail',
@@ -24,11 +25,16 @@ export class MovieDetailComponent implements OnInit {
   faWikipedia = faWikipediaW;
   faLink = faLink;
 
+  get showEditMovie(): boolean {
+    return this.accountService.isUserInRole('Administrator');
+  }
+
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
     private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private accountService: AccountService
   ) { }
 
   ngOnInit() {

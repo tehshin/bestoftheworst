@@ -9,7 +9,7 @@
           </div>
         </div>
       </div>
-      <div class="level-right">
+      <div class="level-right" *ngIf="showEditMovie">
         <div class="level-item">
           <a routerLink="/movie/edit/{{movie?.id}}" type="button" class="button">Edit movie</a>
         </div>
