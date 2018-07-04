@@ -45,4 +45,15 @@ export class AccountService {
         error => console.log(error)
       );
   }
+
+  isUserInRole(role: string): boolean {
+    if (!this.isAuthenticated || !this.user)
+      return false;
+
+    if (this.user.role instanceof Array) {
+      return (<Array<string>>this.user.role).filter(r => r === role).length > 0;
+    } else {
+      return this.user.role === role;
+    }
+  }
 }

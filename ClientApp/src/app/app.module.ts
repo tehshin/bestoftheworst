@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
-import { OAuthModule, OAuthStorage, DefaultOAuthInterceptor } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +26,7 @@ import { AppDataService } from './app-data.service';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GravatarComponent } from './gravatar/gravatar.component';
+import { RoleGuard } from './role-guard.service';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { GravatarComponent } from './gravatar/gravatar.component';
   ],
   providers: [
     AppDataService,
+    RoleGuard,
     {
       provide: APP_INITIALIZER,
       useFactory: (appDataService: AppDataService) => () => appDataService.getAppData(),

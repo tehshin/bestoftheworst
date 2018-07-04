@@ -25,10 +25,10 @@
             <a class="navbar-item" (click)="logout()">Logout</a>
           </div>
         </div>
-        <div class="navbar-item">
+        <div class="navbar-item" *ngIf="showAddMovie">
           <div class="field is-grouped is-grouped-multiline">
             <p class="control">
-              <a routerLink="/create" class="button is-success">Add movie</a>
+              <a routerLink="/movie/create" class="button is-success">Add movie</a>
             </p>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { RoleGuard } from './role-guard.service';
 
 const routes: Routes = [
   {
@@ -17,8 +18,12 @@ const routes: Routes = [
     component: CreateUserComponent
   },
   {
-    path: 'create',
-    component: CreateMovieComponent
+    path: 'movie/create',
+    component: CreateMovieComponent,
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: 'Administrator'
+    }
   },
   {
     path: 'movie/:id',
@@ -26,7 +31,11 @@ const routes: Routes = [
   },
   {
     path: 'movie/edit/:id',
-    component: EditMovieComponent
+    component: EditMovieComponent,
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: 'Administrator'
+    }
   },
   {
     path: '404',

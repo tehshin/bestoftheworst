@@ -9,6 +9,6 @@ interface IProfileModel {
     iss: string | null;
     unique_name: string | null;
     email_confirmed: boolean;
-    role: string[];
+    role: string | string[];
     picture: string | null;
 }

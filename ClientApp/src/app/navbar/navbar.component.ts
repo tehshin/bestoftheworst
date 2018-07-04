@@ -36,8 +36,12 @@ export class NavbarComponent implements OnInit {
     return this.accountService.user;
   }
 
-  public get isLoggedIn(): boolean {
+  get isLoggedIn(): boolean {
     return this.accountService.isAuthenticated;
+  }
+
+  get showAddMovie(): boolean {
+    return this.accountService.isUserInRole('Administrator');
   }
 
   constructor(
