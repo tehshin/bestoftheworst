@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../movie.service';
 import { MovieList, Movie } from '../movie';
+import { faSearch, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-movies',
@@ -12,6 +13,9 @@ export class MoviesComponent implements OnInit {
   movieList: MovieList;
   pages: number[];
   pageSize: number = 24;
+
+  faSearch = faSearch;
+  faChevronDown = faChevronDown;
 
   constructor(private movieService: MovieService) { }
 
