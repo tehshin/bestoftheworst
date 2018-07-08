@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -138,6 +139,44 @@ namespace BestOfTheWorst.Server.Services.Sql
                         select count(id) from [Movies];";
 
             var results = await Session.Connection.QueryMultipleAsync(sql, new { pageIndex, pageSize });
+
+            var movies = results.Read<Movie, Image, Movie>((m, i) => {  
+                m.Image = i;
+                return m;
+            }).ToList();
+
+            var totalCount = results.Read<int>().FirstOrDefault();
+
+            return new PaginatedList<Movie>(movies, totalCount, pageIndex, pageSize);
+        }
+
+        public async Task<PaginatedList<Movie>> SearchAsync(string query, int pageIndex, int pageSize)
+        {
+            var sql = @"select 
+                            m.[Id],
+                            m.[Title], 
+                            m.[Synopsis],
+                            i.[Id],
+                            i.[FileName],
+                            i.[Path]
+                        from [Movies] m
+                        left join [Images] i on m.[ImageId] = i.[Id]
+                        where CONTAINS(m.[Title], @query)
+                        or    CONTAINS(m.[Synopsis], @query)
+                        order by m.[Title]
+                        offset @pageSize * (@pageIndex - 1) rows
+                        fetch next @pageSize rows only;
+                        
+                        select count([Id]) from [Movies]
+                        where CONTAINS([Title], @query)
+                        or    CONTAINS([Synopsis], @query);";
+
+            var terms = query.Trim().ToLowerInvariant()
+                .Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries);
+
+            query = string.Join(" OR ", terms);
+
+            var results = await Session.Connection.QueryMultipleAsync(sql, new { query, pageIndex, pageSize });
 
             var movies = results.Read<Movie, Image, Movie>((m, i) => {  
                 m.Image = i;

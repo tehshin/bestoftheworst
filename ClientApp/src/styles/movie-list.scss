@@ -38,3 +38,34 @@
     padding: 0.5rem;
     font-weight: 600;
 }
+
+.movie-filter-search {
+    position: relative;
+}
+
+.movie-filter-search-hint {
+    display: block;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: $box-background-color;
+    box-shadow: $box-shadow;
+    color: rgba($box-color, .65);
+    border: solid $input-border-color;
+    border-width: 0 1px 1px 1px;
+
+    .movie-filter-search-hint-pointer {
+        display: block;
+        position: absolute;
+        top: -8px;
+        left: 8px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid $box-background-color;
+    }
+
+    .movie-filter-search-hint-content {
+        font-size: 0.8em;
+        padding: 0.75rem 0.5rem;
+    }
+}

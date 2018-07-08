@@ -10,6 +10,8 @@ namespace BestOfTheWorst.Server.Services
 
         Task<PaginatedList<Movie>> ListAsync(int pageIndex, int pageSize);
 
+        Task<PaginatedList<Movie>> SearchAsync(string query, int pageIndex, int pageSize);
+
         Task<Movie> GetByIdAsync(long id);
 
         Task<Movie> CreateAsync(Movie movieToCreate);

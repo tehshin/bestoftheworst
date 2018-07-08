@@ -36,13 +36,18 @@ export class MovieService {
     return throwError(errorObj);
   };
 
-  listMovies(pageIndex: number, pageSize: number) {
+  listMovies(pageIndex: number, pageSize: number, query: string) {
     let params: HttpParams;
     
     if (pageIndex || pageSize) {
       params = new HttpParams();
       params = pageIndex ? params.append('page', pageIndex.toString()) : params;
       params = pageSize ? params.append('pageSize', pageSize.toString()) : params;
+    }
+
+    if (query) {
+      params = params || new HttpParams();
+      params = params.append('query', query);
     }
     
     return this.http.get<MovieList>(this.baseUrl, { params: params })

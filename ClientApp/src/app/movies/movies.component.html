@@ -18,11 +18,20 @@
   <div class="column movie-filters">
     <section class="movie-filter-section">
       <header class="movie-filter-header">Search</header>
-      <div class="control has-icons-left is-loading">
-        <input type="search" class="input" placeholder="Search" />
+      <div class="control has-icons-left movie-filter-search" [ngClass]="{ 'is-loading': isSearching }">
+        <input #searchInput type="input" class="input" placeholder="Search" 
+          (keyup)="searchMovies(searchInput.value)"
+          (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()" />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faSearch"></fa-icon>
         </span>
+        <div class="movie-filter-search-hint" *ngIf="isSearchFocused" [@searchHint]>
+          <i class="movie-filter-search-hint-pointer"></i>
+          <div class="movie-filter-search-hint-content" [@showHintText]>
+            Search movie by title or description
+          </div>
+        </div>
       </div>
     </section>
     <section class="movie-filter-section">

@@ -30,7 +30,7 @@ namespace BestOfTheWorst.Server.Controllers
         /// <returns>A paged list of Movies.</returns>
         [HttpGet("", Name = "ListMovies")]
         [ProducesResponseType(typeof(MovieListViewModel), 200)]
-        public async Task<MovieListViewModel> Get([FromQuery]int page, [FromQuery]int pageSize)
+        public async Task<MovieListViewModel> Get([FromQuery]int page, [FromQuery]int pageSize, [FromQuery]string query = "")
         {
             if (page <= 0)
             {
@@ -42,7 +42,10 @@ namespace BestOfTheWorst.Server.Controllers
                 pageSize = 10;
             }
 
-            var pageOfMovies = await _movieService.ListAsync(page, pageSize);
+            var pageOfMovies = string.IsNullOrEmpty(query)
+                ? await _movieService.ListAsync(page, pageSize)
+                : await _movieService.SearchAsync(query, page, pageSize);
+            
             var movieListViewModel = _mapper.Map<PaginatedList<Movie>, MovieListViewModel>(pageOfMovies);
 
             return movieListViewModel;
