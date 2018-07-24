@@ -69,3 +69,41 @@
         padding: 0.75rem 0.5rem;
     }
 }
+
+.episode-filter-list {
+    position: relative;
+    background-color: $box-background-color;
+    color: #212121;
+    box-shadow: $box-shadow;
+    margin-bottom: 1.25rem;
+
+    .episode-filter-item {
+        display: flex;
+        color: #212121;
+        border-top: 1px solid #cfcfcf;
+        box-shadow: none;
+    }
+
+    .episode-filter-name {
+        flex-grow: 1;
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .episode-filter-addon {
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        a {
+            color: #999;
+
+            &:hover {
+                color: $danger;
+            }
+        }
+    }
+}

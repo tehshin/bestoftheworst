@@ -36,6 +36,29 @@
     </section>
     <section class="movie-filter-section">
       <header class="movie-filter-header">Episodes</header>
+      <div class="episode-filter-list" *ngIf="episodeFilter.length">
+        <div class="episode-filter-item" *ngFor="let episode of episodeFilter, let i = index">
+          <div class="episode-filter-name">{{ episode.title }}</div>
+          <div class="episode-filter-addon">
+            <a href="#" (click)="removeEpisodeFilter(i)">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select [(ngModel)]="selectedEpisode">
+              <option [ngValue]="null">Select episode to add</option>
+              <option *ngFor="let episode of episodes" [ngValue]="episode">{{ episode.title }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <button type="button" class="button is-primary" (click)="addEpisodeToFilter()">Add</button>
+        </div>
+      </div>
     </section>
     <section class="movie-filter-section">
       <header class="movie-filter-header">Tags</header>

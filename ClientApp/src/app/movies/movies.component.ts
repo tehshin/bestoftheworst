@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../movie.service';
 import { MovieList, Movie } from '../movie';
-import { faSearch, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { Subject } from 'rxjs';
+import { faSearch, faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Subject, combineLatest, forkJoin, merge, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { trigger, transition, style, animate, query, animateChild } from '@angular/animations';
+import { EpisodeService } from '../episode.service';
+import { Episode } from '../episode';
 
 @Component({
   selector: 'app-movies',
@@ -42,19 +44,34 @@ export class MoviesComponent implements OnInit {
   pageSize: number = 24;
   isSearching: boolean = false;
   isSearchFocused: boolean = false;
+  episodes: Episode[] = [];
+  episodeFilter: Episode[] = [];
+  selectedEpisode: Episode = null;
 
-  private searchText$ = new Subject<string>();
+  private searchText$ = new BehaviorSubject<string>(null);
+  private episodeFilter$ = new BehaviorSubject<Episode[]>(this.episodeFilter);
 
   faSearch = faSearch;
   faChevronDown = faChevronDown;
+  faTimes = faTimes;
 
-  constructor(private movieService: MovieService) { }
+  constructor(
+    private movieService: MovieService,
+    private episodeService: EpisodeService
+  ) { 
+    this.episodeService.listEpisodes().subscribe(
+      (episodes) => this.episodes = episodes
+    );
+  }
 
   ngOnInit() {
-    this.searchText$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      tap(q => {
+    combineLatest(
+      this.searchText$.pipe(
+        debounceTime(500),
+        distinctUntilChanged()),
+      this.episodeFilter$  
+    ).pipe(
+      tap(([q, episodes]) => {
         this.isSearching = true;
         this.listMovies(1, q);
       })
@@ -73,6 +90,21 @@ export class MoviesComponent implements OnInit {
 
   searchMovies(query: string) {
     this.searchText$.next(query);
+  }
+
+  addEpisodeToFilter(episode: Episode) {
+    if (this.selectedEpisode) {
+      const alreadyInList = this.episodeFilter.filter(e => e.id === this.selectedEpisode.id).length > 0;
+      if (!alreadyInList) {
+        this.episodeFilter.push(this.selectedEpisode);
+        this.episodeFilter$.next(this.episodeFilter);
+      }
+    }
+  }
+
+  removeEpisodeFilter(index: number) {
+    this.episodeFilter.splice(index, 1);
+    this.episodeFilter$.next(this.episodeFilter);
   }
 
   listMovies(page: number, query?: string) {
