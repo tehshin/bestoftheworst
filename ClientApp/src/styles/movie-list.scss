@@ -22,7 +22,7 @@
     position: relative;
     display: block;
     height: 0;
-    padding-bottom: 147%;
+    padding-bottom: $imageRatio;
 
     .movie-item-img {
         position: absolute;

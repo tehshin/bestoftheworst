@@ -7,6 +7,8 @@
 
 @import 'bulma-overrides/derived-variables';
 
+$imageRatio: 150.27%;
+
 @import '../../node_modules/bulma/bulma';
 @import "navbar";
 @import "movie-list";

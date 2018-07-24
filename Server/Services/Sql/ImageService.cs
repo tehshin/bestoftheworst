@@ -11,7 +11,7 @@ namespace BestOfTheWorst.Server.Services.Sql
     public class ImageService : BaseService, IImageService
     {
         private int[] _widths = new[] { 500, 250, 100 };
-        private double _sizeRatio = 1.47;
+        private double _sizeRatio = 1.5027;
 
         public string ContentDirectory { get; set; }
 
