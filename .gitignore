@@ -234,3 +234,4 @@ ModelManifest.xml
 /Properties/PublishProfiles/*
 /wwwroot/images/movies/*
 appsettings.development.json
+ClientApp/src/environments/environment.dev.ts

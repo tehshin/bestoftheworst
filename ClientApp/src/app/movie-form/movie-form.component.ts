@@ -6,6 +6,10 @@ import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { LinkType } from '../link-type.enum';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Link } from '../link';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { MovieDbService } from '../movie-db.service';
+import { MovieDbMovie } from 'src/app/movie-db-search-result';
 
 @Component({
   selector: 'app-movie-form',
@@ -15,6 +19,10 @@ import { Link } from '../link';
 export class MovieFormComponent implements OnInit {
 
   @Input("form-title") title: string;
+
+  titleQuery$ = new Subject<string>();
+
+  movieSuggestions: MovieDbMovie[] = [];
 
   private _movieId: number;
   @Input("movie")
@@ -56,14 +64,26 @@ export class MovieFormComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
+    private movieDbService: MovieDbService,
     private router: Router,
     private fb: FormBuilder
   ) { 
     this.linkTypeKeys = Object.keys(this.linkTypes).filter(f => !isNaN(Number(f)));
     this.createForm();
+    this.initApiSearch();
   }
 
   ngOnInit() {
+  }
+
+  initApiSearch() {
+    this.titleQuery$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      tap((q) => {
+        this.searchMovieDb(q);
+      })
+    ).subscribe();
   }
 
   getMovie() {
@@ -157,5 +177,15 @@ export class MovieFormComponent implements OnInit {
 
   goToMovieDetails(movieId: number) {
     this.router.navigate(['/movie', movieId]);
+  }
+
+  nameOnKeyUp(name: string) {
+    this.titleQuery$.next(name);
+  }
+
+  searchMovieDb(title: string) {
+    this.movieDbService.searchMovie(title).subscribe(
+      (result) => this.movieSuggestions = result.results
+    );
   }
 }

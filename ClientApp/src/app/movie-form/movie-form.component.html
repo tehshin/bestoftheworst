@@ -9,7 +9,9 @@
         <div class="field">
           <label class="label">Title</label>
           <div class="control has-icons-right">
-            <input class="input" type="text" formControlName="title" [class.is-danger]="!titleInput.valid && (titleInput.dirty || titleInput.touched)" />
+            <input #nameInput class="input" type="text" formControlName="title" 
+              [class.is-danger]="!titleInput.valid && (titleInput.dirty || titleInput.touched)"
+              (keyup)="nameOnKeyUp(nameInput.value)" />
             <span class="icon is-small is-right" *ngIf="!titleInput.valid && (titleInput.dirty || titleInput.touched)">
               <fa-icon [icon]="faTimes"></fa-icon>
             </span>
@@ -19,6 +21,20 @@
           </div>
           <div class="input-error" *ngIf="titleInput.errors?.required && (titleInput.dirty || titleInput.touched)">
             A title is required
+          </div>
+
+          <div class="movie-suggestions">
+            <div class="movie-suggestion-item" *ngFor="let movie of movieSuggestions">
+              <div class="movie-poster">
+                  <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" />
+              </div>
+              <div class="movie-info">
+                <div class="movie-title">{{ movie.title }}</div>
+                <div class="movie-release">{{ movie.release_date }}</div>
+                <div class="movie-overview">{{ movie.overview }}</div>
+              </div>
+              <div class="movie-actions"></div>
+            </div>
           </div>
         </div>
 
