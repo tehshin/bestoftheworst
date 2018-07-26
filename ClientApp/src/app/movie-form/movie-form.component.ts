@@ -76,6 +76,10 @@ export class MovieFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  getControl(name: string) {
+    return this.form.get(name);
+  }
+
   initApiSearch() {
     this.titleQuery$.pipe(
       debounceTime(500),
@@ -112,11 +116,15 @@ export class MovieFormComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       'title': ['', Validators.required],
+      'overview': ['', Validators.required],
       'synopsis': ['', Validators.compose([Validators.required, Validators.minLength(50)])],
+      'release_date': [null],
+      'runtime': [null],
       'episode': [null, Validators.required],
       'image': [null, Validators.required],
       'tags': [[]],
-      'links': this.fb.array([])
+      'links': this.fb.array([]),
+      'genres': this.fb.array([])
     });
   }
 
@@ -186,6 +194,21 @@ export class MovieFormComponent implements OnInit {
   searchMovieDb(title: string) {
     this.movieDbService.searchMovie(title).subscribe(
       (result) => this.movieSuggestions = result.results
+    );
+  }
+
+  copyMovieInfo(movieId: number) {
+    this.movieDbService.getMovieById(movieId).subscribe(
+      (info) => {
+        this.form.get('title').patchValue(info.title);
+        this.form.get('overview').patchValue(info.overview);
+        this.form.get('release_date').patchValue(info.release_date);
+        this.form.get('runtime').patchValue(info.runtime);
+
+        // TODO: download image
+
+        this.movieSuggestions = [];
+      }
     );
   }
 }

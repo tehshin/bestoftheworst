@@ -14,7 +14,11 @@ export class AuthInterceptor implements HttpInterceptor {
         // Get the auth header from the service.
         const auth = this.injector.get(AccountService);
 
-        if (auth.isAuthenticated) {
+        // should be based on a baseUrl setting or something
+        // maybe store api endpoint url in environment
+        const isApiCall = req.url.startsWith('/api');
+        
+        if (auth.isAuthenticated && isApiCall) {
             let headers = req.headers;
             headers = req.headers.set('Authorization', 'Bearer ' + auth.accessToken);
 

@@ -4,14 +4,16 @@ using BestOfTheWorst.Server.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace bestoftheworst.Migrations
 {
     [DbContext(typeof(BestOfTheWorstContext))]
-    partial class BestOfTheWorstContextModelSnapshot : ModelSnapshot
+    [Migration("20180726081720_AddMovieDbInfo")]
+    partial class AddMovieDbInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

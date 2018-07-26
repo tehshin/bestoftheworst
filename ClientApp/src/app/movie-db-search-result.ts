@@ -14,4 +14,18 @@ interface MovieDbSearchResult {
     total_results: number;
 }
 
-export { MovieDbMovie, MovieDbSearchResult };
+interface MovieDbDetails {
+    backdrop_path: string;
+    genres;
+    homepage: string;
+    id: number;
+    imdb_id: string|null;
+    original_title: string;
+    overview: string;
+    poster_path: string;
+    release_date: string;
+    runtime: number|null;
+    title: string;
+}
+
+export { MovieDbMovie, MovieDbSearchResult, MovieDbDetails };

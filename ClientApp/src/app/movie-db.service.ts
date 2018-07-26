@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { MovieDbSearchResult } from './movie-db-search-result';
+import { MovieDbSearchResult, MovieDbDetails } from './movie-db-search-result';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,10 @@ export class MovieDbService {
     httpOptions.params = httpOptions.params.append('query', query);
 
     return this.http.get<MovieDbSearchResult>(`${this.baseUrl}search/movie`, httpOptions);
+  }
+
+  getMovieById(id: number) {
+    const httpOptions = this.getHttpOptions();
+    return this.http.get<MovieDbDetails>(`${this.baseUrl}movie/${id}`, httpOptions);
   }
 }

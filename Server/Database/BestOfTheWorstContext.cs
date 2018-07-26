@@ -36,8 +36,22 @@ namespace BestOfTheWorst.Server.Database
                 .WithMany()
                 .HasForeignKey(mt => mt.TagId);
 
+            modelBuilder.Entity<MovieGenre>()
+                .HasKey(mg => new { mg.MovieId, mg.GenreId });
+
+            modelBuilder.Entity<MovieGenre>()
+                .HasOne(mg => mg.Movie)
+                .WithMany()
+                .HasForeignKey(mg => mg.MovieId);
+
+            modelBuilder.Entity<MovieGenre>()
+                .HasOne(mg => mg.Genre)
+                .WithMany()
+                .HasForeignKey(mg => mg.GenreId);
+
             modelBuilder.Entity<Movie>()
-                .Ignore(m => m.Tags);
+                .Ignore(m => m.Tags)
+                .Ignore(m => m.Genres);
         }
     }
 }

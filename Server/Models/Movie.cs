@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,13 @@ namespace BestOfTheWorst.Server.Models
 
         public string Title { get; set; }
 
+        public string Overview { get; set; }
+
         public string Synopsis { get; set; }
+
+        public DateTime? ReleaseDate { get; set; }
+
+        public int Runtime { get; set; }
 
         public Guid? ImageId { get; set; }
 
@@ -24,5 +31,7 @@ namespace BestOfTheWorst.Server.Models
         public IList<Tag> Tags { get; set; } = new List<Tag>();
 
         public IList<Link> Links { get; set; } = new List<Link>();
+
+        public IList<Genre> Genres { get; set; } = new List<Genre>();
     }
 }

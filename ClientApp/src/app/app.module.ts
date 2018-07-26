@@ -28,6 +28,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GravatarComponent } from './gravatar/gravatar.component';
 import { RoleGuard } from './role-guard.service';
 import { LoginComponent } from './login/login.component';
+import { TruncateTextPipe } from './truncate-text.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { LoginComponent } from './login/login.component';
     MovieFormComponent,
     CreateUserComponent,
     GravatarComponent,
-    LoginComponent
+    LoginComponent,
+    TruncateTextPipe
   ],
   imports: [
     BrowserModule,

@@ -31,17 +31,48 @@
               <div class="movie-info">
                 <div class="movie-title">{{ movie.title }}</div>
                 <div class="movie-release">{{ movie.release_date }}</div>
-                <div class="movie-overview">{{ movie.overview }}</div>
+                <div class="movie-overview">{{ movie.overview | truncatetext:215 }}</div>
+                <div class="movie-actions">
+                  <button type="button" class="button is-primary" (click)="copyMovieInfo(movie.id)">Get info</button>
+                </div>
               </div>
-              <div class="movie-actions"></div>
             </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="columns">
+            <div class="column">
+              <label class="label">Release date</label>
+              <div class="control">
+                <input type="date" class="input" formControlName="release_date" />
+              </div>
+            </div>
+            <div class="column">
+              <label class="label">Runtime</label>
+              <div class="control">
+                <input type="number" class="input" formControlName="runtime" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Overview</label>
+          <div class="control">
+            <textarea class="textarea" name="overview" formControlName="overview" 
+              [class.is-danger]="!getControl('overview').valid && (getControl('overview').dirty || getControl('overview').touched)"></textarea>
+          </div>
+          <div class="input-error" *ngIf="getControl('overview').errors?.required && (getControl('overview').dirty || getControl('overview').touched)">
+            A overview is required
           </div>
         </div>
 
         <div class="field">
           <label class="label">Synopsis</label>
           <div class="control">
-            <textarea class="textarea" name="synopsis" formControlName="synopsis" [class.is-danger]="!synopsisInput.valid && (synopsisInput.dirty || synopsisInput.touched)"></textarea>
+            <textarea class="textarea" name="synopsis" formControlName="synopsis" 
+              [class.is-danger]="!synopsisInput.valid && (synopsisInput.dirty || synopsisInput.touched)"></textarea>
           </div>
           <div class="input-error" *ngIf="synopsisInput.errors?.required && (synopsisInput.dirty || synopsisInput.touched)">
             A synopsis is required
