@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
 {
@@ -32,7 +33,8 @@ namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
             services.AddScoped<IAppDataService, AppDataService>();
             services.AddScoped<IImageService>(c => 
                 new ImageService(
-                    c.GetService<IDbSession>(), 
+                    c.GetService<IDbSession>(),
+                    c.GetService<IOptions<AppSettings>>(),
                     c.GetService<IHostingEnvironment>().WebRootPath));
 
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();

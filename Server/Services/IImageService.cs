@@ -7,6 +7,8 @@ namespace BestOfTheWorst.Server.Services
 {
     public interface IImageService
     {
-        Task<Image> CreateImage(Stream inputStream, string fileName = "", string targetDirectory = "");
+        Task<Image> DownloadMovieDbImageAsync(string image, string targetDirectory = "");
+
+        Task<Image> CreateImageAsync(Stream inputStream, string fileName = "", string targetDirectory = "");
     }
 }

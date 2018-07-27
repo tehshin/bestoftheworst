@@ -45,6 +45,8 @@ namespace BestOfTheWorst
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration);
+
             string connectionString = Configuration.GetConnectionString("Database");
 
             services.AddDbContextPool<BestOfTheWorstContext>(opt => {

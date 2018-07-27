@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Movie, MovieForm } from '../movie';
 import { MovieService } from '../movie.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { MovieDbService } from '../movie-db.service';
 import { MovieDbMovie } from 'src/app/movie-db-search-result';
+import { MovieImageInputComponent } from '../movie-image-input/movie-image-input.component';
 
 @Component({
   selector: 'app-movie-form',
@@ -19,6 +20,9 @@ import { MovieDbMovie } from 'src/app/movie-db-search-result';
 export class MovieFormComponent implements OnInit {
 
   @Input("form-title") title: string;
+
+  @ViewChild(MovieImageInputComponent)
+  private imageInputComponent: MovieImageInputComponent;
 
   titleQuery$ = new Subject<string>();
 
@@ -200,15 +204,16 @@ export class MovieFormComponent implements OnInit {
   copyMovieInfo(movieId: number) {
     this.movieDbService.getMovieById(movieId).subscribe(
       (info) => {
+        this.imageInputComponent.downloadImage(info.poster_path);
+
         this.form.get('title').patchValue(info.title);
         this.form.get('overview').patchValue(info.overview);
         this.form.get('release_date').patchValue(info.release_date);
         this.form.get('runtime').patchValue(info.runtime);
 
-        // TODO: download image
-
         this.movieSuggestions = [];
       }
     );
   }
+
 }

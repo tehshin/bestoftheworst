@@ -26,4 +26,16 @@ export class ImageService {
         catchError(this.handleError)
       );
   }
+
+  downloadMovieDbImage(image: string) {
+    if (image && image[0] === '/') {
+      image = image.substr(1);
+    }
+
+    return this.http.get(`${this.baseUrl}/download/${image}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 }

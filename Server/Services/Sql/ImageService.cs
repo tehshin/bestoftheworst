@@ -1,26 +1,44 @@
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BestOfTheWorst.Server.Database;
 using BestOfTheWorst.Server.Models;
 using Dapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using SkiaSharp;
 
 namespace BestOfTheWorst.Server.Services.Sql
 {
     public class ImageService : BaseService, IImageService
     {
+        private readonly AppSettings _appSettings;
+
         private int[] _widths = new[] { 500, 250, 100 };
-        private double _sizeRatio = 1.5027;
+        private double _sizeRatio = 1.5;
 
         public string ContentDirectory { get; set; }
 
-        public ImageService(IDbSession session, string contentDirectory) : base(session) 
+        public ImageService(IDbSession session, IOptions<AppSettings> appSettings, string contentDirectory) : base(session) 
         { 
-            ContentDirectory = contentDirectory;ContentDirectory = contentDirectory;
+            ContentDirectory = contentDirectory;
+            _appSettings = appSettings.Value;
         }
 
-        public async Task<Image> CreateImage(Stream inputStream, string fileName = "", string targetDirectory = "")
+        public async Task<Image> DownloadMovieDbImageAsync(string image, string targetDirectory = "")
+        {
+            var imageUrl = $"{_appSettings.MovieDb.ImageBaseUrl}{image}";
+
+            using (var client = new HttpClient())
+            using (var stream = await client.GetStreamAsync(imageUrl))
+            {
+                var localImage = await CreateImageAsync(stream, image, targetDirectory);
+                return localImage;
+            }
+        }
+
+        public async Task<Image> CreateImageAsync(Stream inputStream, string fileName = "", string targetDirectory = "")
         {
             var image = new Image
             {

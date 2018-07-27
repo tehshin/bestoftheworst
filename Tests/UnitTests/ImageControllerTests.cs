@@ -46,7 +46,7 @@ namespace BestOfTheWorst.Tests.UnitTests
 
             var imageServiceMock = new Mock<IImageService>();
             imageServiceMock.Setup(s => 
-                s.CreateImage(
+                s.CreateImageAsync(
                     It.IsAny<Stream>(), 
                     It.IsAny<string>(),
                     It.IsAny<string>()

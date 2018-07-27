@@ -39,9 +39,31 @@ namespace BestOfTheWorst.Server.Controllers
                 return BadRequest();
             }
 
-            var image = await _imageService.CreateImage(imageFile.OpenReadStream(), imageFile.FileName, "images/movies");
+            var image = await _imageService.CreateImageAsync(imageFile.OpenReadStream(), imageFile.FileName, "images/movies");
 
             return Created(Url.Content($"~/images/movies/{image.Id}.jpg"), _mapper.Map<ImageViewModel>(image));
+        }
+
+        /// <summary>
+        /// Downloads the given image from themoviedb.org
+        /// </summary>
+        /// <param name="image">Image file name</param>
+        /// <returns>Created local image</returns>
+        /// <response code="201">Returns the newly created image</response>
+        /// <response code="400">If the image file is null</response>
+        [HttpGet("download/{image}")]
+        [ProducesResponseType(typeof(ImageViewModel), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Download([FromRoute] string image)
+        {
+            if (string.IsNullOrEmpty(image))
+            {
+                return BadRequest();
+            }
+
+            var localImage = await _imageService.DownloadMovieDbImageAsync(image, "images/movies");
+            return Created(Url.Content($"~/images/movies/{localImage.Id}.jpg"), 
+                _mapper.Map<ImageViewModel>(localImage));
         }
     }
 }

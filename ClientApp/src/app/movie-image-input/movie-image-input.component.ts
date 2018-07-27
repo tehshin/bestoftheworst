@@ -44,7 +44,7 @@ export class MovieImageInputComponent implements OnInit, ControlValueAccessor {
           this.imageId = data.id;
           this.imageUrl = data.imageUrls[500];
         }
-      )
+      );
     }
   }
 
@@ -59,5 +59,14 @@ export class MovieImageInputComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any): void {}
 
   setDisabledState?(isDisabled: boolean): void { }
+
+  downloadImage(image: string) {
+    this.imageService.downloadMovieDbImage(image).subscribe(
+      (data: any) => {
+        this.imageId = data.id;
+        this.imageUrl = data.imageUrls[500]
+      }
+    );
+  }
 
 }
