@@ -45,7 +45,7 @@
             <div class="column">
               <label class="label">Release date</label>
               <div class="control">
-                <input type="date" class="input" formControlName="release_date" />
+                <input type="date" class="input" formControlName="releaseDate" />
               </div>
             </div>
             <div class="column">
@@ -91,7 +91,7 @@
 
         <div class="field" formArrayName="links">
           <label class="label">Links</label>
-          <table class="table is-fullwidth is-narrow">
+          <table class="table is-fullwidth">
             <tbody>
               <tr *ngFor="let link of links.controls; let i = index" [formGroupName]="i">
                 <td class="is-narrow">
@@ -123,6 +123,34 @@
             </span>
             <span>
               Add link
+            </span>
+          </button>
+        </div>
+
+        <div class="field" formArrayName="genres">
+          <label class="label">Genres</label>
+          <table class="table is-fullwidth">
+            <tbody>
+              <tr *ngFor="let genre of genres.controls; let i = index">
+                <td class="is-narrow">
+                  <button type="button" class="button is-danger" (click)="removeGenre(i)">
+                    <span class="icon is-small">
+                      <fa-icon [icon]="faTimes"></fa-icon>
+                    </span>
+                  </button>
+                </td>
+                <td>
+                  <input type="text" class="input" placeholder="Genre name" [formControlName]="i" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="button is-small" (click)="addGenre()">
+            <span class="icon is-small">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </span>
+            <span>
+              Add genre
             </span>
           </button>
         </div>

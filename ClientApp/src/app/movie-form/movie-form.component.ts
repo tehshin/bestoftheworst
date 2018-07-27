@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { MovieDbService } from '../movie-db.service';
 import { MovieDbMovie } from 'src/app/movie-db-search-result';
 import { MovieImageInputComponent } from '../movie-image-input/movie-image-input.component';
+import { Genre } from '../genre';
 
 @Component({
   selector: 'app-movie-form',
@@ -66,6 +67,10 @@ export class MovieFormComponent implements OnInit {
     return this.form.get("links") as FormArray;
   }
 
+  get genres(): FormArray {
+    return this.form.get('genres') as FormArray;
+  }
+
   constructor(
     private movieService: MovieService,
     private movieDbService: MovieDbService,
@@ -106,14 +111,20 @@ export class MovieFormComponent implements OnInit {
     }
 
     this.form.get('title').patchValue(movie.title);
+    this.form.get('overview').patchValue(movie.overview);
+    this.form.get('runtime').patchValue(movie.runtime);
+    this.form.get('releaseDate').patchValue(movie.releaseDate);
     this.form.get('synopsis').patchValue(movie.synopsis);
     this.form.get('episode').patchValue(movie.episode.id);
     this.form.get('image').patchValue(movie.image.id);
     this.form.get('tags').patchValue(movie.tags.map(t => t.name));
 
-    let formLinks = this.form.get('links') as FormArray;
     if (movie.links) {
       movie.links.forEach(l => this.addLink(l));
+    }
+
+    if (movie.genres) {
+      movie.genres.forEach(g => this.addGenre(g));
     }
   }
 
@@ -122,7 +133,7 @@ export class MovieFormComponent implements OnInit {
       'title': ['', Validators.required],
       'overview': ['', Validators.required],
       'synopsis': ['', Validators.compose([Validators.required, Validators.minLength(50)])],
-      'release_date': [null],
+      'releaseDate': [null],
       'runtime': [null],
       'episode': [null, Validators.required],
       'image': [null, Validators.required],
@@ -130,6 +141,14 @@ export class MovieFormComponent implements OnInit {
       'links': this.fb.array([]),
       'genres': this.fb.array([])
     });
+  }
+
+  addGenre(genre: Genre) {
+    this.genres.push(this.fb.control(genre ? genre.name : ''));
+  }
+
+  removeGenre(index: number) {
+    this.genres.removeAt(index);
   }
 
   addLink(link: Link) {
@@ -165,13 +184,21 @@ export class MovieFormComponent implements OnInit {
       (link) => new Link(link)
     );
 
+    const genreDeepCopy: Genre[] = movieForm.genres.map(
+      (genre) => new Genre({ name: genre })
+    );
+
     let movie = new MovieForm({ 
       title: movieForm.title,
+      overview: movieForm.overview,
+      releaseDate: movieForm.releaseDate,
+      runtime: movieForm.runtime,
       synopsis: movieForm.synopsis,
       episodeId: movieForm.episode,
       image: movieForm.image,
       tags: movieForm.tags,
-      links: linksDeepCopy
+      links: linksDeepCopy,
+      genres: genreDeepCopy
     });
 
     if (this.movieId) {
@@ -208,8 +235,19 @@ export class MovieFormComponent implements OnInit {
 
         this.form.get('title').patchValue(info.title);
         this.form.get('overview').patchValue(info.overview);
-        this.form.get('release_date').patchValue(info.release_date);
+        this.form.get('releaseDate').patchValue(info.release_date);
         this.form.get('runtime').patchValue(info.runtime);
+
+        this.addLink(new Link({
+          id: 0,
+          linkType: 1,
+          name: "IMDB",
+          href: `https://www.imdb.com/title/${info.imdb_id}`
+        }));
+
+        info.genres.forEach(genre => {
+          this.addGenre(new Genre({ name: genre.name }));
+        });
 
         this.movieSuggestions = [];
       }

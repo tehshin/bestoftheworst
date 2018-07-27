@@ -1,5 +1,6 @@
 import { Link } from "./link";
 import { Episode } from "./episode";
+import { Genre } from "./genre";
 
 export class Image {
     id: string;
@@ -11,16 +12,11 @@ export class Tag {
     name: string;
 }
 
-export class Genre {
-    id: number;
-    name: string;
-}
-
 export class Movie {
     id: number;
     title: string;
     overview: string;
-    release_date: string;
+    releaseDate: string;
     synopsis: string;
     runtime: number;
     image?: Image;
@@ -34,7 +30,7 @@ export class MovieForm {
     title: string;
     overview: string;
     synopsis: string;
-    release_date: string;
+    releaseDate: string;
     runtime: number;
     image: string;
     episodeId: number;

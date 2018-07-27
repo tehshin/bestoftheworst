@@ -30,8 +30,12 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                 .ForMember(dest => dest.LinkType, opt => opt.MapFrom(_ => _.LinkType))
                 .ForMember(dest => dest.Href, opt => opt.MapFrom(_ => _.Href));
 
+            CreateMap<GenreViewModel, Genre>();
+
             CreateMap<Movie, MovieDetailViewModel>()
-                .ForMember(dest => dest.RelatedMovies, opt => opt.Ignore());
+                .ForMember(dest => dest.RelatedMovies, opt => opt.Ignore())
+                .ForMember(dest => dest.ReleaseDate, opt => opt.MapFrom(_ => 
+                    _.ReleaseDate.HasValue ? _.ReleaseDate.Value.ToString("yyyy-MM-dd") : null));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace BestOfTheWorst.Server.ViewModels
@@ -15,7 +16,13 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public string Title { get; set; }
 
+        public string Overview { get; set; }
+        
         public string Synopsis { get; set; }
+
+        public string ReleaseDate { get; set; }
+
+        public int Runtime { get; set; }
 
         public ImageViewModel Image { get; set; }
 
@@ -24,6 +31,8 @@ namespace BestOfTheWorst.Server.ViewModels
         public IList<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
 
         public IList<LinkViewModel> Links { get; set; } = new List<LinkViewModel>();
+
+        public IList<GenreViewModel> Genres { get; set; } = new List<GenreViewModel>();
 
         public IList<MovieInfo> RelatedMovies { get; set; } = new List<MovieInfo>();
     }

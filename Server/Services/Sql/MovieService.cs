@@ -11,10 +11,36 @@ namespace BestOfTheWorst.Server.Services.Sql
     public class MovieService : BaseService, IMovieService
     {
         private readonly ITagService _tagService;
+        private readonly IGenreService _genreService;
 
-        public MovieService(IDbSession session, ITagService tagService) : base(session) 
+        public MovieService(
+            IDbSession session, 
+            ITagService tagService, 
+            IGenreService genreService
+        ) : base(session) 
         {
             _tagService = tagService;
+            _genreService = genreService;
+        }
+
+        private async Task CreateGenresAsync(Movie movie)
+        {
+            foreach (var genre in movie.Genres)
+            {
+                var existingGenre = await _genreService.GetByNameAsync(genre.Name);
+                if (existingGenre == null)
+                {
+                    existingGenre = await _genreService.CreateAsync(genre);
+                }
+
+                genre.Id = existingGenre.Id;
+
+                await CreateMovieGenreAsync(new MovieGenre
+                {
+                    MovieId = movie.Id,
+                    GenreId = genre.Id
+                });
+            }
         }
 
         private async Task CreateTagsAsync(Movie movie)
@@ -81,6 +107,12 @@ namespace BestOfTheWorst.Server.Services.Sql
                            WHERE [Id] = @Id";
             
             await Session.Connection.ExecuteAsync(sql, linkToUpdate);
+        }
+
+        private async Task CreateMovieGenreAsync(MovieGenre movieGenreToCreate)
+        {
+            var sql = @"INSERT INTO [dbo].[MovieGenre] ([MovieId], [GenreId]) VALUES (@MovieId, @GenreId)";
+            await Session.Connection.ExecuteAsync(sql, movieGenreToCreate);
         }
 
         private async Task CreateMovieTagAsync(MovieTag movieTagToCreate)
@@ -194,6 +226,9 @@ namespace BestOfTheWorst.Server.Services.Sql
                             m.[Id],
                             m.[Title], 
                             m.[Synopsis],
+                            m.[Overview],
+                            m.[Runtime],
+                            m.[ReleaseDate],
                             e.[Id],
                             e.[Title],
                             e.[VideoId],
@@ -210,7 +245,11 @@ namespace BestOfTheWorst.Server.Services.Sql
                         where mt.[MovieId] = @id;
                         
                         select [Id], [MovieId], [LinkType], [Name], [Href] from [Links]
-                        where [MovieId] = @id";
+                        where [MovieId] = @id;
+                        
+                        select distinct g.[Id], g.[Name] from [MovieGenre] mg 
+                        join [Genre] g on mg.[GenreId] = g.[Id]
+                        where mg.[MovieId] = @id;";
 
             var results = await Session.Connection.QueryMultipleAsync(sql, new { id });
 
@@ -222,10 +261,12 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             var movieTags = results.Read<Tag>().ToList();
             var movieLinks = results.Read<Link>().ToList();
+            var movieGenres = results.Read<Genre>().ToList();
 
             if (movie != null) {
                 movie.Tags = movieTags;
                 movie.Links = movieLinks;
+                movie.Genres = movieGenres;
             }
             
             return movie;
@@ -235,11 +276,17 @@ namespace BestOfTheWorst.Server.Services.Sql
         {
             var sql = @"INSERT INTO [Movies]
                             ([Title]
+                            ,[Overview]
+                            ,[ReleaseDate]
+                            ,[Runtime]
                             ,[Synopsis]
                             ,[ImageId]
                             ,[EpisodeId])
                         VALUES
                             (@Title
+                             ,@Overview
+                             ,@ReleaseDate
+                             ,@Runtime
                              ,@Synopsis
                              ,@ImageId
                              ,@EpisodeId);
@@ -249,6 +296,7 @@ namespace BestOfTheWorst.Server.Services.Sql
 
             await CreateTagsAsync(movieToCreate);
             await CreateLinksAsync(movieToCreate);
+            await CreateGenresAsync(movieToCreate);
             
             return movieToCreate;
         }

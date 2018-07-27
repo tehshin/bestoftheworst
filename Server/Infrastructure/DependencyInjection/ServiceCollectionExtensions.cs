@@ -28,6 +28,7 @@ namespace BestOfTheWorst.Server.Infrastructure.DependencyInjection
 
             services.AddScoped<IDbSession>(c => new DbSession(connectionString));
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IEpisodeService, EpisodeService>();
             services.AddScoped<IAppDataService, AppDataService>();
