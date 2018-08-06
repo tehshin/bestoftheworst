@@ -74,4 +74,8 @@ export class MovieDetailComponent implements OnInit {
   getImageUrlForWidth(movie: Movie, width: number) {
     return movie.image.imageUrls[width] || movie.image.imageUrls[500];
   }
+
+  getReleaseYear(movie: Movie) {
+    return movie.releaseDate.split('-')[0];
+  }
 }

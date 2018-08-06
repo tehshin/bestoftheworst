@@ -1,11 +1,26 @@
 .movie-header {
-    color: #1a1a1a;
-    padding-bottom: 2.25rem;
+    background: radial-gradient(circle at 20% 50%, rgba($primary, .4), $primary);    
+    color: #fff;
+    padding: 3rem 0;
 }
 
 .movie-title {
-    font-weight: 300;
-    margin-bottom: 0!important;
+    padding-top: 0.75rem;
+
+    h2 {
+        display: inline-block;
+        font-size: 2.4em;
+        line-height: 1.1em;
+        font-weight: 300;
+        margin-bottom: 0!important;
+    }
+
+    .release-date {
+        opacity: 0.6;
+        font-size: 1.7em;
+        font-weight: 400;
+        padding-left: 0.5em;
+    }
 }
 
 .movie-episode {
@@ -34,6 +49,7 @@
 
 .movie-image {
     box-shadow: 0 0 5px rgba(#000, .3);
+    width: 300px;
 
     img {
         display: block;
