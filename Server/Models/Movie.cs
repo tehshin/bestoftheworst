@@ -18,6 +18,8 @@ namespace BestOfTheWorst.Server.Models
 
         public int Runtime { get; set; }
 
+        public int Placement { get; set; }
+
         public Guid? ImageId { get; set; }
 
         public Image Image { get; set; }

@@ -15,6 +15,8 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public int Runtime { get; set; }
 
+        public int Placement { get; set; }
+
         public string Synopsis { get; set; }
 
         public IList<string> Tags { get; set; } = new List<string>();

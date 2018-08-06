@@ -114,6 +114,7 @@ export class MovieFormComponent implements OnInit {
     this.form.get('overview').patchValue(movie.overview);
     this.form.get('runtime').patchValue(movie.runtime);
     this.form.get('releaseDate').patchValue(movie.releaseDate);
+    this.form.get('placement').patchValue(movie.placement);
     this.form.get('synopsis').patchValue(movie.synopsis);
     this.form.get('episode').patchValue(movie.episode.id);
     this.form.get('image').patchValue(movie.image.id);
@@ -135,6 +136,7 @@ export class MovieFormComponent implements OnInit {
       'synopsis': ['', Validators.compose([Validators.required, Validators.minLength(50)])],
       'releaseDate': [null],
       'runtime': [null],
+      'placement': [0],
       'episode': [null, Validators.required],
       'image': [null, Validators.required],
       'tags': [[]],
@@ -193,6 +195,7 @@ export class MovieFormComponent implements OnInit {
       overview: movieForm.overview,
       releaseDate: movieForm.releaseDate,
       runtime: movieForm.runtime,
+      placement: movieForm.placement,
       synopsis: movieForm.synopsis,
       episodeId: movieForm.episode,
       image: movieForm.image,

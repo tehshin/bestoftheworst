@@ -19,6 +19,7 @@ export class Movie {
     releaseDate: string;
     synopsis: string;
     runtime: number;
+    placement: number;
     image?: Image;
     episode?: Episode;
     tags: Array<Tag> = [];
@@ -32,6 +33,7 @@ export class MovieForm {
     synopsis: string;
     releaseDate: string;
     runtime: number;
+    placement: number;
     image: string;
     episodeId: number;
     tags: string[] = [];

@@ -279,6 +279,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                             ,[Overview]
                             ,[ReleaseDate]
                             ,[Runtime]
+                            ,[Placement]
                             ,[Synopsis]
                             ,[ImageId]
                             ,[EpisodeId])
@@ -287,6 +288,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                              ,@Overview
                              ,@ReleaseDate
                              ,@Runtime
+                             ,@Placement
                              ,@Synopsis
                              ,@ImageId
                              ,@EpisodeId);
