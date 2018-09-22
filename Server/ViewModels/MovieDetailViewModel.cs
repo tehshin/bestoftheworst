@@ -24,6 +24,8 @@ namespace BestOfTheWorst.Server.ViewModels
 
         public int Runtime { get; set; }
 
+        public int Placement { get; set; }
+
         public ImageViewModel Image { get; set; }
 
         public EpisodeViewModel Episode { get; set; }

@@ -229,6 +229,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                             m.[Overview],
                             m.[Runtime],
                             m.[ReleaseDate],
+                            m.[Placement],
                             e.[Id],
                             e.[Title],
                             e.[VideoId],
@@ -307,6 +308,10 @@ namespace BestOfTheWorst.Server.Services.Sql
         {
             var sql = @"update [Movies] 
                         set [Title] = @Title
+                            ,[Overview] = @Overview
+                            ,[ReleaseDate] = @ReleaseDate
+                            ,[Runtime] = @Runtime
+                            ,[Placement] = @Placement
                             ,[Synopsis] = @Synopsis
                             ,[ImageId] = @ImageId
                             ,[EpisodeId] = @EpisodeId
