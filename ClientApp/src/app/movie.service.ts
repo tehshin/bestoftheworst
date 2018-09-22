@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Movie, MovieForm, MovieList } from './movie'
+import { Movie } from './models/movie'
 import { throwError, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { MovieList } from './models/movie-list';
+import { MovieForm } from './models/movie-form';
 
 @Injectable({
   providedIn: 'root'

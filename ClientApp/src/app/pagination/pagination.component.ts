@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { PageInfo } from '../page-info';
+import { PageInfo } from '../models/page-info';
 
 @Component({
   selector: 'app-pagination',
@@ -14,7 +14,7 @@ export class PaginationComponent implements OnInit {
 
   @Output() pageChanged = new EventEmitter<number>();
 
-  pages: PageInfo[];
+  pages: Array<PageInfo>;
 
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
@@ -28,7 +28,7 @@ export class PaginationComponent implements OnInit {
     this.generatePages(this.page);
   }
 
-  generatePages(page: number) {
+  generatePages(page: number): void {
     if (!page) page = 1;
     
     let prevPage = page - 1;
@@ -87,28 +87,28 @@ export class PaginationComponent implements OnInit {
     }
   }
 
-  changePage(page: number) {
+  changePage(page: number): void {
     this.generatePages(page);
     this.pageChanged.emit(page);
   }
 
-  hasPrevious() {
+  hasPrevious(): boolean {
     return this.page > 1;
   }
 
-  hasNext() {
+  hasNext(): boolean {
     return this.page < this.totalPages;
   }
 
-  isCurrentPage(page: number) {
+  isCurrentPage(page: number): boolean {
     return this.page == page;
   }
 
-  goToPrevious() {
+  goToPrevious(): void {
     this.changePage(this.page - 1);
   }
 
-  goToNext() {
+  goToNext(): void {
     this.changePage(this.page + 1);
   }
 }
