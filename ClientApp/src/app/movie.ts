@@ -25,6 +25,18 @@ export class Movie {
     tags: Array<Tag> = [];
     links: Array<Link> = [];
     genres: Array<Genre> = [];
+
+    constructor(data?:Partial<Movie>) {
+        Object.assign(this, data);
+    }
+
+    getReleaseYear(): string {
+        return this.releaseDate ? this.releaseDate.split('-').shift() : null;
+    }
+
+    getGenreNames(): string {
+        return this.genres.map((genre:Genre) => genre.name).join(", ");
+    }
 }
 
 export class MovieForm {

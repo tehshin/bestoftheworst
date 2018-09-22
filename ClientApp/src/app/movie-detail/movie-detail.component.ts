@@ -3,8 +3,8 @@ import { Movie } from '../movie';
 import { MovieService } from '../movie.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { faImdb, faWikipediaW } from '@fortawesome/free-brands-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faImdb, faWikipediaW, faAmazon } from '@fortawesome/free-brands-svg-icons';
+import { faLink, faHeart, faStar, faTrophy, faTired, faMeh, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { switchMap, catchError } from 'rxjs/operators';
 import { Observable, empty } from 'rxjs';
 import { Link } from '../link';
@@ -24,6 +24,13 @@ export class MovieDetailComponent implements OnInit {
   faImdb = faImdb;
   faWikipedia = faWikipediaW;
   faLink = faLink;
+  faAmazon = faAmazon;
+  faHeart = faHeart;
+  faStar = faStar;
+  faTrophy = faTrophy;
+  faTired = faTired;
+  faMeh = faMeh;
+  faEdit = faEdit;
 
   get showEditMovie(): boolean {
     return this.accountService.isUserInRole('Administrator');
@@ -73,9 +80,5 @@ export class MovieDetailComponent implements OnInit {
 
   getImageUrlForWidth(movie: Movie, width: number) {
     return movie.image.imageUrls[width] || movie.image.imageUrls[500];
-  }
-
-  getReleaseYear(movie: Movie) {
-    return movie.releaseDate.split('-')[0];
   }
 }

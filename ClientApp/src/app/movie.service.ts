@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Movie, MovieForm, MovieList } from './movie'
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -56,10 +56,11 @@ export class MovieService {
       )
   };
 
-  getById(id: number) {
+  getById(id: number): Observable<Movie> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.get<Movie>(url)
       .pipe(
+        map((movieDto:Movie) => new Movie(movieDto)),
         catchError(this.handleError)
       );
   };

@@ -10,25 +10,50 @@
         <div class="column">
           <div class="movie-title">
             <h2>{{ movie?.title }}</h2>
-            <span class="release-date">({{ getReleaseYear(movie) }})</span>
+            <span class="release-date">({{ movie?.getReleaseYear() }})</span>
           </div>
-        </div>
-      </div>
-      <!-- <div class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <div class="movie-titles">
-                <h1 class="title movie-title">{{ movie?.title }}</h1>
-                <div class="movie-episode">{{ movie?.episode.title }}</div>
+          <div class="movie-actions">
+            <div class="epsiode-rating" title="Meh">
+              <div class="outer-circle">
+                <div class="inner-circle">
+                  <fa-icon [icon]="faMeh" size="lg" fixed="true"></fa-icon>
+                </div>
+              </div>
+              <span class="rating-label">Episode rank</span>
+            </div>
+            <a href="#" title="Buy on Amazon (affiliate)">
+              <fa-icon [icon]="faAmazon"></fa-icon>
+            </a>
+            <a href="#" title="Add movie to your favourite list">
+              <fa-icon [icon]="faHeart"></fa-icon>
+            </a>
+            <a href="#" title="Rate this movie">
+              <fa-icon [icon]="faStar"></fa-icon>
+            </a>
+            <a *ngIf="showEditMovie" routerLink="/movie/edit/{{movie?.id}}" title="Edit movie">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </a>
+          </div>
+          <div class="movie-info">
+            <h3>Overview</h3>
+            <div class="movie-overview">{{ movie?.overview }}</div>
+            <div class="meta-info">
+              <dl>
+                <dt>Genre</dt>
+                <dd>{{ movie?.getGenreNames() }}</dd>
+              </dl>
+              <dl>
+                <dt>Runtime</dt>
+                <dd>{{ movie?.runtime }} min.</dd>
+              </dl>
+              <dl>
+                <dt>BOTW Episode</dt>
+                <dd>{{ movie?.episode?.title }}</dd>
+              </dl>
             </div>
           </div>
         </div>
-        <div class="level-right" *ngIf="showEditMovie">
-          <div class="level-item">
-            <a routerLink="/movie/edit/{{movie?.id}}" type="button" class="button">Edit movie</a>
-          </div>
-        </div>
-      </div> -->
+      </div>
     </div>
   </header>
 
