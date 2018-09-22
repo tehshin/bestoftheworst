@@ -81,4 +81,27 @@ export class MovieDetailComponent implements OnInit {
   getImageUrlForWidth(movie: Movie, width: number) {
     return movie.image.imageUrls[width] || movie.image.imageUrls[500];
   }
+
+  getRankIcon(movie: Movie) {
+    switch (movie.placement) {
+      case 1:
+        return faTrophy;
+      case 2:
+        return faTired;
+      default:
+        return faMeh;
+    }
+  }
+
+  getRankTitle(movie: Movie) {
+    switch (movie.placement) {
+      case 1:
+        return "Best of the Worst!";
+      case 2:
+        return "Destroyed";
+      default:
+        return "Meh";
+    }
+  }
+
 }

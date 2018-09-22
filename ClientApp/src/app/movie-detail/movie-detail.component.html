@@ -13,10 +13,10 @@
             <span class="release-date">({{ movie?.getReleaseYear() }})</span>
           </div>
           <div class="movie-actions">
-            <div class="epsiode-rating" title="Meh">
+            <div class="epsiode-rating" [title]="getRankTitle(movie)">
               <div class="outer-circle">
                 <div class="inner-circle">
-                  <fa-icon [icon]="faMeh" size="lg" fixed="true"></fa-icon>
+                  <fa-icon [icon]="getRankIcon(movie)" size="lg" fixed="true"></fa-icon>
                 </div>
               </div>
               <span class="rating-label">Episode rank</span>
