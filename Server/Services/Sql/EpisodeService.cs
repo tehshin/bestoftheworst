@@ -16,10 +16,12 @@ namespace BestOfTheWorst.Server.Services.Sql
         {
             var sql = @"INSERT INTO [Episodes]
                             ([Title]
-                            ,[VideoId])
+                            ,[VideoId]
+                            ,[ReleaseDate])
                         VALUES
                             (@Title
-                            ,@VideoId);
+                            ,@VideoId
+                            ,@ReleaseDate);
                         select scope_identity()";
             
             episodeToCreate.Id = await Session.Connection.QueryFirstOrDefaultAsync<long>(sql, episodeToCreate);
@@ -35,13 +37,13 @@ namespace BestOfTheWorst.Server.Services.Sql
 
         public async Task<Episode> GetByIdAsync(long id)
         {
-            var sql = "select [Id], [Title], [VideoId] from [Episodes] where [Id] = @id";
+            var sql = "select [Id], [Title], [VideoId], [ReleaseDate] from [Episodes] where [Id] = @id";
             return await Session.Connection.QueryFirstOrDefaultAsync<Episode>(sql, new { id });
         }
 
         public async Task<IEnumerable<Episode>> ListAllAsync()
         {
-            var sql = "select [Id], [Title], [VideoId] from [Episodes]";
+            var sql = "select [Id], [Title], [VideoId], [ReleaseDate] from [Episodes]";
             return await Session.Connection.QueryAsync<Episode>(sql);
         }
 
@@ -50,6 +52,7 @@ namespace BestOfTheWorst.Server.Services.Sql
             var sql = @"UPDATE [dbo].[Episodes]
                         SET [Title] = @Title
                             ,[VideoId] = @VideoId
+                            ,[ReleaseDate] = @ReleaseDate
                         WHERE
                             [Id] = @Id";
             

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BestOfTheWorst.Server.ViewModels
@@ -9,5 +10,7 @@ namespace BestOfTheWorst.Server.ViewModels
 
         [Required]
         public string VideoId { get; set; }
+
+        public DateTime? ReleaseDate { get; set; }
     }
 }
