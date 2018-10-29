@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BestOfTheWorst.Server.Models;
@@ -49,6 +50,24 @@ namespace BestOfTheWorst.Server.Controllers
             var movieListViewModel = _mapper.Map<PaginatedList<Movie>, MovieListViewModel>(pageOfMovies);
 
             return movieListViewModel;
+        }
+
+        /// <summary>
+        /// Returns the latest movies grouped by episode and ordered by episode release date
+        /// </summary>
+        /// <returns>Returns movies grouped by episodes</returns>
+        [HttpGet("latest", Name = "GetLatestMovies")]
+        [ProducesResponseType(typeof(IEnumerable<EpisodeGroupViewModel>), 200)]
+        public async Task<IEnumerable<EpisodeGroupViewModel>> GetLatest()
+        {
+            var movies = await _movieService.ListByLatestEpisodesAsync(5);
+            var groupedByEpisodes = movies.GroupBy(m => m.Episode)
+                .OrderBy(g => g.Key.ReleaseDate);
+
+            return groupedByEpisodes.Select(g => new EpisodeGroupViewModel {
+                Episode = _mapper.Map<EpisodeViewModel>(g.Key),
+                Movies = _mapper.Map<IEnumerable<EpisodeGroupViewModel.MovieInfo>>(g.ToList())
+            });
         }
 
         /// <summary>

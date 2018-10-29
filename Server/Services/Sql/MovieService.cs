@@ -182,6 +182,33 @@ namespace BestOfTheWorst.Server.Services.Sql
             return new PaginatedList<Movie>(movies, totalCount, pageIndex, pageSize);
         }
 
+        public async Task<IEnumerable<Movie>> ListByLatestEpisodesAsync(int episodeCount)
+        {
+            var sql = @"select
+                            m.[Id],
+                            m.[Title], 
+                            m.[Synopsis],
+                            e.[Id],
+                            e.[Title],
+                            e.[ReleaseDate],
+                            i.[Id],
+                            i.[FileName],
+                            i.[Path]
+                        from [Movies] m
+                        left join [Images] i on m.[ImageId] = i.[Id]
+                        left join [Episode] e on m.[EpisodeId] = e.[Id]
+                        where m.[EpisodeId] in(
+                            select top (@episodeCount) [Id] from [Episodes])";
+
+            var results = await Session.Connection.QueryAsync<Movie, Episode, Image, Movie>(sql, (m, e, i) => {
+                m.Image = i;
+                m.Episode = e;
+                return m;
+            }, new { episodeCount });
+
+            return results.ToList();
+        }
+
         public async Task<PaginatedList<Movie>> SearchAsync(string query, int pageIndex, int pageSize)
         {
             var sql = @"select 

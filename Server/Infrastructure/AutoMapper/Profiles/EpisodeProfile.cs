@@ -13,6 +13,8 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                     _.ReleaseDate.HasValue ? _.ReleaseDate.Value.ToString("yyyy-MM-dd") : null));
 
             CreateMap<CreateEpisodeViewModel, Episode>();
+
+            CreateMap<Movie, EpisodeGroupViewModel.MovieInfo>();
         }
     }
 }
