@@ -64,7 +64,8 @@ namespace BestOfTheWorst.Server.Controllers
         ///     POST /episode
         ///     {
         ///         "title": "BOTW 1",
-        ///         "videoId": "3ckt5UfqgrM"
+        ///         "videoId": "3ckt5UfqgrM",
+        ///         "releaseDate": "2018-12-24"
         ///     }
         ///
         /// </remarks>

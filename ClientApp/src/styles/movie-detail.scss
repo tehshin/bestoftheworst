@@ -126,12 +126,21 @@
     }
 }
 
+.movie-detail-link {
+    color: #fff;
+    text-decoration: underline;
+
+    &:not(:last-child) {
+        margin-right: 0.5em;
+    }
+
+    &:hover {
+        color: #cfcfcf;
+    }
+}
+
 .movie-episode {
-    color: #1a1a1a;
-    font-size: .95rem;
-    margin: 0.75em 0;
-    line-height: 1.5em;
-    font-weight: normal;
+    background-color: #212121;
 }
 
 .video {
@@ -198,34 +207,5 @@
         &:hover {
             background-color: #e5e5e5;
         }
-    }
-}
-
-.movie-detail-links {
-    position: relative;
-    background-color: $box-background-color;
-    box-shadow: $box-shadow;
-
-    .movie-detail-link {
-        display: block;
-        color: #212121;
-        padding: 0.75rem;
-        border-top: 1px solid #cfcfcf;
-        font-size: 0.85rem;
-
-        .icon {
-            font-size: 1rem;
-            margin-right: 0.5rem;
-        }
-
-        &:hover {
-            background-color: #e5e5e5;
-        }
-    }
-}
-
-.tags {
-    .movie-detail-tag {
-        box-shadow: $box-shadow;
     }
 }

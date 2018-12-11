@@ -233,6 +233,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                             e.[Id],
                             e.[Title],
                             e.[VideoId],
+                            e.[ReleaseDate],
                             i.[Id],
                             i.[FileName],
                             i.[Path]

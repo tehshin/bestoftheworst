@@ -7,5 +7,7 @@ namespace BestOfTheWorst.Server.ViewModels
         public string Title { get; set; }
 
         public string VideoId { get; set; }
+
+        public string ReleaseDate { get; set; }
     }
 }

@@ -36,6 +36,12 @@
       <input type="text" class="input" name="videoid" [(ngModel)]="episodeForm.videoId" />
     </div>
   </div>
+  <div class="field">
+    <label class="label">Release date</label>
+    <div class="control">
+      <input type="text" class="input" name="releasedate" [(ngModel)]="episodeForm.releaseDate" />
+    </div>
+  </div>
   <div class="control">
     <button type="button" class="button is-primary" (click)="addEpisode()">
       Add episode
