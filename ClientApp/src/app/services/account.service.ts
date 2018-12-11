@@ -3,16 +3,14 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
-
-  private baseUrl = '/api/user';
+export class AccountService extends HttpService {
 
   private isLoginVisibleSource = new Subject<boolean>();
-
   isLoginVisible$ = this.isLoginVisibleSource.asObservable();
 
   get isAuthenticated(): boolean {
@@ -37,13 +35,21 @@ export class AccountService {
 
   constructor(
     private authService: OAuthService,
-    private http: HttpClient
-  ) { }
+    httpClient: HttpClient
+  ) { 
+    super(httpClient, '/api/user');
+  }
 
+  /**
+   * Show the login dialog
+   */
   showLogin() {
     this.isLoginVisibleSource.next(true);
   }
 
+  /**
+   * Hide the login dialog
+   */
   hideLogin() {
     this.isLoginVisibleSource.next(false);
   }

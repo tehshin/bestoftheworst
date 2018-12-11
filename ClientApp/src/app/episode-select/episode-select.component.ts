@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { EpisodeService } from '../episode.service';
+import { EpisodeService } from '../services/episode.service';
 import { Episode } from '../models/episode';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 

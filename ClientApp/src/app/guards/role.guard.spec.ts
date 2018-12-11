@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 
-import { RoleGuard } from './role-guard.service';
+import { RoleGuard } from './role.guard';
 import { OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';

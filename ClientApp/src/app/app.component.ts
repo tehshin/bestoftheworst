@@ -3,7 +3,7 @@ import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig } from './auth-config';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AccountService } from './account.service';
+import { AccountService } from './services/account.service';
 
 @Component({
   selector: 'app-root',

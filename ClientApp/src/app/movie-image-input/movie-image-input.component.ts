@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ImageService } from '../image.service';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-movie-image-input',
