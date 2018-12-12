@@ -25,9 +25,13 @@ class AccountServiceStub {
 
   showLogin(): void {
   }
+
+  isUserInRole(role: string): boolean {
+    return true;
+  }
 }
 
-describe('RoleGuard', () => {
+fdescribe('RoleGuard', () => {
   let roleGuard: RoleGuard;
   
   let accountService: AccountServiceStub;
@@ -96,6 +100,7 @@ describe('RoleGuard', () => {
 
     spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
     spyOn(accountService, 'showLogin').and.callThrough();
+    spyOn(accountService, 'isUserInRole').and.returnValue(false);
 
     accountService.user.role = 'not allowed';
 
