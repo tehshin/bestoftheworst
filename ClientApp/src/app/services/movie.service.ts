@@ -1,11 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Movie } from '../models/movie'
-import { throwError, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { MovieList } from '../models/movie-list';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Movie } from '../models/movie';
 import { MovieForm } from '../models/movie-form';
-import { HttpService } from './http.service';
+import { MovieList } from '../models/movie-list';
+import { HttpService, QueryParams } from './http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,13 @@ export class MovieService extends HttpService {
   }
 
   listMovies(pageIndex: number, pageSize: number, query: string) {
-    let params: HttpParams;
+    const queryParams: QueryParams = {};
 
-    return this.get<MovieList>('', {
-      page: pageIndex ? pageIndex.toString() : null,
-      pageSize: pageSize ? pageSize.toString() : null,
-      query
-    });
+    if (pageIndex) queryParams.page = pageIndex;
+    if (pageSize) queryParams.pageSize = pageSize;
+    if (query) queryParams.query = query;
+
+    return this.get<MovieList>('', queryParams);
   };
 
   getById(id: number): Observable<Movie> {
@@ -38,18 +38,10 @@ export class MovieService extends HttpService {
   };
 
   updateMovie(id: number, movie: MovieForm): Observable<{}> {
-    const url = `${this.baseUrl}/`;
-    return this.put('${id}', movie)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.put('${id}', movie);
   };
 
-  deleteMovie(id: number): Observable<{}> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.http.delete(url, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+  deleteMovie(id: number): void {
+    this.delete(`${id}`);
   };
 }

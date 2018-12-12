@@ -1,8 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Episode } from '../models/episode';
-import { catchError } from 'rxjs/operators';
 import { HttpService } from './http.service';
 
 @Injectable({

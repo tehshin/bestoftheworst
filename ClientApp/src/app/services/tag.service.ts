@@ -1,36 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { throwError, Observable, BehaviorSubject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TagService {
+export class TagService extends HttpService {
 
-  baseUrl = '/api/tag';
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
+  private _autocompleteSuggestions$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  autocompleteSuggestions$: Observable<string[]> = this._autocompleteSuggestions$.asObservable();
 
-  autocompleteSuggestions: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  constructor(httpClient: HttpClient) {
+    super(httpClient, '/api/tag');
+  }
 
-  constructor(private http: HttpClient) { }
-
-  private handleError(error: HttpErrorResponse) {
-    const errorMsg = error.message || 'Unable to retrieve data';
-    return throwError(errorMsg);
-  };
-
+  /**
+   * Trigger a search request that will update the `autocompleteSuggestions$` observable
+   */
   autocomplete(q: string): void {
-    let params = new HttpParams().set("term", q);
-
-    this.http.get<string[]>(`${this.baseUrl}/autocomplete`, { params: params })
-      .subscribe(
-        (data) => this.autocompleteSuggestions.next(data),
-        error => this.handleError(error)
-      );
+    this.get<string[]>(`${this.baseUrl}/autocomplete`, { 'term': q })
+      .subscribe((data) => this._autocompleteSuggestions$.next(data));
   }
 }

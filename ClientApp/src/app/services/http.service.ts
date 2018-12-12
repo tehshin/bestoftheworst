@@ -1,10 +1,10 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEvent, HttpResponse, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
 
 export interface QueryParams {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 }
 
 @Injectable()
@@ -72,5 +72,28 @@ export class HttpService {
         catchError(this.handleHttpError),
         map((response: HttpResponse<T>) => response.body)
       );
+  }
+
+  /**
+   * Construct a PUT request which returns the result as the given type
+   * 
+   * @return an `Observable` of the body as type `T`.
+   */
+  protected put<T>(url: string, data: any): Observable<T> {
+    return this.httpClient.put<T>(url, data, this.httpOptions)
+      .pipe(
+        catchError(this.handleHttpError),
+        map((response: HttpResponse<T>) => response.body)
+      );
+  }
+
+  /**
+   * Construct a DELETE request which returns nothing
+   */
+  protected delete(url: string): void {
+    this.httpClient.delete(url, this.httpOptions)
+      .pipe(
+        catchError(this.handleHttpError)
+      ).subscribe();
   }
 }
