@@ -31,7 +31,7 @@ class AccountServiceStub {
   }
 }
 
-fdescribe('RoleGuard', () => {
+describe('RoleGuard', () => {
   let roleGuard: RoleGuard;
   
   let accountService: AccountServiceStub;

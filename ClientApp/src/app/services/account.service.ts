@@ -17,7 +17,7 @@ export class AccountService extends HttpService {
     return this.authService.hasValidAccessToken();
   }
 
-  get accessToken() {
+  get accessToken(): string {
     return this.authService.getAccessToken();
   }
 
