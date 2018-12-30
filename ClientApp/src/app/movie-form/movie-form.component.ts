@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Movie } from '../models/movie';
-import { MovieService } from '../movie.service';
+import { MovieService } from '../services/movie.service';
 import { Router } from '@angular/router';
 import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { LinkType } from '../models/link-type.enum';
@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Link } from '../models/link';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { MovieDbService } from '../movie-db.service';
+import { MovieDbService } from '../services/movie-db.service';
 import { MovieDbMovie } from '../models/movie-db-search-result';
 import { MovieImageInputComponent } from '../movie-image-input/movie-image-input.component';
 import { Genre } from '../models/genre';

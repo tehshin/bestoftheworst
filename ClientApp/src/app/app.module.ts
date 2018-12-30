@@ -22,11 +22,11 @@ import { TagInputComponent } from './tag-input/tag-input.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { MovieFormComponent } from './movie-form/movie-form.component';
-import { AppDataService } from './app-data.service';
+import { AppDataService } from './services/app-data.service';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GravatarComponent } from './gravatar/gravatar.component';
-import { RoleGuard } from './role-guard.service';
+import { RoleGuard } from './guards/role.guard';
 import { LoginComponent } from './login/login.component';
 import { TruncateTextPipe } from './truncate-text.pipe';
 

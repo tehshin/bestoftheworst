@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AppDataService } from '../app-data.service';
+import { AppDataService } from '../services/app-data.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { AccountService } from '../account.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-navbar',

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieService } from '../movie.service';
+import { MovieService } from '../services/movie.service';
 import { Movie } from '../models/movie';
 import { faSearch, faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { trigger, transition, style, animate, query, animateChild } from '@angular/animations';
-import { EpisodeService } from '../episode.service';
+import { EpisodeService } from '../services/episode.service';
 import { Episode } from '../models/episode';
 import { MovieList } from '../models/movie-list';
 

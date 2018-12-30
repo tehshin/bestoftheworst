@@ -1,8 +1,8 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { TagService } from '../tag.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { TagService } from '../services/tag.service';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
   ) { }
 
   ngOnInit() {
-    this.tagService.autocompleteSuggestions.subscribe(_ => this.tagSuggestions = _);
+    this.tagService.autocompleteSuggestions$.subscribe(_ => this.tagSuggestions = _);
 
     this.searchText$.pipe(
       debounceTime(500),

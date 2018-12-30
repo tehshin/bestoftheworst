@@ -6,7 +6,7 @@ import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { RoleGuard } from './role-guard.service';
+import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   {

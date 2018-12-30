@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
-import { MovieService } from '../movie.service';
+import { MovieService } from '../services/movie.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { faImdb, faWikipediaW, faAmazon } from '@fortawesome/free-brands-svg-icons';
@@ -9,7 +9,7 @@ import { switchMap, catchError } from 'rxjs/operators';
 import { Observable, empty } from 'rxjs';
 import { Link } from '../models/link';
 import { LinkType } from '../models/link-type.enum';
-import { AccountService } from '../account.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-movie-detail',

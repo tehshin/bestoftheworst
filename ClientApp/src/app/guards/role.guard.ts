@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { AccountService } from './account.service';
+import { AccountService } from '../services/account.service';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -14,7 +14,7 @@ export class RoleGuard implements CanActivate {
     const expectedRole = route.data.expectedRole;
     const user = this.accountService.user;
 
-    if (!this.accountService.isAuthenticated || !user || user.role !== expectedRole) {
+    if (!this.accountService.isAuthenticated || !user || !this.accountService.isUserInRole(expectedRole)) {
         this.router.navigate(['']);
         this.accountService.showLogin();
         return false;

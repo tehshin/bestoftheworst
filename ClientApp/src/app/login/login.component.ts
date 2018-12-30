@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faGoogle, faTwitter, faMicrosoft, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { AppDataService } from '../app-data.service';
+import { AppDataService } from '../services/app-data.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { AccountService } from '../account.service';
+import { AccountService } from '../services/account.service';
 import { Subscription } from 'rxjs';
 
 @Component({
