@@ -49,6 +49,12 @@ namespace BestOfTheWorst
 
             string connectionString = Configuration.GetConnectionString("Database");
 
+            services.AddLogging(builder => {
+                builder.AddConfiguration(Configuration.GetSection("Logging"))
+                    .AddConsole()
+                    .AddDebug();
+            });
+
             services.AddDbContextPool<BestOfTheWorstContext>(opt => {
                 opt.UseSqlServer(connectionString: connectionString);
                 opt.UseOpenIddict();
@@ -100,11 +106,8 @@ namespace BestOfTheWorst
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

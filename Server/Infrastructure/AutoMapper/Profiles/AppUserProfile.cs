@@ -10,7 +10,7 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
         public AppUserProfile()
         {
             CreateMap<AppUser, UserInfoViewModel>()
-                .ForMember(dest => dest.GravatarHash, opt => opt.ResolveUsing<GravatarResolver>());
+                .ForMember(dest => dest.GravatarHash, opt => opt.MapFrom<GravatarResolver>());
         }
     }
 }

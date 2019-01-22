@@ -10,6 +10,16 @@
                 "${workspaceFolder}/best-of-the-worst.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run:dev",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "-p ${workspaceFolder}/best-of-the-worst.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

@@ -130,7 +130,7 @@ namespace BestOfTheWorst.Server.Services.Sql
                 using (var cropped = new SKBitmap(cropRect.Width, cropRect.Height))
                 {
                     original.ExtractSubset(cropped, cropRect);
-                    return cropped.Resize(new SKImageInfo(width, height), SKBitmapResizeMethod.Lanczos3);
+                    return cropped.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
                 }
             }
         }

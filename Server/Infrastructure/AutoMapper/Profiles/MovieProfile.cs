@@ -22,7 +22,7 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
                 ));
 
             CreateMap<MovieFormViewModel, Movie>()
-                .ForMember(dest => dest.Tags, opt => opt.ResolveUsing<StringTagResolver>())
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom<StringTagResolver>())
                 .ForMember(dest => dest.ImageId, opt => opt.MapFrom(_ => _.Image))
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
 

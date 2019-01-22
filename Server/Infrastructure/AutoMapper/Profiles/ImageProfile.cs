@@ -11,7 +11,7 @@ namespace BestOfTheWorst.Server.Infrastructure.AutoMapper.Profiles
         public ImageProfile()
         {
             CreateMap<Image, ImageViewModel>()
-                .ForMember(i => i.ImageUrls, o => o.ResolveUsing<ImageUrlResolver>());
+                .ForMember(i => i.ImageUrls, o => o.MapFrom<ImageUrlResolver>());
         }
     }
 }
