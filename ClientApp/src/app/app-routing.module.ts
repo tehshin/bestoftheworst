@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MoviesComponent } from './movies/movies.component';
 import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { RoleGuard } from './guards/role.guard';
+import { LatestMoviesComponent } from './latest-movies/latest-movies.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MoviesComponent
+    component: LatestMoviesComponent
   },
   {
     path: 'users/join',

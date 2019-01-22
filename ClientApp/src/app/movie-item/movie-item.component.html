@@ -1,0 +1,9 @@
+<a routerLink="/movie/{{movie?.id}}" class="movie-item">
+  <div class="movie-item-picture">
+    <img class="movie-item-img" *ngIf="movie?.image" [src]="getImageUrlForWidth(movie, 250)" 
+      alt="{{movie?.title}}" />
+  </div>
+  <div class="movie-item-content">
+    {{ movie?.title }}
+  </div>
+</a>

@@ -53,19 +53,19 @@ namespace BestOfTheWorst.Server.Controllers
         }
 
         /// <summary>
-        /// Returns the latest movies grouped by episode and ordered by episode release date
+        /// Returns the latest movies grouped by episode and ordered by episode release date.
         /// </summary>
         /// <returns>Returns movies grouped by episodes</returns>
         [HttpGet("latest", Name = "GetLatestMovies")]
         [ProducesResponseType(typeof(IEnumerable<EpisodeGroupViewModel>), 200)]
         public async Task<IEnumerable<EpisodeGroupViewModel>> GetLatest()
         {
-            var movies = await _movieService.ListByLatestEpisodesAsync(5);
-            var groupedByEpisodes = movies.GroupBy(m => m.Episode)
+            var movies = await _movieService.ListByLatestEpisodesAsync(22);
+            var groupedByEpisodes = movies.GroupBy(m => new { m.EpisodeId, m.Episode.ReleaseDate })
                 .OrderBy(g => g.Key.ReleaseDate);
 
             return groupedByEpisodes.Select(g => new EpisodeGroupViewModel {
-                Episode = _mapper.Map<EpisodeViewModel>(g.Key),
+                Episode = _mapper.Map<EpisodeViewModel>(g.First().Episode),
                 Movies = _mapper.Map<IEnumerable<EpisodeGroupViewModel.MovieInfo>>(g.ToList())
             });
         }

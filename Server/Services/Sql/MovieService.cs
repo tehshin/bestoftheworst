@@ -196,13 +196,14 @@ namespace BestOfTheWorst.Server.Services.Sql
                             i.[Path]
                         from [Movies] m
                         left join [Images] i on m.[ImageId] = i.[Id]
-                        left join [Episode] e on m.[EpisodeId] = e.[Id]
+                        left join [Episodes] e on m.[EpisodeId] = e.[Id]
                         where m.[EpisodeId] in(
                             select top (@episodeCount) [Id] from [Episodes])";
 
             var results = await Session.Connection.QueryAsync<Movie, Episode, Image, Movie>(sql, (m, e, i) => {
                 m.Image = i;
                 m.Episode = e;
+                m.EpisodeId = e.Id;
                 return m;
             }, new { episodeCount });
 

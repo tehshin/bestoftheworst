@@ -29,6 +29,8 @@ import { GravatarComponent } from './gravatar/gravatar.component';
 import { RoleGuard } from './guards/role.guard';
 import { LoginComponent } from './login/login.component';
 import { TruncateTextPipe } from './truncate-text.pipe';
+import { LatestMoviesComponent } from './latest-movies/latest-movies.component';
+import { MovieItemComponent } from './movie-item/movie-item.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { TruncateTextPipe } from './truncate-text.pipe';
     CreateUserComponent,
     GravatarComponent,
     LoginComponent,
-    TruncateTextPipe
+    TruncateTextPipe,
+    LatestMoviesComponent,
+    MovieItemComponent
   ],
   imports: [
     BrowserModule,

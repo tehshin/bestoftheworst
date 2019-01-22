@@ -14,9 +14,9 @@ export class Movie {
     placement: number;
     image?: Image;
     episode?: Episode;
-    tags: Array<Tag> = [];
-    links: Array<Link> = [];
-    genres: Array<Genre> = [];
+    tags: Tag[] = [];
+    links: Link[] = [];
+    genres: Genre[] = [];
 
     constructor(data?:Partial<Movie>) {
         Object.assign(this, data);
