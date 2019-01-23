@@ -16,6 +16,27 @@ $imageRatio: 150.27%;
 @import "modal";
 @import "form";
 
+.section-title {
+    display: flex;
+    
+    &.with-border {
+        margin-top: 1.25rem;
+        height: 1.75rem;
+        border-bottom: 1px solid $grey-light;
+        font-size: 1em;
+        line-height: 1em;
+        font-weight: 600;
+        text-align: left;
+    }
+}
+
+.episode-group-item__movies {
+    background-color: darken($grey-lighter, 4%);
+    padding: 0.75rem;
+    border-bottom: 1px solid $grey-light;
+    box-shadow: 0 2px 0px rgba(#000, 0.025);
+}
+
 .table {
     td.is-narrow {
         width: 1%;
