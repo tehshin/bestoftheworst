@@ -1,5 +1,5 @@
-import { Link } from "./link";
-import { Genre } from "./genre";
+import { Link } from './link';
+import { Genre } from './genre';
 
 export class MovieForm {
     title: string;
@@ -11,8 +11,8 @@ export class MovieForm {
     image: string;
     episodeId: number;
     tags: string[] = [];
-    links: Array<Link> = [];
-    genres: Array<Genre> = [];
+    links: Link[] = [];
+    genres: Genre[] = [];
 
     public constructor(init?: Partial<MovieForm>) {
         Object.assign(this, init);

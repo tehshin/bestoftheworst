@@ -6,60 +6,60 @@ import { AccountService } from '../services/account.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  loginProviders = [];
-  isLoginDialogVisible: boolean = false;
-  loginDialogTitle: string = "Login";
+    loginProviders: string[] = [];
+    isLoginDialogVisible: boolean = false;
+    loginDialogTitle: string = 'Login';
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  faGoogle = faGoogle;
-  faGithub = faGithub;
-  faTwitter = faTwitter;
-  faMicrosoft = faMicrosoft;
+    faGoogle: object = faGoogle;
+    faGithub: object = faGithub;
+    faTwitter: object = faTwitter;
+    faMicrosoft: object = faMicrosoft;
 
-  loginProviderIcons = {
-    "Google": this.faGoogle,
-    "GitHub": this.faGithub,
-    "Twitter": this.faTwitter,
-    "Microsoft": this.faMicrosoft
-  };
+    loginProviderIcons: { [key: string]: object } = {
+        'Google': this.faGoogle,
+        'GitHub': this.faGithub,
+        'Twitter': this.faTwitter,
+        'Microsoft': this.faMicrosoft
+    };
 
-  constructor(
-    private appDataService: AppDataService,
-    private authService: OAuthService,
-    private accountService: AccountService
-  ) { }
+    constructor(
+        private appDataService: AppDataService,
+        private authService: OAuthService,
+        private accountService: AccountService
+    ) { }
 
-  ngOnInit() {
-    this.appDataService.loginProviders.subscribe(
-      data => this.loginProviders = data
-    );
+    ngOnInit(): void {
+        this.appDataService.loginProviders.subscribe(
+            (data: string[]) => this.loginProviders = data
+        );
 
-    this.subscription = this.accountService.isLoginVisible$.subscribe(
-      state => this.isLoginDialogVisible = state
-    );
-  }
+        this.subscription = this.accountService.isLoginVisible$.subscribe(
+            (state: boolean) => this.isLoginDialogVisible = state
+        );
+    }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
 
-  closeLoginDialog() {
-    this.accountService.hideLogin();
-  }
+    closeLoginDialog(): void {
+        this.accountService.hideLogin();
+    }
 
-  loginProviderClass(loginProvider: string) {
-    return `is-${loginProvider.toLowerCase()}`;
-  }
+    loginProviderClass(loginProvider: string): string {
+        return `is-${loginProvider.toLowerCase()}`;
+    }
 
-  redirect(provider: string) {
-    this.authService.initImplicitFlow(null, { provider: provider });
-  }
+    redirect(provider: string): void {
+        this.authService.initImplicitFlow(null, { provider: provider });
+    }
 
 }

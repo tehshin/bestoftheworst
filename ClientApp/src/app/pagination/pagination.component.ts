@@ -1,114 +1,111 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { PageInfo } from '../models/page-info';
 
 @Component({
-  selector: 'app-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+    selector: 'app-pagination',
+    templateUrl: './pagination.component.html',
+    styleUrls: ['./pagination.component.scss']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnChanges {
 
-  @Input() page: number = 1;
-  @Input() totalPages: number = 1;
+    @Input() page: number = 1;
+    @Input() totalPages: number = 1;
 
-  @Output() pageChanged = new EventEmitter<number>();
+    @Output() pageChanged: EventEmitter<number> = new EventEmitter<number>();
 
-  pages: Array<PageInfo>;
+    pages: PageInfo[];
 
-  faAngleLeft = faAngleLeft;
-  faAngleRight = faAngleRight;
+    faAngleLeft: object = faAngleLeft;
+    faAngleRight: object = faAngleRight;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-    this.generatePages(this.page);
-  }
-
-  generatePages(page: number): void {
-    if (!page) page = 1;
-    
-    let prevPage = page - 1;
-    let nextPage = page + 1;
-
-    if (prevPage < 1) prevPage = 1;
-    if (nextPage > this.totalPages) nextPage = this.totalPages ? this.totalPages : 1;
-
-    this.pages = [];
-
-    this.pages.push(new PageInfo({ 
-      text: "1",
-      pageIndex: 1 
-    }));
-
-    if (prevPage >= 3) {
-      this.pages.push(new PageInfo({
-        text: "...",
-        clickable: false
-      }));
+    ngOnChanges(): void {
+        this.generatePages(this.page);
     }
 
-    if (prevPage < page && prevPage > 1) {
-      this.pages.push(new PageInfo({
-        text: prevPage.toString(),
-        pageIndex: prevPage
-      }));
+    generatePages(page: number): void {
+        if (!page) page = 1;
+
+        let prevPage: number = page - 1;
+        let nextPage: number = page + 1;
+
+        if (prevPage < 1) prevPage = 1;
+        if (nextPage > this.totalPages) nextPage = this.totalPages ? this.totalPages : 1;
+
+        this.pages = [];
+
+        this.pages.push(new PageInfo({
+            text: '1',
+            pageIndex: 1
+        }));
+
+        if (prevPage >= 3) {
+            this.pages.push(new PageInfo({
+                text: '...',
+                clickable: false
+            }));
+        }
+
+        if (prevPage < page && prevPage > 1) {
+            this.pages.push(new PageInfo({
+                text: prevPage.toString(),
+                pageIndex: prevPage
+            }));
+        }
+
+        if (this.page !== 1 && this.page !== this.totalPages) {
+            this.pages.push(new PageInfo({
+                text: page.toString(),
+                pageIndex: page
+            }));
+        }
+
+        if (nextPage < this.totalPages) {
+            this.pages.push(new PageInfo({
+                text: nextPage.toString(),
+                pageIndex: nextPage
+            }));
+        }
+
+        if (nextPage < (this.totalPages - 1)) {
+            this.pages.push(new PageInfo({
+                text: '...',
+                clickable: false
+            }));
+        }
+
+        if (this.totalPages > 1) {
+            this.pages.push(new PageInfo({
+                text: this.totalPages ? this.totalPages.toString() : '1',
+                pageIndex: this.totalPages
+            }));
+        }
     }
 
-    if (this.page != 1 && this.page != this.totalPages) {
-      this.pages.push(new PageInfo({
-        text: page.toString(),
-        pageIndex: page
-      }));
-    }
-    
-    if (nextPage < this.totalPages) {
-      this.pages.push(new PageInfo({
-        text: nextPage.toString(),
-        pageIndex: nextPage
-      }));
+    changePage(page: number): void {
+        this.generatePages(page);
+        this.pageChanged.emit(page);
     }
 
-    if (nextPage < (this.totalPages - 1)) {
-      this.pages.push(new PageInfo({
-        text: "...",
-        clickable: false
-      }));
+    hasPrevious(): boolean {
+        return this.page > 1;
     }
 
-    if (this.totalPages > 1) {
-      this.pages.push(new PageInfo({ 
-        text: this.totalPages ? this.totalPages.toString() : "1",
-        pageIndex: this.totalPages 
-      }));
+    hasNext(): boolean {
+        return this.page < this.totalPages;
     }
-  }
 
-  changePage(page: number): void {
-    this.generatePages(page);
-    this.pageChanged.emit(page);
-  }
+    isCurrentPage(page: number): boolean {
+        return this.page === page;
+    }
 
-  hasPrevious(): boolean {
-    return this.page > 1;
-  }
+    goToPrevious(): void {
+        this.changePage(this.page - 1);
+    }
 
-  hasNext(): boolean {
-    return this.page < this.totalPages;
-  }
-
-  isCurrentPage(page: number): boolean {
-    return this.page == page;
-  }
-
-  goToPrevious(): void {
-    this.changePage(this.page - 1);
-  }
-
-  goToNext(): void {
-    this.changePage(this.page + 1);
-  }
+    goToNext(): void {
+        this.changePage(this.page + 1);
+    }
 }

@@ -6,113 +6,113 @@ import { AccountService } from '../services/account.service';
 import { RoleGuard } from './role.guard';
 
 class ActivatedRouteSnapshotStub {
-  private _data: any;
-  get data() {
-    return this._data;
-  }
+    private _data: any;
+    get data(): any {
+        return this._data;
+    }
 }
 
 class AccountServiceStub {
-  _isAuthenticated: boolean = true;
+    _isAuthenticated: boolean = true;
 
-  get isAuthenticated() {
-    return this._isAuthenticated;
-  }
+    get isAuthenticated(): boolean {
+        return this._isAuthenticated;
+    }
 
-  user: any = {
-    role: 'a role'
-  };
+    user: any = {
+        role: 'a role'
+    };
 
-  showLogin(): void {
-  }
+    showLogin(): void {
+    }
 
-  isUserInRole(role: string): boolean {
-    return true;
-  }
+    isUserInRole(role: string): boolean {
+        return true;
+    }
 }
 
 describe('RoleGuard', () => {
-  let roleGuard: RoleGuard;
-  
-  let accountService: AccountServiceStub;
-  let router: any = {
-    navigate: jasmine.createSpy('navigate')
-  };
-  
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [
-        RoleGuard,
-        {
-          provide: AccountService,
-          useClass: AccountServiceStub,
-        },
-        {
-          provide: Router,
-          useValue: router
-        },
-        {
-          provide: ActivatedRouteSnapshot,
-          useClass: ActivatedRouteSnapshotStub
-        }
-      ]
-    }).compileComponents();
-  }));
+    let roleGuard: RoleGuard;
 
-  beforeEach(() => {
-    accountService = TestBed.get(AccountService);
-    roleGuard = TestBed.get(RoleGuard);
-  });
+    let accountService: AccountServiceStub;
+    const router: any = {
+        navigate: jasmine.createSpy('navigate')
+    };
 
-  it('should be created', () => {
-    expect(roleGuard).toBeTruthy();
-  });
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, RouterTestingModule],
+            providers: [
+                RoleGuard,
+                {
+                    provide: AccountService,
+                    useClass: AccountServiceStub,
+                },
+                {
+                    provide: Router,
+                    useValue: router
+                },
+                {
+                    provide: ActivatedRouteSnapshot,
+                    useClass: ActivatedRouteSnapshotStub
+                }
+            ]
+        }).compileComponents();
+    }));
 
-  it('should redirect to index and show login if user is not authenticated', () => {
-    const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
+    beforeEach(() => {
+        accountService = TestBed.get(AccountService);
+        roleGuard = TestBed.get(RoleGuard);
+    });
 
-    spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
-    spyOn(accountService, 'showLogin').and.callThrough();
+    it('should be created', () => {
+        expect(roleGuard).toBeTruthy();
+    });
 
-    accountService._isAuthenticated = false;
+    it('should redirect to index and show login if user is not authenticated', () => {
+        const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
 
-    expect(roleGuard.canActivate(route)).toBe(false);
-    expect(accountService.showLogin).toHaveBeenCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith(['']);
-  });
+        spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
+        spyOn(accountService, 'showLogin').and.callThrough();
 
-  it('should redirect to index and show login if user session is not valid', () => {
-    const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
+        accountService._isAuthenticated = false;
 
-    spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
-    spyOn(accountService, 'showLogin').and.callThrough();
+        expect(roleGuard.canActivate(route)).toBe(false);
+        expect(accountService.showLogin).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['']);
+    });
 
-    accountService.user = null;
+    it('should redirect to index and show login if user session is not valid', () => {
+        const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
 
-    expect(roleGuard.canActivate(route)).toBe(false);
-    expect(accountService.showLogin).toHaveBeenCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith(['']);
-  });
+        spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
+        spyOn(accountService, 'showLogin').and.callThrough();
 
-  it('should redirect to index and show login if user is not in expected role', () => {
-    const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
+        accountService.user = null;
 
-    spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
-    spyOn(accountService, 'showLogin').and.callThrough();
-    spyOn(accountService, 'isUserInRole').and.returnValue(false);
+        expect(roleGuard.canActivate(route)).toBe(false);
+        expect(accountService.showLogin).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['']);
+    });
 
-    accountService.user.role = 'not allowed';
+    it('should redirect to index and show login if user is not in expected role', () => {
+        const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
 
-    expect(roleGuard.canActivate(route)).toBe(false);
-    expect(accountService.showLogin).toHaveBeenCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith(['']);
-  });
+        spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
+        spyOn(accountService, 'showLogin').and.callThrough();
+        spyOn(accountService, 'isUserInRole').and.returnValue(false);
 
-  it('should activate route if user is authenticated and has the correct role', () => {
-    const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
+        accountService.user.role = 'not allowed';
 
-    spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
-    expect(roleGuard.canActivate(route)).toBe(true);
-  });
+        expect(roleGuard.canActivate(route)).toBe(false);
+        expect(accountService.showLogin).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['']);
+    });
+
+    it('should activate route if user is authenticated and has the correct role', () => {
+        const route: ActivatedRouteSnapshot = TestBed.get(ActivatedRouteSnapshot);
+
+        spyOnProperty(route, 'data', 'get').and.returnValue({ expectedRole: 'a role' });
+        expect(roleGuard.canActivate(route)).toBe(true);
+    });
 });

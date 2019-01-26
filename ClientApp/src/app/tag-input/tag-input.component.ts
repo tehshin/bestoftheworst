@@ -1,136 +1,144 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
 import { TagService } from '../services/tag.service';
 
-
 @Component({
-  selector: 'app-tag-input',
-  templateUrl: './tag-input.component.html',
-  styleUrls: ['./tag-input.component.scss'],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => TagInputComponent),
-    multi: true
-  }]
+    selector: 'app-tag-input',
+    templateUrl: './tag-input.component.html',
+    styleUrls: ['./tag-input.component.scss'],
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => TagInputComponent),
+        multi: true
+    }]
 })
-export class TagInputComponent implements OnInit, ControlValueAccessor {
+export class TagInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
-  @Input("tags")
-  _tags: string[] = [];
+    @Input() _tags: string[] = [];
 
-  newTag: string;
-  showDropdown: boolean = false;
-  selectedIndex: number = 0;
-  tagSuggestions: string[] = [];
-  
-  private searchText$ = new Subject<string>();
+    newTag: string;
+    showDropdown: boolean = false;
+    selectedIndex: number = 0;
+    tagSuggestions: string[] = [];
 
-  get tags() {
-    return this._tags;
-  }
+    private searchText$: Subject<string> = new Subject<string>();
+    private destroyed$: Subject<void> = new Subject<void>();
 
-  set tags(val) {
-    if (val) {
-      this._tags = val;
-    }
-    
-    this.propagateChange(this._tags);
-  }
-
-  propagateChange = (_: any) => {};
-
-  constructor(
-    private tagService: TagService
-  ) { }
-
-  ngOnInit() {
-    this.tagService.autocompleteSuggestions$.subscribe(_ => this.tagSuggestions = _);
-
-    this.searchText$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      tap(q => {
-        this.showDropdown = q.length > 0;
-      }),
-      tap(q => this.tagService.autocomplete(q))
-    ).subscribe();
-  }
-
-  keyEnter(tag: string, $event: KeyboardEvent) {
-    if (this.showDropdown) {
-      tag = this.tagSuggestions[this.selectedIndex] || tag;
+    get tags(): string[] {
+        return this._tags;
     }
 
-    if (tag) {
-      this.addTag(tag);
+    set tags(val: string[]) {
+        if (val) {
+            this._tags = val;
+        }
+
+        this.propagateChange(this._tags);
     }
 
-    if ($event.stopPropagation) $event.stopPropagation();
-    if ($event.preventDefault) $event.preventDefault();
+    propagateChange: Function = (_: any) => { };
 
-    $event.cancelBubble = true;
-    $event.returnValue = false;
-  }
+    constructor(
+        private tagService: TagService
+    ) { }
 
-  addTag(tag: string) {
-    this.tags.push(tag);
-    this.newTag = "";
-    this.showDropdown = false;
-    this.searchText$.next("");
-  }
+    ngOnInit(): void {
+        this.tagService.autocompleteSuggestions$
+            .pipe(
+                takeUntil(this.destroyed$)
+            )
+            .subscribe((suggestions: string[]) => this.tagSuggestions = suggestions);
 
-  removeTag(index: number, $event) {
-    this.tags.splice(index, 1);
-
-    if ($event.stopPropagation) $event.stopPropagation();
-    if ($event.preventDefault) $event.preventDefault();
-
-    $event.cancelBubble = true;
-    $event.returnValue = false;
-  }
-
-  keyDown($event: KeyboardEvent) {
-    if ($event.keyCode === 40 && this.selectedIndex < this.tagSuggestions.length - 1) {
-      this.selectedIndex++;
-    } else if ($event.keyCode === 38 && this.selectedIndex > 0) {
-      this.selectedIndex--;
+        this.searchText$.pipe(
+            debounceTime(500),
+            distinctUntilChanged(),
+            takeUntil(this.destroyed$)
+        ).subscribe((q: string) => {
+            this.showDropdown = q.length > 0;
+            this.tagService.autocomplete(q);
+        });
     }
 
-    if ($event.keyCode === 27) {
-      this.showDropdown = false;
+    ngOnDestroy(): void {
+        this.destroyed$.next();
+        this.destroyed$.complete();
     }
 
-    if ($event.keyCode === 40 
-      || $event.keyCode === 38
-      || $event.keyCode === 27) {
-      if ($event.stopPropagation) $event.stopPropagation();
-      if ($event.preventDefault) $event.preventDefault();
+    keyEnter(tag: string, $event: KeyboardEvent): void {
+        if (this.showDropdown) {
+            tag = this.tagSuggestions[this.selectedIndex] || tag;
+        }
 
-      $event.cancelBubble = true;
-      $event.returnValue = false;
+        if (tag) {
+            this.addTag(tag);
+        }
+
+        if ($event.stopPropagation) $event.stopPropagation();
+        if ($event.preventDefault) $event.preventDefault();
+
+        $event.cancelBubble = true;
+        $event.returnValue = false;
     }
-  }
 
-  autocomplete(q: string) {
-    this.searchText$.next(q);
-  }
+    addTag(tag: string): void {
+        this.tags.push(tag);
+        this.newTag = '';
+        this.showDropdown = false;
+        this.searchText$.next('');
+    }
 
-  focusInput(input: HTMLInputElement) {
-    input.focus();
-  }
+    removeTag(index: number, $event: Event): void {
+        this.tags.splice(index, 1);
 
-  writeValue(obj: any): void {
-    this.tags = obj;
-  }
+        if ($event.stopPropagation) $event.stopPropagation();
+        if ($event.preventDefault) $event.preventDefault();
 
-  registerOnChange(fn: any): void {
-    this.propagateChange = fn;
-  }
+        $event.cancelBubble = true;
+        $event.returnValue = false;
+    }
 
-  registerOnTouched(fn: any): void { }
+    keyDown($event: KeyboardEvent): void {
+        if ($event.keyCode === 40 && this.selectedIndex < this.tagSuggestions.length - 1) {
+            this.selectedIndex++;
+        } else if ($event.keyCode === 38 && this.selectedIndex > 0) {
+            this.selectedIndex--;
+        }
 
-  setDisabledState?(isDisabled: boolean): void { }
+        if ($event.keyCode === 27) {
+            this.showDropdown = false;
+        }
+
+        if ($event.keyCode === 40
+            || $event.keyCode === 38
+            || $event.keyCode === 27) {
+            if ($event.stopPropagation) $event.stopPropagation();
+            if ($event.preventDefault) $event.preventDefault();
+
+            $event.cancelBubble = true;
+            $event.returnValue = false;
+        }
+    }
+
+    autocomplete(q: string): void {
+        this.searchText$.next(q);
+    }
+
+    focusInput(input: HTMLInputElement): void {
+        input.focus();
+    }
+
+    writeValue(obj: any): void {
+        this.tags = obj;
+    }
+
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
+    }
+
+    registerOnTouched(fn: any): void { }
+
+    setDisabledState?(isDisabled: boolean): void { }
 
 }

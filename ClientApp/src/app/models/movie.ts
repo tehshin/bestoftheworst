@@ -1,8 +1,8 @@
-import { Link } from "./link";
-import { Episode } from "./episode";
-import { Genre } from "./genre";
-import { Image } from "./image";
-import { Tag } from "./tag";
+import { Link } from './link';
+import { Episode } from './episode';
+import { Genre } from './genre';
+import { Image } from './image';
+import { Tag } from './tag';
 
 export class Movie {
     id: number;
@@ -18,7 +18,7 @@ export class Movie {
     links: Link[] = [];
     genres: Genre[] = [];
 
-    constructor(data?:Partial<Movie>) {
+    constructor(data?: Partial<Movie>) {
         Object.assign(this, data);
     }
 
@@ -27,6 +27,6 @@ export class Movie {
     }
 
     getGenreNames(): string {
-        return this.genres.map((genre:Genre) => genre.name).join(", ");
+        return this.genres.map((genre: Genre) => genre.name).join(', ');
     }
 }

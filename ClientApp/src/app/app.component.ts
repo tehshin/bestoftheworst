@@ -6,41 +6,40 @@ import { filter } from 'rxjs/operators';
 import { AccountService } from './services/account.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Best of the Worst';
+    title: string = 'Best of the Worst';
 
-  constructor(
-    private oAuthService: OAuthService,
-    private activatedRotue: ActivatedRoute,
-    private router: Router,
-    private accountService: AccountService
-  ) { 
-    this.configureAuth();
-  }
-
-  ngOnInit() {
-    this.activatedRotue.queryParams.subscribe(
-      (params: Params) => {
-        const loginStatus = params["loginstatus"];
-        if (loginStatus == "2") {
-          this.router.navigate(['users/join']);
-        }
-      }
-    );
-  }
-
-  configureAuth() {
-    let baseUrl = window.location.origin;
-    if (!baseUrl.endsWith('/')) {
-      baseUrl = baseUrl + '/';
+    constructor(
+        private oAuthService: OAuthService,
+        private activatedRotue: ActivatedRoute,
+        private router: Router
+    ) {
+        this.configureAuth();
     }
-    
-    this.oAuthService.configure(authConfig(baseUrl));
-    this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oAuthService.loadDiscoveryDocumentAndTryLogin();
-  }
+
+    ngOnInit(): void {
+        this.activatedRotue.queryParams.subscribe(
+            (params: Params) => {
+                const loginStatus: string = params['loginstatus'];
+                if (loginStatus === '2') {
+                    this.router.navigate(['users/join']);
+                }
+            }
+        );
+    }
+
+    configureAuth(): void {
+        let baseUrl: string = window.location.origin;
+        if (!baseUrl.endsWith('/')) {
+            baseUrl = baseUrl + '/';
+        }
+
+        this.oAuthService.configure(authConfig(baseUrl));
+        this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
+        this.oAuthService.loadDiscoveryDocumentAndTryLogin();
+    }
 }

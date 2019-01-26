@@ -5,23 +5,23 @@ import { Episode } from '../models/episode';
 import { HttpService } from './http.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class EpisodeService extends HttpService {
 
-  constructor(httpClient: HttpClient) {
-    super(httpClient, '/api/episode');
-  }
+    constructor(httpClient: HttpClient) {
+        super(httpClient, '/api/episode');
+    }
 
-  listEpisodes(): Observable<Episode[]> {
-    return this.get<Episode[]>();
-  }
+    listEpisodes(): Observable<Episode[]> {
+        return this.get<Episode[]>();
+    }
 
-  getById(id: number): Observable<Episode> {
-    return this.get<Episode>(`${id}`);
-  }
+    getById(id: number): Observable<Episode> {
+        return this.get<Episode>(`${id}`);
+    }
 
-  createEpisode(episode: Episode) : Observable<Episode> {
-    return this.post<Episode>(this.baseUrl, episode);
-  }
+    createEpisode(episode: Episode): Observable<Episode> {
+        return this.post<Episode>(this.baseUrl, episode);
+    }
 }

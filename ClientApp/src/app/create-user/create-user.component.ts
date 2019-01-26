@@ -2,24 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+    selector: 'app-create-user',
+    templateUrl: './create-user.component.html',
+    styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
 
-  email: string;
-  username: string;
+    email: string;
+    username: string;
 
-  constructor(
-    private authService: OAuthService
-  ) { }
+    constructor(
+        private authService: OAuthService
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit(): void {
+    }
 
-  join() {
-    this.authService.initImplicitFlow(null, { email: this.email, username: this.username });
-  }
+    join(): void {
+        this.authService.initImplicitFlow(null, { email: this.email, username: this.username });
+    }
 
 }

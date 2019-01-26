@@ -1,4 +1,4 @@
-import { AuthConfig } from "angular-oauth2-oidc";
+import { AuthConfig } from 'angular-oauth2-oidc';
 
 export function authConfig(url: string): AuthConfig {
     return new AuthConfig({

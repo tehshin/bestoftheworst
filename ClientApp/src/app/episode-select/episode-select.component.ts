@@ -1,85 +1,82 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { EpisodeService } from '../services/episode.service';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Episode } from '../models/episode';
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { EpisodeService } from '../services/episode.service';
 
 @Component({
-  selector: 'app-episode-select',
-  templateUrl: './episode-select.component.html',
-  styleUrls: ['./episode-select.component.scss'],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => EpisodeSelectComponent),
-    multi: true
-  }]
+    selector: 'app-episode-select',
+    templateUrl: './episode-select.component.html',
+    styleUrls: ['./episode-select.component.scss'],
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => EpisodeSelectComponent),
+        multi: true
+    }]
 })
 export class EpisodeSelectComponent implements OnInit, ControlValueAccessor {
 
-  @Input("episode")
-  _episodeId: number;
+    @Input('episode') _episodeId: number;
 
-  faPlus = faPlus;
-  episodes: Episode[] = [];
-  showDialog: boolean = false;
+    faPlus: object = faPlus;
+    episodes: Episode[] = [];
+    showDialog: boolean = false;
 
-  episodeForm: Episode = new Episode();
+    episodeForm: Episode = new Episode();
 
-  get episodeId() {
-    return this._episodeId;
-  }
+    get episodeId(): number {
+        return this._episodeId;
+    }
 
-  set episodeId(val) {
-    this._episodeId = val;
-    this.propagateChange(this._episodeId);
-  }
+    set episodeId(val: number) {
+        this._episodeId = val;
+        this.propagateChange(this._episodeId);
+    }
 
-  propagateChange = (_: any) => {};
+    propagateChange = (_: any): void => { };
 
-  constructor(private episodeService: EpisodeService) { }
+    constructor(private episodeService: EpisodeService) { }
 
-  ngOnInit() {
-    this.listEpisodes();
-  }
+    ngOnInit(): void {
+        this.listEpisodes();
+    }
 
-  listEpisodes() {
-    this.episodeService.listEpisodes()
-      .subscribe(
-        (data) => this.episodes = data,
-        error => console.log('listEpisodes', error)
-      );
-  }
+    listEpisodes(): void {
+        this.episodeService.listEpisodes()
+            .subscribe(
+                (data: Episode[]) => this.episodes = data
+            );
+    }
 
-  addEpisode() {
-    this.episodeService.createEpisode(this.episodeForm)
-      .subscribe(
-        (newEpisode) => { 
-          this.episodes.push(newEpisode);
-          this.closeDialog();
-        },
-        error => console.log(error)
-      );
-  }
+    addEpisode(): void {
+        this.episodeService.createEpisode(this.episodeForm)
+            .subscribe(
+                (newEpisode: Episode) => {
+                    this.episodes.push(newEpisode);
+                    this.closeDialog();
+                }
+            );
+    }
 
-  openDialog() {
-    this.showDialog = true;
-  }
+    openDialog(): void {
+        this.showDialog = true;
+    }
 
-  closeDialog() {
-    this.showDialog = false;
-  }
+    closeDialog(): void {
+        this.showDialog = false;
+    }
 
-  writeValue(obj: any): void {
-    if (!obj) obj = 0;
-    this.episodeId = obj;
-  }
+    writeValue(obj: any): void {
+        if (!obj) obj = 0;
+        this.episodeId = obj;
+    }
 
-  registerOnChange(fn: any) {
-    this.propagateChange = fn;
-  }
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
+    }
 
-  registerOnTouched(fn: any) {}
+    registerOnTouched(fn: any): void { }
 
-  setDisabledState?(isDisabled: boolean) {}
+    setDisabledState?(isDisabled: boolean): void { }
 
 }

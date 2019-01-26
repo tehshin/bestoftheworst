@@ -1,5 +1,5 @@
-import { Episode } from "./episode";
-import { Movie } from "./movie";
+import { Episode } from './episode';
+import { Movie } from './movie';
 
 export class EpisodeGroup {
     episode: Episode;
