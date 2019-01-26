@@ -82,6 +82,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
         this.listMovies(1);
     }
 
+    ngOnDestroy(): void {
+        this.destroyed$.next();
+        this.destroyed$.complete();
+    }
+
     onSearchFocus(): void {
         this.isSearchFocused = true;
     }
