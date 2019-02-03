@@ -23,7 +23,7 @@
         overflow: hidden;
         width: 640px;
         margin: 0 auto;
-        background-color: #e1e1e1;
+        background-color: $body-background-color;
         box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
         z-index: 41;
         transition: all .3s ease;
@@ -32,7 +32,7 @@
     .modal-header {
         display: flex;
         align-items: center;
-        background: #ccc;
+        background: #161618;
     }
 
     .modal-title {

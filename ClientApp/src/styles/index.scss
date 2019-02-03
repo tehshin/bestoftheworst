@@ -20,21 +20,18 @@ $imageRatio: 150.27%;
     display: flex;
     
     &.with-border {
-        margin-top: 1.25rem;
-        height: 1.75rem;
-        border-bottom: 1px solid $grey-light;
-        font-size: 1em;
-        line-height: 1em;
-        font-weight: 600;
+        color: $white-ter;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5em;
+        // font-weight: 400;
         text-align: left;
+        text-transform: uppercase;
     }
 }
 
 .episode-group-item__movies {
-    background-color: darken($grey-lighter, 4%);
-    padding: 0.75rem;
-    border-bottom: 1px solid $grey-light;
-    box-shadow: 0 2px 0px rgba(#000, 0.025);
+    overflow: hidden;
 }
 
 .table {

@@ -4,8 +4,10 @@ $purple-invert: findColorInvert($purple);
 $primary: $purple;
 $primary-invert: $purple-invert;
 
-$grey-lighter: #ccc;
-$body-background-color: $grey-lighter;
+$black-ter: #27282e;
+$body-background-color: $black-ter;
+
+$text: $white-ter;
 
 $radius-small: 1px;
 $radius: 2px;
