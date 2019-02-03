@@ -15,7 +15,7 @@
     display: block;
     background: $box-background-color;
     box-shadow: $box-shadow;
-    color: $dark;
+    color: $box-color;
 
     @at-root #{&}__img-wrapper {
         position: relative;
@@ -36,6 +36,11 @@
         font-size: 0.85rem;
         padding: 0.5rem;
         font-weight: 600;
+    }
+
+    &:hover {
+        background-color: #333;
+        color: $box-color;
     }
 }
 
