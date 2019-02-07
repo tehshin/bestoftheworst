@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { EpisodeGroup } from '../models/episode-group';
-import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * This component displays a list of movies contained within an `EpisodeGroup`.
