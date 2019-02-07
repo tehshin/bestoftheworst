@@ -30,8 +30,52 @@ $imageRatio: 150.27%;
     }
 }
 
+.episode-group-item {
+    position: relative;
+
+    &:hover {
+        .episode-group-item__scroller-previous,
+        .episode-group-item__scroller-next {
+            opacity: 1;
+        }
+    }
+}
+
+.episode-group-item__scroller-previous,
+.episode-group-item__scroller-next {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -3em;
+    align-items: center;
+    justify-content: center;
+    width: 1.75em;
+    height: 6em;
+    background-color: $box-background-color;
+    box-shadow: 5px 2px 5px rgba(#000, .5);
+    color: $text;
+    opacity: .5;
+    transition: opacity 0.25s ease-in-out;
+
+    &:hover {
+        color: $text;
+        background-color: #333;
+    }
+}
+
+.episode-group-item__scroller-next {
+    left: auto;
+    right: 0;
+    box-shadow: -5px 2px 5px rgba(#000, .5);
+}
+
 .episode-group-item__movies {
     overflow: hidden;
+
+    .columns {
+        transition: transform 0.25s ease-in-out;
+    }
 }
 
 .table {

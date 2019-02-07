@@ -3,16 +3,7 @@
         <div *ngIf="episodeGroups$ | async; let episodeGroups">
             <div class="columns is-multiline is-variable is-8">
                 <div class="column" *ngFor="let group of episodeGroups; let groupIndex = index" [ngClass]="{ 'is-full': groupIndex === 0, 'is-half': groupIndex > 0 }">
-                    <div class="episode-group-item" [class.episode-group-item__latest]="groupIndex === 0">
-                        <div class="section-title with-border">{{group.episode.title}}</div>
-                        <div class="episode-group-item__movies">
-                            <div class="columns is-variable is-2">
-                                <div class="column" [class.is-one-third]="groupIndex > 0" *ngFor="let movie of group.movies">
-                                    <app-movie-item [movie]="movie"></app-movie-item>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <app-episode-group [episodeGroup]="group"></app-episode-group>
                 </div>
             </div>
         </div>

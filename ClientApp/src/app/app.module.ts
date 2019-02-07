@@ -29,6 +29,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { AppDataService } from './services/app-data.service';
 import { TagInputComponent } from './tag-input/tag-input.component';
 import { TruncateTextPipe } from './truncate-text.pipe';
+import { EpisodeGroupComponent } from './episode-group/episode-group.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { TruncateTextPipe } from './truncate-text.pipe';
         LoginComponent,
         TruncateTextPipe,
         LatestMoviesComponent,
-        MovieItemComponent
+        MovieItemComponent,
+        EpisodeGroupComponent
     ],
     imports: [
         BrowserModule,

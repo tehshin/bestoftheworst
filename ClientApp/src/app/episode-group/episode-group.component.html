@@ -1,0 +1,16 @@
+<div class="episode-group-item" [class.episode-group-item__latest]="showAllMovies">
+    <div class="section-title with-border">{{episodeGroup.episode.title}}</div>
+    <div #movieList class="episode-group-item__movies">
+        <div class="columns is-variable is-2" [ngStyle]="{ 'transform': 'translateX(' + scrollPos + '%)' }">
+            <div class="column" [class.is-one-third]="!showAllMovies" *ngFor="let movie of episodeGroup.movies">
+                <app-movie-item [movie]="movie"></app-movie-item>
+            </div>
+        </div>
+    </div>
+    <a (click)="scrollLeft()" *ngIf="hasPrevious" class="episode-group-item__scroller-previous">
+        <fa-icon [icon]="faAngleLeft" size="lg"></fa-icon>
+    </a>
+    <a (click)="scrollRight()" *ngIf="hasNext" class="episode-group-item__scroller-next">
+        <fa-icon [icon]="faAngleRight" size="lg"></fa-icon>
+    </a>
+</div>
