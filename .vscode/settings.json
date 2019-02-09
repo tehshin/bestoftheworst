@@ -1,0 +1,3 @@
+{
+    "jest.pathToJest": "cd ClientApp && npm test --"
+}
