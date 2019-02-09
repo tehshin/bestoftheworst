@@ -34,6 +34,7 @@ export class EpisodeGroupComponent implements OnInit {
      * Returns whether the movie list is scrollable
      */
     get isScrollable(): boolean {
+        if (!this.episodeGroup || !this.episodeGroup.movies) return false;
         return this.episodeGroup && !this.showAllMovies && this.episodeGroup.movies.length > 3;
     }
 
@@ -57,7 +58,9 @@ export class EpisodeGroupComponent implements OnInit {
     scrollPos: number = 0;
 
     ngOnInit(): void {
-        this.maxScrollDistance = Math.min((this.episodeGroup.movies.length - 3) * -this.SINGLE_ITEM_WIDTH, 0);
+        if (this.episodeGroup && this.episodeGroup.movies) {
+            this.maxScrollDistance = Math.min((this.episodeGroup.movies.length - 3) * -this.SINGLE_ITEM_WIDTH, 0);
+        }
     }
 
     /**

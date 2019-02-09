@@ -2,8 +2,10 @@
     <div class="container">
         <div *ngIf="episodeGroups$ | async; let episodeGroups">
             <div class="columns is-multiline is-variable is-8">
-                <div class="column" *ngFor="let group of episodeGroups; let groupIndex = index" [ngClass]="{ 'is-full': groupIndex === 0, 'is-half': groupIndex > 0 }">
-                    <app-episode-group [episodeGroup]="group"></app-episode-group>
+                <div class="column" 
+                    *ngFor="let group of episodeGroups; let groupIndex = index" 
+                    [ngClass]="{ 'is-full': groupIndex === 0, 'is-half': groupIndex > 0 }">
+                    <app-episode-group [episodeGroup]="group" [showAllMovies]="groupIndex === 0"></app-episode-group>
                 </div>
             </div>
         </div>
