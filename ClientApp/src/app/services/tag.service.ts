@@ -16,10 +16,11 @@ export class TagService extends HttpService {
     }
 
     /**
-     * Trigger a search request that will update the `autocompleteSuggestions$` observable
+     * Creates a GET request to search for existing tags.
+     * Results will be published to the autocompleteSuggestions$ observable.
      */
     autocomplete(q: string): void {
-        this.get<string[]>(`${this.baseUrl}/autocomplete`, { 'term': q })
+        this.get<string[]>('autocomplete', { 'term': q })
             .subscribe((data: string[]) => this._autocompleteSuggestions$.next(data));
     }
 }
