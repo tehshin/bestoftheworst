@@ -77,5 +77,5 @@ describe('HttpService', () => {
         const deleteRequest: TestRequest = http.expectOne('/api/test');
         expect(deleteRequest).toBeTruthy();
         expect(deleteRequest.request.method).toBe('DELETE');
-    })
+    });
 });
