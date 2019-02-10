@@ -65,7 +65,8 @@ export class HttpService {
      * @return an `Observable` of the body as type `T`.
      */
     protected post<T>(url: string, data: any): Observable<T> {
-        return this.httpClient.post<T>(url, data, this.httpOptions)
+        const requestUrl: string = url ? `${this.baseUrl}/${url}` : this.baseUrl;
+        return this.httpClient.post<T>(requestUrl, data, this.httpOptions)
             .pipe(
                 catchError(this.handleHttpError),
                 map((response: HttpResponse<T>) => response.body)
@@ -77,7 +78,8 @@ export class HttpService {
      * @return an `Observable` of the body as type `T`.
      */
     protected put<T>(url: string, data: any): Observable<T> {
-        return this.httpClient.put<T>(url, data, this.httpOptions)
+        const requestUrl: string = url ? `${this.baseUrl}/${url}` : this.baseUrl;
+        return this.httpClient.put<T>(requestUrl, data, this.httpOptions)
             .pipe(
                 catchError(this.handleHttpError),
                 map((response: HttpResponse<T>) => response.body)
@@ -88,7 +90,8 @@ export class HttpService {
      * Construct a DELETE request which returns nothing
      */
     protected delete(url: string): void {
-        this.httpClient.delete(url, this.httpOptions)
+        const requestUrl: string = url ? `${this.baseUrl}/${url}` : this.baseUrl;
+        this.httpClient.delete(requestUrl, this.httpOptions)
             .pipe(
                 catchError(this.handleHttpError)
             ).subscribe();
