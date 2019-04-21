@@ -1,0 +1,24 @@
+{
+  "npmScope": "botw",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "best-of-the-worst": {
+      "tags": ["botw"]
+    },
+    "core": {
+      "tags": ["core"]
+    },
+    "model": {
+      "tags": ["core"]
+    },
+    "moviedb": {
+      "tags": ["moviedb"]
+    }
+  }
+}
